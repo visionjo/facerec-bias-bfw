@@ -3,7 +3,7 @@ Build and install the package.
 """
 from setuptools import setup, find_packages
 
-NAME = 'facebias'
+NAME = 'mypackage'
 FULLNAME = "Facial Recognition Bias and the BFW Dataset"
 AUTHOR = "Joseph Robinson"
 AUTHOR_EMAIL = 'robinson.jo@husky.neu.edu'

@@ -5,6 +5,10 @@ import numpy as np
 import pandas as pd
 
 
+def load_bfw_datatable(fname):
+    return pd.read_pickle(fname)
+
+
 def load_berkeley_earth_data(fname):
     """
     Load monthly temperature data from a Berkeley Earth file.
@@ -42,7 +46,7 @@ def load_berkeley_earth_data(fname):
                    month=month.astype(np.int),
                    monthly_anomaly=anom,
                    monthly_error=error,
-                   year_decimal=year + (month - 1)/12,
+                   year_decimal=year + (month - 1) / 12,
                    monthly_temperature=anom + abs_temp)
     data = pd.DataFrame(columns)
     return data
