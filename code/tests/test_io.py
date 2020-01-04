@@ -4,7 +4,7 @@ Test the input and output functions
 import pathlib
 import numpy.testing as npt
 
-from mypackage.io import load_bfw_datatable
+from facebias.io import load_bfw_datatable
 
 DATADIR = pathlib.Path(__file__).parent.parent.parent.joinpath('data')
 
