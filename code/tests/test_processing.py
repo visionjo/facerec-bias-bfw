@@ -4,7 +4,7 @@ Test the processing functions
 import numpy as np
 import numpy.testing as npt
 
-from mypackage.processing import LinearTrend
+from facebias.processing import LinearTrend
 
 
 def test_trend_no_uncertainty():
