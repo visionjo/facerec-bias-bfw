@@ -5,7 +5,7 @@
 ###############################################################################
 
 # Set the package name
-PACKAGE = mypackage
+PACKAGE = facebias
 
 TESTDIR = tests
 RESDIR = ../results

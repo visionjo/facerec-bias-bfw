@@ -4,15 +4,14 @@ Test the input and output functions
 import pathlib
 import numpy.testing as npt
 
-from mypackage.io import load_berkeley_earth_data
-
+from facebias.io import load_bfw_datatable
 
 DATADIR = pathlib.Path(__file__).parent.parent.parent.joinpath('data')
 
 
-def test_berkeley_earth():
+def test_bias_dataframe():
     "Make sure the data is loaded properly"
-    fname = DATADIR.joinpath('hawaii-TAVG-Trend.txt')
-    data = load_berkeley_earth_data(fname)
-    assert len(data) == 1569
-    npt.assert_allclose(data.monthly_temperature.mean(), 22.439276)
+    fname = DATADIR.joinpath('final_datatable_all.pkl')
+    data = load_bfw_datatable(fname)
+    assert len(data) == 923898
+    npt.assert_allclose(data['score'].mean(), 0.5864211374778945)

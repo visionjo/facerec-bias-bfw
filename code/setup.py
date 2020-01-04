@@ -3,17 +3,17 @@ Build and install the package.
 """
 from setuptools import setup, find_packages
 
-NAME = 'mypackage'
-FULLNAME = NAME
-AUTHOR = "Leonardo Uieda"
-AUTHOR_EMAIL = 'some@email.com'
+NAME = 'facebias'
+FULLNAME = "Facial Recognition Bias and the BFW Dataset"
+AUTHOR = "Joseph Robinson"
+AUTHOR_EMAIL = 'robinson.jo@husky.neu.edu'
 LICENSE = "BSD License"
-URL = "https://github.com/pinga-lab/paper-template"
+URL = "https://github.com/visionjo/facerec-bias-bfw"
 DESCRIPTION = ""
 KEYWORDS = ''
 LONG_DESCRIPTION = DESCRIPTION
 
-VERSION = '1.0'
+VERSION = '0.1'
 
 PACKAGES = find_packages(exclude=['tests', 'notebooks'])
 SCRIPTS = []

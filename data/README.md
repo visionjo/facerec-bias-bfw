@@ -2,9 +2,8 @@
 
 This folder contains the raw data files used in the paper:
 
-* `hawaii-TAVG-Trend.txt`: Regional climate change data for the state of
-  Hawai'i from [Berkeley Earth](http://berkeleyearth.org/). Download link:
-  http://berkeleyearth.lbl.gov/regions/hawaii
+* `final-datatable-all.pkl`: List of pairs with corresponding tags for class labels (1/0), subgroups, and scores. 
+Download link: ADD URL
 
 ## References
 
