@@ -7,7 +7,7 @@ by
 [Yann Henon](yann.henon@ismconnect.com),
 [Gennady Livitz](gennady.livitz@ismconnect.com),
 [Can Qin](qin.ca@husky.neu.edu),
-[YUN FU](yunfu@ece.neu.edu)
+[Yun Fu](yunfu@ece.neu.edu)
 
 This paper has been submitted for publication in _15th IEEE International Conference on Automatic Face and Gesture Recognition
  on Automatic Facial and Gesture Recognition (FG2020)_.
@@ -24,6 +24,7 @@ Furthermore, we built and released the facial image dataset needed to address bi
 Faces in the Wild_ (BFW).
 
 ![](manuscript/figures/allcurves.png)
+
 *Detection Error Trade-off (DET) curves.Top-left: per gender.Top-Right: per ethnic groups.Bottom:per subgroup. Lower is 
 better. On the gender-based DET curve, two dashed lined connects points at a constan threshold, which shows a rough 
 factor of 3 difference inFPR at the same threshold. Similar differences in FPR exist in the other plots at a constant 
@@ -35,10 +36,6 @@ threshold.*
 We reveal critical insights into problems of bias in state-of-the-art facial recognition (FR) systems using a novel Balanced Faces In the Wild (BFW) dataset: data balanced in gender and for ethnic groups. Classic signal detection theory was applied to understand the score distribution across different subgroups. Specifically, in face verification using Arc-Face, we show that the optimal threshold varies across different subgroups of face-pairs. Thus, the conventional approach of learning a single, global threshold on all data yields a threshold biased to subgroups. We leveled out performances across different subgroups while improving the overall performance by learning a threshold per subgroup. Furthermore, we conduct a human evaluation to measure the bias in humans (i.e., within versus across subgroups), which supports the hypothesis that such a bias exists in human perception.
 
 ## Software implementation
-
-> Briefly describe the software that was written to produce the results of this
-> paper.
-
 All source code used to generate the results and figures in the paper are in
 the `code` folder.
 The calculations and figure generation are all run inside
@@ -54,7 +51,7 @@ See the `README.md` files in each directory for a full description.
 You can download a copy of all the files in this repository by cloning the
 [git](https://git-scm.com/) repository:
 
-    git clone https://github.com/pinga-lab/PAPER-REPO.git
+    git clone https://github.com/visionjo/facerec-bias-bfw.git
 
 or [download a zip archive](https://github.com/pinga-lab/PAPER-REPO/archive/master.zip).
 
@@ -133,7 +130,7 @@ to the authors. See `LICENSE.md` for the full license text.
 
 The manuscript text is not open source. The authors reserve the rights to the
 article content, which is currently submitted for publication in the
-JOURNAL NAME.
+2020 IEEE Conference on AMFG.
 
 ## Acknowledgement
 We would like to thank the [PINGA](https://github.com/pinga-lab?type=source) organization on Github for the
