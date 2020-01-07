@@ -1,7 +1,11 @@
-import seaborn as sns
-import numpy as np
-from matplotlib.ticker import ScalarFormatter
+"""
+Functions for generating plots and visuals.
+"""
 import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+from matplotlib.ticker import ScalarFormatter
+from sklearn.metrics import roc_curve, auc
 
 
 def draw_det_curve(fpr,
@@ -62,5 +66,53 @@ def draw_det_curve(fpr,
 
     ax.legend(loc='best')
     ax.set_title(title)
+
+    return ax
+
+
+def generate_roc(scores,
+                 labels,
+                 fpath='', calculate_auc=True,
+                 add_diag_line=False, color='darkorange', lw=2,
+                 label='ROC curve', title='Receiver operating characteristic'
+                 ):
+    """
+
+    Parameters
+    ----------
+    scores: list    scores of the N pairs (len=N)
+    labels: list    boolean labels of the N pairs (len=N)
+    fpath:          file-path to save ROC; only saved if arg is passed in
+    calculate_auc:  calculate AUC and display in legend of ROC
+    add_diag_line:  add ROC curve for random (i.e., diagonal from (0,0) to (1,1)
+    color:          color of plotted line
+    lw:             Line width of plot
+    label:          Legend Label
+    title:          Axes title
+
+    Returns Axes of figure:   plt.Axes()
+    -------
+
+    """
+    fpr, tpr, _ = roc_curve(labels, scores)
+    if calculate_auc:
+        roc_auc = auc(fpr, tpr)
+        label += f'area = {roc_auc}'
+
+    fig, ax = plt.subplots(1)
+
+    plt.plot(fpr, tpr, color=color, lw=lw, label=label)
+
+    if add_diag_line:
+        plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.05])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title(title)
+    plt.legend(loc='best')
+    if fpath is not None:
+        plt.savefig(fpath)
 
     return ax
