@@ -1,6 +1,4 @@
-"""
-Calculate a linear trend for the temperature data
-"""
+ 
 import numpy as np
 
 

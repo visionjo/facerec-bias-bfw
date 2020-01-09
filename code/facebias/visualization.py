@@ -8,19 +8,20 @@ from matplotlib.ticker import ScalarFormatter
 from sklearn.metrics import roc_curve, auc
 
 
-def draw_det_curve(fpr,
-                   fnr,
-                   ax=None,
-                   label=None,
-                   set_axis_log_x=True,
-                   set_axis_log_y=False,
-                   scale=100,
-                   title=None,
-                   label_x='FPR',
-                   label_y='FNR (%)',
-                   ticks_to_use_x=(1e-4, 1e-3, 1e-2, 1e-1, 1e-0),
-                   ticks_to_use_y=(0.01, 0.03, 0.05, 0.10, 0.20, 0.30, 0.40)
-                   ):
+def draw_det_curve(
+    fpr,
+    fnr,
+    ax=None,
+    label=None,
+    set_axis_log_x=True,
+    set_axis_log_y=False,
+    scale=100,
+    title=None,
+    label_x="FPR",
+    label_y="FNR (%)",
+    ticks_to_use_x=(1e-4, 1e-3, 1e-2, 1e-1, 1e-0),
+    ticks_to_use_y=(0.01, 0.03, 0.05, 0.10, 0.20, 0.30, 0.40),
+):
     """
     Generate DET Curve (i.e., FNR vs FPR). It is assumed FPR and FNR is increasing and decreasing, respectfully.
 
@@ -47,11 +48,11 @@ def draw_det_curve(fpr,
     if ax is None:
         _, ax = plt.subplots()
 
-    sns.lineplot(fpr, fnr * scale, label=label, linewidth=3, ax=ax)
+    sns.plot(fpr, fnr * scale, label=label, linewidth=3, ax=ax)
     if set_axis_log_y:
-        ax.set_yscale('log')
+        ax.set_yscale("log")
     if set_axis_log_x:
-        ax.set_xscale('log')
+        ax.set_xscale("log")
 
     ax.get_xaxis().set_major_formatter(ScalarFormatter())
     ax.get_yaxis().set_major_formatter(ScalarFormatter())
@@ -64,18 +65,23 @@ def draw_det_curve(fpr,
     ax.set_xlabel(label_x)
     ax.set_ylabel(label_y)
 
-    ax.legend(loc='best')
+    ax.legend(loc="best")
     ax.set_title(title)
 
     return ax
 
 
-def generate_roc(scores,
-                 labels,
-                 fpath='', calculate_auc=True,
-                 add_diag_line=False, color='darkorange', lw=2,
-                 label='ROC curve', title='Receiver operating characteristic'
-                 ):
+def generate_roc(
+    scores,
+    labels,
+    fpath="",
+    calculate_auc=True,
+    add_diag_line=False,
+    color="darkorange",
+    lw=2,
+    label="ROC curve",
+    title="Receiver operating characteristic",
+):
     """
 
     Parameters
@@ -97,21 +103,21 @@ def generate_roc(scores,
     fpr, tpr, _ = roc_curve(labels, scores)
     if calculate_auc:
         roc_auc = auc(fpr, tpr)
-        label += f'area = {roc_auc}'
+        label += f"area = {roc_auc}"
 
     fig, ax = plt.subplots(1)
 
     plt.plot(fpr, tpr, color=color, lw=lw, label=label)
 
     if add_diag_line:
-        plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+        plt.plot([0, 1], [0, 1], color="navy", lw=lw, linestyle="--")
 
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.05])
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
     plt.title(title)
-    plt.legend(loc='best')
+    plt.legend(loc="best")
     if fpath is not None:
         plt.savefig(fpath)
 

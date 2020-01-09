@@ -57,8 +57,7 @@ sequentially in a way that can be reproduced.
 
 
 ## Notebooks
-
-* [estimate-hawaii-trend.ipynb](http://nbviewer.jupyter.org/github/pinga-lab/paper-template/blob/master/code/notebooks/estimate-hawaii-trend.ipynb):
-  Calculate a linear trend for the temperature data of Hawaii.
-* [figure-hawaii-trend.ipynb](http://nbviewer.jupyter.org/github/pinga-lab/paper-template/blob/master/code/notebooks/figure-hawaii-trend.ipynb):
+* [bfw-eda.ipynb](http://nbviewer.jupyter.org/github/visionjo/facerec-bias-bfw/blob/master/code/notebooks/bfw-eda.ipynb):
+  Generate visualizations of BFW DB statistics.
+* [figure-hawaii-trend.ipynb](http://nbviewer.jupyter.org/githubvisionjo/facerec-bias-bfw/blob/master/code/notebooks/figure-hawaii-trend.ipynb):
   Make a figure of the estimated trend for the paper.

@@ -67,6 +67,7 @@ class Metrics:
      different clusters. There are two error types: A (FP) decision is when two dissimilar documents get clustered
      together. A (FN) decision is when two similar documents are in different clusters.
     """
+
     feats_a = None
     n_clusters = None
     n_pairs = None
@@ -84,7 +85,9 @@ class Metrics:
         self.data_is_loaded = False
 
     def fit(self, true_labels, predicted_labels, calculate_stats=True):
-        true_labels, predicted_labels = align_pseudo_labels(true_labels, predicted_labels)
+        true_labels, predicted_labels = align_pseudo_labels(
+            true_labels, predicted_labels
+        )
         self.feats_a = true_labels
         self.predicted_labels = predicted_labels
         self.true_labels = true_labels
@@ -93,30 +96,37 @@ class Metrics:
         self.n_clusters = len(np.unique(self.predicted_labels))
         if calculate_stats:
             stats = self.confusion_matrix_values(true_labels, predicted_labels)
-            self.tp = stats['TP']
-            self.tn = stats['TN']
-            self.fp = stats['FP']
-            self.fn = stats['FN']
+            self.tp = stats["TP"]
+            self.tn = stats["TN"]
+            self.fp = stats["FP"]
+            self.fn = stats["FN"]
         self.n_pairs = nchoosek(self.n_samples, 2)
         self.data_is_loaded = True
 
     def __repr__(self):
-        return ("Pairwise stats:\n"
-                "===============\n"
-                "TP:\t{}\n"
-                "TN:\t{}\n"
-                "FP:\t{}\n"
-                "FN:\t{}\n"
-                "NCLASSES:\t{}\n"
-                "NSAMPLES:\t{}".format(self.tp, self.tn, self.fp, self.fn, self.n_classes, self.n_samples)
-                )
+        return (
+            "Pairwise stats:\n"
+            "===============\n"
+            "TP:\t{}\n"
+            "TN:\t{}\n"
+            "FP:\t{}\n"
+            "FN:\t{}\n"
+            "NCLASSES:\t{}\n"
+            "NSAMPLES:\t{}".format(
+                self.tp, self.tn, self.fp, self.fn, self.n_classes, self.n_samples
+            )
+        )
 
     def func_help(self):
         if self.n_samples is None:
             print("Data must be fit(): Return NONE")
             return False
         elif self.n_pairs is None:
-            print("Pairs need to be calculated. See self.fit() in {}()".format(self.__class__))
+            print(
+                "Pairs need to be calculated. See self.fit() in {}()".format(
+                    self.__class__
+                )
+            )
             return False
         return True
 
@@ -136,7 +146,7 @@ class Metrics:
             return 1
         if self.fp == 0:
             if not self.tp + self.tn > 0:
-                print('WARNING: precision of 1 returned but no correct prediction.')
+                print("WARNING: precision of 1 returned but no correct prediction.")
                 print(self)
             # special case: when labels were all marked positive
             return 1
@@ -157,7 +167,7 @@ class Metrics:
             return 1
         if self.fn == 0:
             if not self.tp + self.fp > 0:
-                print('WARNING: recall of 1 returned but no true predictions.')
+                print("WARNING: recall of 1 returned but no true predictions.")
                 print(self)
             # special case: when labels were all marked positive
             return 1
@@ -309,13 +319,13 @@ class Metrics:
         true_ids, cluster_ids = align_pseudo_labels(true_ids, cluster_ids)
 
         stats = {}
-        stats['TP'] = self.calculate_tp(true_ids, cluster_ids)
-        stats['FP'] = self.calculate_fp(true_ids, cluster_ids)
-        stats['FN'] = self.calculate_fn(true_ids, cluster_ids)
+        stats["TP"] = self.calculate_tp(true_ids, cluster_ids)
+        stats["FP"] = self.calculate_fp(true_ids, cluster_ids)
+        stats["FN"] = self.calculate_fn(true_ids, cluster_ids)
         npairs = nchoosek(len(true_ids), 2)  # total number of pairs
-        npositive = stats['FP'] + stats['TP']  # total number of positive pairs
+        npositive = stats["FP"] + stats["TP"]  # total number of positive pairs
         nnegative = npairs - npositive  # total number of negative pairs
-        stats['TN'] = int(nnegative - stats['FN'])
+        stats["TN"] = int(nnegative - stats["FN"])
 
         return stats
 
@@ -333,7 +343,7 @@ class Metrics:
         """
 
         stats = self.confusion_matrix_values(true_ids, cluster_ids)
-        return stats['TP'] / (stats['TP'] + stats['FP'])
+        return stats["TP"] / (stats["TP"] + stats["FP"])
 
     def calculate_recall(self, true_ids, cluster_ids):
         """
@@ -350,7 +360,7 @@ class Metrics:
         """
         stats = self.confusion_matrix_values(true_ids, cluster_ids)
 
-        return stats['TP'] / (stats['TP'] + stats['FN'])
+        return stats["TP"] / (stats["TP"] + stats["FN"])
 
     def calculate_accuracy(self, true_ids, cluster_ids):
         """
@@ -365,7 +375,9 @@ class Metrics:
         """
         stats = self.confusion_matrix_values(true_ids, cluster_ids)
 
-        return (stats['TP'] + stats['TN']) / (stats['TP'] + stats['FP'] + stats['FN'] + stats['TN'])
+        return (stats["TP"] + stats["TN"]) / (
+            stats["TP"] + stats["FP"] + stats["FN"] + stats["TN"]
+        )
 
     def calculate_specificity(self, true_ids, cluster_ids):
         """
@@ -378,7 +390,7 @@ class Metrics:
         """
         stats = self.confusion_matrix_values(true_ids, cluster_ids)
 
-        return stats['TN'] / (stats['TN'] + stats['FP'])
+        return stats["TN"] / (stats["TN"] + stats["FP"])
 
     def calculate_f1score(self, true_ids, cluster_ids):
         """
@@ -391,13 +403,13 @@ class Metrics:
         """
         stats = self.confusion_matrix_values(true_ids, cluster_ids)
 
-        return 2 * stats['TP'] / (2 * stats['TP'] + stats['FP'] + stats['FN'])
+        return 2 * stats["TP"] / (2 * stats["TP"] + stats["FP"] + stats["FN"])
 
 
 def calculate_det_curves(y_true, scores):
     """
     Calculate false match rates, both for non-matches and matches
-    :param true_labels:   ground truth label, boolean (1 if match; else, 0)
+    :param y_true:   ground truth label, boolean (1 if match; else, 0)
     :param scores:   scores for each pair.
     :return:    list of tuples (false-match and false-non-match rates.
     """
@@ -405,7 +417,7 @@ def calculate_det_curves(y_true, scores):
     # y_pred = threshold_scores(scores, threshold)
     fpr, tpr, thresholds = roc_curve(y_true, scores, pos_label=1)
     fnr = 1 - tpr
-    return list(zip(fpr, fnr, thresholds))
+    return fpr, fnr, thresholds
 
 
 def sum_tp(threshold, scores, op=greater_equal):
