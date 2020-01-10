@@ -1,10 +1,29 @@
 """
 Functions for loading the data
 """
-import numpy as np
-import pandas as pd
-from pathlib import Path
 import warnings
+from pathlib import Path
+
+import pandas as pd
+
+
+def _isfile(fpath):
+    return Path(fpath).is_file()
+
+
+def prune_dataframe(data, cols):
+    # only keep columns specified as input arg cols
+    columns = data.columns.to_list()
+
+    for column in columns:
+        if column not in cols:
+            del data[column]
+    for col in cols:
+        if col not in columns:
+            warnings.warn(f"cols={col} was not found in datatable... will be ommitted")
+
+    return data
+
 
 def load_bfw_datatable(fname, cols=None):
     """
@@ -33,13 +52,56 @@ def load_bfw_datatable(fname, cols=None):
     if cols:
         # only keep columns specified as input arg cols
         columns = data.columns.to_list()
-        
+
         for column in columns:
             if column not in cols:
                 del data[column]
         for col in cols:
             if col not in columns:
-                warnings.warn(f'cols={col} was not found in datatable... will be ommitted')
-                
+                warnings.warn(
+                    f"cols={col} was not found in datatable... will be ommitted"
+                )
+
     return data
 
+
+def save_bfw_datatable(data, fpath="datatable.pkl", cols=None, append_cols=True):
+    """
+    Saves data table; if cols is set, only the respective cols included; if append=True, checks if the table exists;
+    if so, load and include existing columns in file not in current data table (i.e., only update cols of data).
+
+    If append is set False, data table will overwrite file (i.e., create new file, whether or not it exists).
+
+    Parameters
+    ----------
+    data  : pd.DataFrame()
+        Data table to save
+
+    fpath : str: <optional> default = datatable.pkl
+        The name/path of the data file.
+
+    cols: container (list or tuple): <optional> default=None
+        List (or tuple) of columns to save; Note [] accessor is used, so typically column keys are of type str.
+        If element in cols does not exist, then it is simply ignored
+
+    append_cols: bool: <optional> default=True
+        If True, only update columns of data; else, overwrite or create new file.
+
+    """
+    if cols:
+        data = prune_dataframe(data, cols)
+    if append_cols:
+        if _isfile(fpath):
+            data_in = pd.read_pickle(fpath)
+
+            if len(data) != len(data_in):
+                warnings.warn(
+                    "cannot append: sizes of tables are different\n terminating function call\nNothing saved"
+                )
+                return None
+
+            for column in data.columns:
+                data_in[column] = data["column"]
+            data = data_in.copy()
+            del data_in
+    pd.to_pickle(data, fpath)
