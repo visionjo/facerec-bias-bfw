@@ -20,7 +20,7 @@ def prune_dataframe(data, cols):
             del data[column]
     for col in cols:
         if col not in columns:
-            warnings.warn(f'cols={col} was not found in datatable... will be ommitted')
+            warnings.warn(f"cols={col} was not found in datatable... will be ommitted")
 
     return data
 
@@ -58,12 +58,14 @@ def load_bfw_datatable(fname, cols=None):
                 del data[column]
         for col in cols:
             if col not in columns:
-                warnings.warn(f'cols={col} was not found in datatable... will be ommitted')
+                warnings.warn(
+                    f"cols={col} was not found in datatable... will be ommitted"
+                )
 
     return data
 
 
-def save_bfw_datatable(data, fpath='datatable.pkl', cols=None, append_cols=True):
+def save_bfw_datatable(data, fpath="datatable.pkl", cols=None, append_cols=True):
     """
     Saves data table; if cols is set, only the respective cols included; if append=True, checks if the table exists;
     if so, load and include existing columns in file not in current data table (i.e., only update cols of data).
@@ -93,11 +95,13 @@ def save_bfw_datatable(data, fpath='datatable.pkl', cols=None, append_cols=True)
             data_in = pd.read_pickle(fpath)
 
             if len(data) != len(data_in):
-                warnings.warn('cannot append: sizes of tables are different\n terminating function call\nNothing saved')
+                warnings.warn(
+                    "cannot append: sizes of tables are different\n terminating function call\nNothing saved"
+                )
                 return None
 
             for column in data.columns:
-                data_in[column] = data['column']
+                data_in[column] = data["column"]
             data = data_in.copy()
             del data_in
     pd.to_pickle(data, fpath)
