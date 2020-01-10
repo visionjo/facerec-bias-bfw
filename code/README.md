@@ -56,13 +56,13 @@ sequentially in a way that can be reproduced.
         make figures
 
 ## To Do
-[x] create demo 1: notebook to compare features, i.e., create 'score' column
-[ ] facebias.io: add function overwrite datatable with option to append columns to existing dataframe if file exists; else, save as is
-[ ] facebias.io: add function to load features as dictionary
-[ ] create demo 2: generate SDM curves
-[ ] create demo 3: generate ROC Curves
-[ ] create demo 4: generate confusion matrix (Rank-1 analysis) curves
-
+- [x] create demo 1: notebook to compare features, i.e., create 'score' column
+- [x] facebias.io: add function overwrite datatable with option to append columns to existing dataframe if file exists; else, save as is
+- [ ] facebias.io: add function to load features as dictionary
+- [x] create demo 2: generate SDM curves
+- [ ] create demo 3: generate ROC Curves
+- [ ] create demo 4: generate confusion matrix (Rank-1 analysis) curves
+- [ ] add notebooks to nbviewer and include in proceednig section (once public)
 
 ## Notebooks
 * [bfw-eda.ipynb](http://nbviewer.jupyter.org/github/visionjo/facerec-bias-bfw/blob/master/code/notebooks/bfw-eda.ipynb):
