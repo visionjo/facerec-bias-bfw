@@ -3,50 +3,43 @@ Functions for loading the data
 """
 import numpy as np
 import pandas as pd
+from pathlib import Path
+import warnings
 
-
-def load_bfw_datatable(fname):
-    return pd.read_pickle(fname)
-
-
-def load_berkeley_earth_data(fname):
+def load_bfw_datatable(fname, cols=None):
     """
-    Load monthly temperature data from a Berkeley Earth file.
+    Load datatable of pairs, and often associated scores and metadata for each respective sample pair.
 
-    The moving average columns are ignored. For convenience, reads the
-    reference temperature and calculates the absolute temperature as well. Also
-    calculates decimal years for calculating trends and plotting.
+    cols allows for only the columns needed to be kept. Thus, column headers not in cols will be pruned out.
 
     Parameters
     ----------
     fname : str
         The name/path of the data file.
+        
+    cols: container (list or tuple): <optional> default=None
+        List (or tuple) of columns headers to return; Note [] accessor is used, so typicall column keys are of type str.
+        If element in cols does not exist, then it is simply ignored
 
     Returns
     -------
     data : pandas.DataFrame
-        The data in a pandas.DataFrame with columns: year, month, year_decimal,
-        monthy_anomaly, monthly_error, monthly_temperature.
+        The data in a pandas.DataFrame with columns of at least: fold, p1, p2, label
+        Note that columns are added in many steps, so scores, predicted, and others may also be columns.
 
     """
-    # Used to find the absolute temperature in the header
-    marker = '% Estimated Jan 1951-Dec 1980 absolute temperature (C):'
-    with open(fname) as datafile:
-        # Read the absolute temperature from the header
-        for line in datafile:
-            if line.startswith(marker):
-                numbers = line.split(':')[1]
-                abs_temp = float(numbers.split('+/-')[0].strip())
-                break
-        # Load the rest of the data into a DataFrame
-        year, month, anom, error = np.loadtxt(datafile, comments='%',
-                                              usecols=[0, 1, 2, 3],
-                                              unpack=True)
-    columns = dict(year=year.astype(np.int),
-                   month=month.astype(np.int),
-                   monthly_anomaly=anom,
-                   monthly_error=error,
-                   year_decimal=year + (month - 1) / 12,
-                   monthly_temperature=anom + abs_temp)
-    data = pd.DataFrame(columns)
+    assert Path(fname).is_file(), f"error: file of datatable does not exist {fname}"
+    data = pd.read_pickle(fname)
+    if cols:
+        # only keep columns specified as input arg cols
+        columns = data.columns.to_list()
+        
+        for column in columns:
+            if column not in cols:
+                del data[column]
+        for col in cols:
+            if col not in columns:
+                warnings.warn(f'cols={col} was not found in datatable... will be ommitted')
+                
     return data
+

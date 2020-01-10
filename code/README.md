@@ -55,10 +55,15 @@ sequentially in a way that can be reproduced.
 
         make figures
 
+## To Do
+[x] create demo 1: notebook to compare features, i.e., create 'score' column
+[ ] facebias.io: add function overwrite datatable with option to append columns to existing dataframe if file exists; else, save as is
+[ ] facebias.io: add function to load features as dictionary
+[ ] create demo 2: generate SDM curves
+[ ] create demo 3: generate ROC Curves
+[ ] create demo 4: generate confusion matrix (Rank-1 analysis) curves
+
 
 ## Notebooks
-
-* [estimate-hawaii-trend.ipynb](http://nbviewer.jupyter.org/github/pinga-lab/paper-template/blob/master/code/notebooks/estimate-hawaii-trend.ipynb):
-  Calculate a linear trend for the temperature data of Hawaii.
-* [figure-hawaii-trend.ipynb](http://nbviewer.jupyter.org/github/pinga-lab/paper-template/blob/master/code/notebooks/figure-hawaii-trend.ipynb):
-  Make a figure of the estimated trend for the paper.
+* [bfw-eda.ipynb](http://nbviewer.jupyter.org/github/visionjo/facerec-bias-bfw/blob/master/code/notebooks/bfw-eda.ipynb):
+  Generate visualizations of BFW DB statistics.
