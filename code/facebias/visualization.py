@@ -24,7 +24,8 @@ def draw_det_curve(
         fontsize=24,
 ):
     """
-    Generate DET Curve (i.e., FNR vs FPR). It is assumed FPR and FNR is increasing and decreasing, respectfully.
+    Generate DET Curve (i.e., FNR vs FPR). It is assumed FPR and FNR is
+    increasing and decreasing, respectfully.
 
     Parameters
     ----------
@@ -57,8 +58,8 @@ def draw_det_curve(
 
     ax.get_xaxis().set_major_formatter(ScalarFormatter())
     ax.get_yaxis().set_major_formatter(ScalarFormatter())
-    ax.set_xticks(ticks_to_use_x, fontsize=fontsize)
-    ax.set_yticks(scale * np.array(ticks_to_use_y), fontsize=fontsize)
+    ax.set_xticks(ticks_to_use_x)
+    ax.set_yticks(scale * np.array(ticks_to_use_y))
 
     # add 10% to upper ylimit
     ax.set_ylim(0.00, scale * np.max(ticks_to_use_y))
