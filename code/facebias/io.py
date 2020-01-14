@@ -12,7 +12,9 @@ def _isfile(fpath):
     return Path(fpath).is_file()
 
 
-def load_features_from_image_list(li_images, dir_features, ext_img='jpg', ext_feat='pkl'):
+def load_features_from_image_list(
+        li_images, dir_features, ext_img="jpg", ext_feat="pkl"
+):
     """
     Provided a list of images and the directory holding features, load features into LUT with using the relative
     file path as the key paired with the respective feature as the value.
@@ -36,13 +38,17 @@ def load_features_from_image_list(li_images, dir_features, ext_img='jpg', ext_fe
     features: dict(file path, feature vector)
 
     """
-    li_features = [dir_features + f.replace(f'.{ext_img}', f'.{ext_feat}') for f in li_images]
+    li_features = [
+        dir_features + f.replace(f".{ext_img}", f".{ext_feat}") for f in li_images
+    ]
     # read features as a dictionary, with keys set as the file path of the image with values set as the face encodings
     # features = {str(f.replace(dir_features, '')): pd.read_pickle(f) for f in li_features}
     # TODO some reason comprehension above does not work. Return to refactor later
     features = {}
     for feat in li_features:
-        features[feat.replace(dir_features, '').replace(f'.{ext_feat}', f'.{ext_img}')] = np.load(feat)
+        features[
+            feat.replace(dir_features, "").replace(f".{ext_feat}", f".{ext_img}")
+        ] = np.load(feat)
 
     return features
 
@@ -56,8 +62,7 @@ def prune_dataframe(data, cols):
             del data[column]
     for col in cols:
         if col not in columns:
-            warnings.warn(
-                f"cols={col} was not found in datatable... will be ommitted")
+            warnings.warn(f"cols={col} was not found in datatable... will be ommitted")
 
     return data
 
@@ -84,8 +89,7 @@ def load_bfw_datatable(fname, cols=None):
         Note that columns are added in many steps, so scores, predicted, and others may also be columns.
 
     """
-    assert Path(
-        fname).is_file(), f"error: file of datatable does not exist {fname}"
+    assert Path(fname).exists(), f"error: file of datatable does not exist {fname}"
     data = pd.read_pickle(fname)
     if cols:
         # only keep columns specified as input arg cols
