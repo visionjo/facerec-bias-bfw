@@ -4,11 +4,47 @@ Functions for loading the data
 import warnings
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
-  
+
 def _isfile(fpath):
     return Path(fpath).is_file()
+
+
+def load_features_from_image_list(li_images, dir_features, ext_img='jpg', ext_feat='pkl'):
+    """
+    Provided a list of images and the directory holding features, load features into LUT with using the relative
+    file path as the key paired with the respective feature as the value.
+
+    NOTE that it is assumed that features are named and stored like the images, with the difference being dir_features
+    points to the folder that the relative file path is rooted. Check that file extensions are properly set-- the only
+    time this would make no difference is if the list is actually the relative file paths of the features, and, hence,
+    no replacement of string will occur. Finally, the root directory should be considered separate from the relative
+    file paths, as the LUT keys, otherwise, will contain the file path instead of the file path relative to the DB for
+    which can be used to identify the source of each feature.
+
+    Parameters
+    ----------
+    li_images       list of images
+    dir_features    root directory of features
+    ext_img         file extension of images as in list
+    ext_feat        file extension of features as saved on disc
+
+    Returns
+    -------
+    features: dict(file path, feature vector)
+
+    """
+    li_features = [dir_features + f.replace(f'.{ext_img}', f'.{ext_feat}') for f in li_images]
+    # read features as a dictionary, with keys set as the file path of the image with values set as the face encodings
+    # features = {str(f.replace(dir_features, '')): pd.read_pickle(f) for f in li_features}
+    # TODO some reason comprehension above does not work. Return to refactor later
+    features = {}
+    for feat in li_features:
+        features[feat.replace(dir_features, '').replace(f'.{ext_feat}', f'.{ext_img}')] = np.load(feat)
+
+    return features
 
 
 def prune_dataframe(data, cols):
