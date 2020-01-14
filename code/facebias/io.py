@@ -13,7 +13,7 @@ def _isfile(fpath):
 
 
 def load_features_from_image_list(
-        li_images, dir_features, ext_img="jpg", ext_feat="pkl"
+    li_images, dir_features, ext_img="jpg", ext_feat="pkl"
 ):
     """
     Provided a list of images and the directory holding features, load features into LUT with using the relative
@@ -107,8 +107,9 @@ def load_bfw_datatable(fname, cols=None):
     return data
 
 
-def save_bfw_datatable(data, fpath="datatable.pkl", cols=None,
-                       append_cols=True):
+def save_bfw_datatable(
+    data, fpath="datatable.pkl", cols=None, append_cols=True, f_type="pickle"
+):
     """
     Saves data table; if cols is set, only the respective cols included; if append=True, checks if the table exists;
     if so, load and include existing columns in file not in current data table (i.e., only update cols of data).
@@ -130,6 +131,9 @@ def save_bfw_datatable(data, fpath="datatable.pkl", cols=None,
     append_cols: bool: <optional> default=True
         If True, only update columns of data; else, overwrite or create new file.
 
+    f_type: str: <optional> default = 'pickle'
+        Specify the type of file to save ['pickle' or 'csv']. Note, if neither is set file will be dumped as pickle.
+
     """
     if cols:
         data = prune_dataframe(data, cols)
@@ -143,8 +147,12 @@ def save_bfw_datatable(data, fpath="datatable.pkl", cols=None,
                 )
                 return None
 
-            for column in data.columns:
-                data_in[column] = data["column"]
+            for column in data.columns.to_list():
+                data_in[column] = data[column]
             data = data_in.copy()
             del data_in
-    pd.to_pickle(data, fpath)
+    if f_type.lower() == "csv":
+        fpath = fpath[:-4] + ".csv"
+        data.to_csv(fpath, index=False)
+    else:
+        pd.to_pickle(data, fpath)
