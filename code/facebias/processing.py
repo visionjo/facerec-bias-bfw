@@ -49,7 +49,7 @@ def compute_score_into_table(data, dir_features):
     features = load_features_from_image_list(image_list, dir_features, ext_feat='npy')
 
     # score all feature pairs by calculating cosine similarity of the features
-    data['score'] = data.apply(lambda x: cosine_similarity(features[x["p1"]], features[x["p2"]]), axis=1)
+    data['score'] = data.apply(lambda x: cosine_similarity(features[x["p1"]], features[x["p2"]])[0][0], axis=1)
 
     return data
 
