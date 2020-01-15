@@ -54,7 +54,20 @@ def load_features_from_image_list(
 
 
 def prune_dataframe(data, cols):
-    # only keep columns specified as input arg cols
+    """
+    Prune dataframe data so that only columns specified in cols remain. Delete the rest.
+
+    Parameters
+    ----------
+    data : pandas.DataFrame
+    col : container (list or tuple)
+        List (or tuple) of columns headers of data we want to keep
+
+    Returns
+    -------
+    data : pandas.DataFrame
+        The pruned dataframe that only contain columns in cols
+    """
     columns = data.columns.to_list()
 
     for column in columns:
@@ -92,17 +105,7 @@ def load_bfw_datatable(fname, cols=None):
     assert Path(fname).exists(), f"error: file of datatable does not exist {fname}"
     data = pd.read_pickle(fname)
     if cols:
-        # only keep columns specified as input arg cols
-        columns = data.columns.to_list()
-
-        for column in columns:
-            if column not in cols:
-                del data[column]
-        for col in cols:
-            if col not in columns:
-                warnings.warn(
-                    f"cols={col} was not found in datatable... will be ommitted"
-                )
+        data = prune_dataframe(data, cols)
 
     return data
 
