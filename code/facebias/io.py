@@ -1,6 +1,7 @@
 """
 Functions for loading the data
 """
+import os
 import warnings
 from pathlib import Path
 
@@ -38,19 +39,7 @@ def load_features_from_image_list(
     features: dict(file path, feature vector)
 
     """
-    li_features = [
-        dir_features + f.replace(f".{ext_img}", f".{ext_feat}") for f in li_images
-    ]
-    # read features as a dictionary, with keys set as the file path of the image with values set as the face encodings
-    # features = {str(f.replace(dir_features, '')): pd.read_pickle(f) for f in li_features}
-    # TODO some reason comprehension above does not work. Return to refactor later
-    features = {}
-    for feat in li_features:
-        features[
-            feat.replace(dir_features, "").replace(f".{ext_feat}", f".{ext_img}")
-        ] = np.load(feat)
-
-    return features
+    return {f: np.load(os.path.join(dir_features, f.replace(f".{ext_img}", f".{ext_feat}"))) for f in li_images}
 
 
 def prune_dataframe(data, cols):
