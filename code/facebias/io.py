@@ -4,11 +4,53 @@ Functions for loading the data
 import warnings
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
-  
+
 def _isfile(fpath):
     return Path(fpath).is_file()
+
+
+def load_features_from_image_list(
+    li_images, dir_features, ext_img="jpg", ext_feat="pkl"
+):
+    """
+    Provided a list of images and the directory holding features, load features into LUT with using the relative
+    file path as the key paired with the respective feature as the value.
+
+    NOTE that it is assumed that features are named and stored like the images, with the difference being dir_features
+    points to the folder that the relative file path is rooted. Check that file extensions are properly set-- the only
+    time this would make no difference is if the list is actually the relative file paths of the features, and, hence,
+    no replacement of string will occur. Finally, the root directory should be considered separate from the relative
+    file paths, as the LUT keys, otherwise, will contain the file path instead of the file path relative to the DB for
+    which can be used to identify the source of each feature.
+
+    Parameters
+    ----------
+    li_images       list of images
+    dir_features    root directory of features
+    ext_img         file extension of images as in list
+    ext_feat        file extension of features as saved on disc
+
+    Returns
+    -------
+    features: dict(file path, feature vector)
+
+    """
+    li_features = [
+        dir_features + f.replace(f".{ext_img}", f".{ext_feat}") for f in li_images
+    ]
+    # read features as a dictionary, with keys set as the file path of the image with values set as the face encodings
+    # features = {str(f.replace(dir_features, '')): pd.read_pickle(f) for f in li_features}
+    # TODO some reason comprehension above does not work. Return to refactor later
+    features = {}
+    for feat in li_features:
+        features[
+            feat.replace(dir_features, "").replace(f".{ext_feat}", f".{ext_img}")
+        ] = np.load(feat)
+
+    return features
 
 
 def prune_dataframe(data, cols):
@@ -20,8 +62,7 @@ def prune_dataframe(data, cols):
             del data[column]
     for col in cols:
         if col not in columns:
-            warnings.warn(
-                f"cols={col} was not found in datatable... will be ommitted")
+            warnings.warn(f"cols={col} was not found in datatable... will be ommitted")
 
     return data
 
@@ -48,8 +89,7 @@ def load_bfw_datatable(fname, cols=None):
         Note that columns are added in many steps, so scores, predicted, and others may also be columns.
 
     """
-    assert Path(
-        fname).is_file(), f"error: file of datatable does not exist {fname}"
+    assert Path(fname).exists(), f"error: file of datatable does not exist {fname}"
     data = pd.read_pickle(fname)
     if cols:
         # only keep columns specified as input arg cols
@@ -67,8 +107,9 @@ def load_bfw_datatable(fname, cols=None):
     return data
 
 
-def save_bfw_datatable(data, fpath="datatable.pkl", cols=None,
-                       append_cols=True):
+def save_bfw_datatable(
+    data, fpath="datatable.pkl", cols=None, append_cols=True, f_type="pickle"
+):
     """
     Saves data table; if cols is set, only the respective cols included; if append=True, checks if the table exists;
     if so, load and include existing columns in file not in current data table (i.e., only update cols of data).
@@ -90,6 +131,9 @@ def save_bfw_datatable(data, fpath="datatable.pkl", cols=None,
     append_cols: bool: <optional> default=True
         If True, only update columns of data; else, overwrite or create new file.
 
+    f_type: str: <optional> default = 'pickle'
+        Specify the type of file to save ['pickle' or 'csv']. Note, if neither is set file will be dumped as pickle.
+
     """
     if cols:
         data = prune_dataframe(data, cols)
@@ -103,8 +147,12 @@ def save_bfw_datatable(data, fpath="datatable.pkl", cols=None,
                 )
                 return None
 
-            for column in data.columns:
-                data_in[column] = data["column"]
+            for column in data.columns.to_list():
+                data_in[column] = data[column]
             data = data_in.copy()
             del data_in
-    pd.to_pickle(data, fpath)
+    if f_type.lower() == "csv":
+        fpath = fpath[:-4] + ".csv"
+        data.to_csv(fpath, index=False)
+    else:
+        pd.to_pickle(data, fpath)
