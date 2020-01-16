@@ -10,7 +10,7 @@ by
 [Yun Fu](yunfu@ece.neu.edu)
 
 This paper has been submitted for publication in _15th IEEE International Conference on Automatic Face and Gesture Recognition
- on Automatic Facial and Gesture Recognition (FG2020)_.
+ on Automatic Facial and Gesture Recognition (FG2020).
 
 ## Overview
 Our findings reveal a bias in scoring sensitivity across different subgroups when verifying the identity of a subject
@@ -23,13 +23,14 @@ subgroup-specific thresholds are optimal in terms of overall performance and bal
 Furthermore, we built and released the facial image dataset needed to address bias from this view of FR. Namely, _Bias
 Faces in the Wild_ (BFW).
 
-![](manuscript/figures/allcurves.png)
+![](manuscript/figures/montage.png)
 
 *Detection Error Trade-off (DET) curves.Top-left: per gender.Top-Right: per ethnic groups.Bottom:per subgroup. Lower is 
 better. On the gender-based DET curve, two dashed lined connects points at a constan threshold, which shows a rough 
 factor of 3 difference inFPR at the same threshold. Similar differences in FPR exist in the other plots at a constant 
 threshold.*
 
+Register and download via this [form](https://northeastern-my.sharepoint.com/:u:/g/personal/robinson_jo_northeastern_edu/EUBGBL941IxAvLn7EyDf-z4B4GWKv0wiTD6aju14R5Kfnw?e=T2hj56).
 
 ## Abstract
 
@@ -120,6 +121,26 @@ Each cell can be executed using `Shift + Enter`.
 Executing text cells does nothing and executing code cells runs the code
 and produces it's output.
 To execute the whole notebook, run all cells in order.
+### Balanced Faces _in the Wild_ (BFW)
+![](manuscript/figures/table1.png)
+
+
+![](manuscript/figures/table2.png)
+
+
+### Experiments
+#### 1. Signal Detection Models (SDM) 
+![](manuscript/figures/violinplots.png)
+
+#### 2. NN (i.e., Rank 1) Error Analysis
+![](manuscript/figures/confusion.png)
+
+#### 3. Detection Error Trade-Off (DET) Curves 
+![](manuscript/figures/detcurve-improved.png)
+
+
+#### 4. TAR at FAR
+![](manuscript/figures/tar_at_far.png)
 
 
 ## License
