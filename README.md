@@ -10,7 +10,7 @@ by
 [Yun Fu](yunfu@ece.neu.edu)
 
 This paper has been submitted for publication in _15th IEEE International Conference on Automatic Face and Gesture Recognition
- on Automatic Facial and Gesture Recognition (FG2020)_.
+ on Automatic Facial and Gesture Recognition (FG2020).
 
 ## Overview
 Our findings reveal a bias in scoring sensitivity across different subgroups when verifying the identity of a subject
@@ -20,16 +20,12 @@ whether true or false pair). Our work uses fundamental signal detection theory t
 global threshold causes a skew in performance ratings across different subgroups. For this, we demonstrate that 
 subgroup-specific thresholds are optimal in terms of overall performance and balance across subgroups.
 
-Furthermore, we built and released the facial image dataset needed to address bias from this view of FR. Namely, _Bias
-Faces in the Wild_ (BFW).
+Furthermore, we built and released the facial image dataset needed to address bias from this view of FR. Namely, *Bias Faces in the Wild* (BFW).
 
-![](manuscript/figures/allcurves.png)
+<img src=manuscript/figures/montage.png alt="montage.png" width="400"/>
 
-*Detection Error Trade-off (DET) curves.Top-left: per gender.Top-Right: per ethnic groups.Bottom:per subgroup. Lower is 
-better. On the gender-based DET curve, two dashed lined connects points at a constan threshold, which shows a rough 
-factor of 3 difference inFPR at the same threshold. Similar differences in FPR exist in the other plots at a constant 
-threshold.*
 
+Register and download via this [form](https://northeastern-my.sharepoint.com/:u:/g/personal/robinson_jo_northeastern_edu/EUBGBL941IxAvLn7EyDf-z4B4GWKv0wiTD6aju14R5Kfnw?e=T2hj56).
 
 ## Abstract
 
@@ -120,6 +116,51 @@ Each cell can be executed using `Shift + Enter`.
 Executing text cells does nothing and executing code cells runs the code
 and produces it's output.
 To execute the whole notebook, run all cells in order.
+### Balanced Faces _in the Wild_ (BFW)
+
+<img src=manuscript/figures/table1.png alt="table1" width="600"/>
+
+**Subgroups of BFW.** Each row depicts a different gender, Female (F) (top) and Male (M) (bottom). Columns are grouped by ethnicity (i.e., Asian (A), Black (B), Indian (I), and White (W), respectfully).
+
+<img src=manuscript/figures/facemontage.png alt="facemontage.png" width="600"/>
+
+<img src=manuscript/figures/table2.png alt="table2" width="600"/>
+
+### Experiments
+#### 1. Signal Detection Models (SDM) 
+<img src=manuscript/figures/violinplots.png alt="violinplots.png" width="500"/>
+
+#### 2. NN (i.e., Rank 1) Error Analysis
+<img src=manuscript/figures/confusion.png alt="confusion.png" width="500"/>
+
+#### 3. Detection Error Trade-Off (DET) Curves 
+**DET curves.** Top-left: per gender.Top-Right: per ethnic groups.Bottom:per subgroup. Lower is better. On the gender-based DET curve, two dashed lined connects points at a constan threshold, which shows a rough factor of 3 difference inFPR at the same threshold. Similar differences in FPR exist in the other plots at a constant threshold &theta;<sub>const</sub>.
+
+<img src=manuscript/figures/detcurve-improved.png alt="detcurve" width="500"/>
+
+#### 4. TAR at FAR
+<img src=manuscript/figures/tar_at_far.png alt="tar_at_far.png" width="400"/>
+
+
+#### 5. Human Evaluation
+We evaluated human on face pairs focusing on two racial groups: Chinese and Caucasians. To focus on the experiment, we honed-in on two groups, white Americans (W) and Chinese from China (C). The purpose was to the minimize variability by only analyzing the subsets of the broader groups of whites and Asians.
+Samples were collected by recruiting subjects from multiple sources (e.g., social media, email lists, and family/friends)– a total of 120 par- ticipants were sampled at random from all the submissions that were (1) complete and (2) from a W or C participant. Specifically, there were 60 W and 60 C, both with Male (M) and Female (F) split evenly. A total of 50 face pairs of non-famous
+“look-alikes” were collected from the internet, with 20 (WA) and 20 (C) pairs (male and female split evenly). The other 10 pairs are of others (e.g., Hispanic/ Latino, Japanese, African). Survey was created, distributed, and recorded via PaperForm.
+
+<img src=manuscript/figures/human-eval-table.png alt="humaneval-fig" width="400"/>
+
+Quantitative and qualitative results are in Table IV and Fig. 5, respectfully. One might expect that the most exposure to others would be within the same subgroup, and, therefore, would be best at labeling their own. Secondarily, they would be best at labeling images of the same ethnicity, but opposite gender. Our findings concur. Each subgroup is best at labeling their type, and then second best at labeling the same ethnicity but opposite sex. Interestingly, each group of images is best tagged by the corresponding subgroup, with the second-to-best having the same ethnicity and opposite gender. On average, subgroups are comparable at labeling images.
+
+
+<img src=manuscript/figures/human-eval-fig.png alt="humaneval-fig" width="400"/>
+
+
+
+
+### Supplemental
+Variations in optimal threshold are shown shown to generalize to other models (Fig. 6). Like in Fig. 2, the Detection Error Trade-off (DET) curves for three CNN-based models, each trained on VGG2 with softmax but with different backbones.
+
+<img src=manuscript/figures/multi-models-det.png alt="multi-models-det" width="800"/>
 
 
 ## License
