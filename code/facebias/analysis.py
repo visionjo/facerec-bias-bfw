@@ -33,7 +33,7 @@ def violin_plot(data, save_figure_path=None):
                    split=True, palette=palette, ax=ax, scale_hue=True, inner=None)
     plt.xlabel("Subgroup", fontsize=fontsize)
     plt.ylabel("Score", fontsize=fontsize)
-    ax.tick_params(axis='both', labelsize=fontsize)
+    ax.tick_params(axis="both", labelsize=fontsize)
     plt.legend(loc="best", fontsize=fontsize)
     plt.title("Score Distribution for Genuine and Imposter Pairs Across Subgroup", fontsize=fontsize)
 
@@ -63,7 +63,7 @@ def det_plot(data, group_by, plot_title, save_figure_path=None):
     ax.set_xlim([1e-4, 1])
     ax.set_ylim([0, 30])
 
-    ax.tick_params(axis='both', labelsize=fontsize)
+    ax.tick_params(axis="both", labelsize=fontsize)
 
     # save figure
     if save_figure_path is not None:
@@ -126,7 +126,7 @@ def confusion_matrix(image_list_path, embedding_dir_path, save_figure_path=None)
 
 
 def create_bias_analysis_plots(image_pair_path, image_list_path, embedding_dir_path, processed_data=None,
-                               save_figure_dir='results'):
+                               save_figure_dir="results"):
     if processed_data is not None:
         with open(processed_data, "rb") as f:
             data_pair_df = pk.load(f)
