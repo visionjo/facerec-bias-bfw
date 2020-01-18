@@ -10,14 +10,14 @@ dir_data = "../../data/bfw-data/"
 f_datatable = f"{dir_data}bfw-datatable.pkl"
 
 thresholds = np.linspace(0.2, 0.9, 1000)
-data = load_bfw_datatable(f_datatable,
-                          cols=['p1', 'p2', 'score', 'label', 'fold',
-                                'senet50'])
+data = load_bfw_datatable(
+    f_datatable, cols=["p1", "p2", "score", "label", "fold", "senet50"]
+)
 data["score"] = data["senet50"]
-del data['senet50']
+del data["senet50"]
 
 # reorder for find_best_threshold(s
-data = data[['p1', 'p2', 'score', 'label', 'fold']]
+data = data[["p1", "p2", "score", "label", "fold"]]
 
 global_threshold, _ = fbutils.find_best_threshold(thresholds, data)
 

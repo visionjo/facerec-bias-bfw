@@ -11,9 +11,9 @@ def add_package_path(path_package=f"../"):
 def eval_acc(threshold, predicts):
     """    """
 
-    y_predict = (predicts['score'] > threshold).astype(int)
+    y_predict = (predicts["score"] > threshold).astype(int)
 
-    return (predicts['label'] == y_predict).mean()
+    return (predicts["label"] == y_predict).mean()
 
 
 def find_best_threshold(thresholds, predicts, function=eval_acc, find_max=True):
@@ -30,11 +30,11 @@ def find_best_threshold(thresholds, predicts, function=eval_acc, find_max=True):
     :return:            Threshold value that yielded best accuracy (same type as
                         threshold[threshold.argmax()]).
     """
-    assert 'label' in predicts
-    assert 'score' in predicts
+    assert "label" in predicts
+    assert "score" in predicts
 
     op = np.greater_equal if find_max else np.less_equal
-    predicts['label'] = predicts['label'].astype(int)
+    predicts["label"] = predicts["label"].astype(int)
     best_threshold = best_score = 0
     for threshold in thresholds:
 
