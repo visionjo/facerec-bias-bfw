@@ -1,5 +1,7 @@
 import sys
 
+import numpy as np
+
 
 def add_package_path(path_package=f"../"):
     if path_package not in sys.path:
@@ -9,24 +11,35 @@ def add_package_path(path_package=f"../"):
 def eval_acc(threshold, predicts):
     """    """
 
-    y_predict = np.array([1 if float(p[2]) > threshold else 0 for p in predicts])
-    y_true = np.array([int(p[3]) for p in predicts])
+    y_predict = (predicts['score'] > threshold).astype(int)
 
-    return (y_true == y_predict).mean()
+    return (predicts['label'] == y_predict).mean()
 
 
-def find_best_threshold(thresholds, predicts):
+def find_best_threshold(thresholds, predicts, function=eval_acc, find_max=True):
     """
-    Determine best threshold as the largest threshold that yields top accuracy. Note, tie goes to larger threshold.
+    Determine best threshold as the largest threshold that yields top accuracy.
+    Note, tie goes to larger threshold.
+
+    :param find_max:    If true, find largest
+    :param function:    Function to base case on, i.e., how to score
     :param thresholds:  threshold values to calculate accuracy with respect to.
-    :param predicts:    predictions [p1, p2, score, label], where score and label (index 2 and 3) are used.
-    :return:            Threshold value that yielded best accuracy (same type as threshold[threshold.argmax()]).
+    :param predicts:    predictions [p1, p2, score, label], where score and
+                        label (index 2 and 3) are used.
+
+    :return:            Threshold value that yielded best accuracy (same type as
+                        threshold[threshold.argmax()]).
     """
-    best_threshold = best_acc = 0
+    assert 'label' in predicts
+    assert 'score' in predicts
+
+    op = np.greater_equal if find_max else np.less_equal
+    predicts['label'] = predicts['label'].astype(int)
+    best_threshold = best_score = 0
     for threshold in thresholds:
 
-        accuracy = eval_acc(threshold, predicts)
-        if accuracy >= best_acc:
-            best_acc = accuracy
+        score = function(threshold, predicts)
+        if op(score, best_score):
+            best_score = score
             best_threshold = threshold
-    return best_threshold
+    return best_threshold, best_score
