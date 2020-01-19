@@ -3,7 +3,6 @@ Functions for generating plots and visuals.
 """
 import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
 from matplotlib.ticker import ScalarFormatter
 from sklearn.metrics import roc_curve, auc
 
