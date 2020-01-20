@@ -111,12 +111,16 @@ def get_attribute_gender_ethnicity(data, path_col, col_suffix=""):
 
 
 def assign_person_unique_id(data):
+    label_encoder = LabelEncoder()
+
     subject_names = list(set(
         ["/".join(p1.split('/')[:-1]) for p1 in data["p1"].unique()] +
         ["/".join(p2.split('/')[:-1]) for p2 in data["p2"].unique()]))
-    ids = _label_encoder(subject_names)
-    data["ids1"] = ids[:data.shape[0]]
-    data["ids2"] = ids[data.shape[0]:]
+    label_encoder.fit(subject_names)
+
+    data["ids1"] = label_encoder.transform(data["p1"].apply(lambda x: "/".join(x.split("/")[:-1])))
+    data["ids2"] = label_encoder.transform(data["p2"].apply(lambda x: "/".join(x.split("/")[:-1])))
+
     return data
 
 
