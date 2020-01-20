@@ -13,10 +13,10 @@ from pathlib import Path
 from sklearn.preprocessing import LabelEncoder
 from sklearn.metrics.pairwise import cosine_similarity
 
-from facebias.io import load_features_from_image_list
+from facebias.iotools import load_features_from_image_list
 from facebias.visualization import draw_det_curve
 from facebias.metrics import calculate_det_curves
-from facebias.processing import get_attribute_gender_ethnicity, load_image_pair_with_attribute_and_score
+from facebias.preprocessing import get_attribute_gender_ethnicity, load_image_pair_with_attribute_and_score
 
 
 def violin_plot(data, save_figure_path=None):
@@ -70,9 +70,9 @@ def det_plot(data, group_by, plot_title, save_figure_path=None):
         plt.savefig(save_figure_path)
 
 
-def plot_confusion_matrix(df, save_figure_path=None):
-    # plot confusion matrix in heatmap format
-    fig, ax = plt.subplots(figsize=(9, 9))
+    def plot_confusion_matrix(df, save_figure_path=None):
+        # plot confusion matrix in heatmap format
+        fig, ax = plt.subplots(figsize=(9, 9))
 
     # set color scheme and style
     cmap = colors.LinearSegmentedColormap.from_list("nameofcolormap", ["w", "b"], gamma=2.0)
@@ -88,8 +88,10 @@ def plot_confusion_matrix(df, save_figure_path=None):
     fontsize = 14
     ax.set_yticklabels(df.columns, rotation=0, fontsize=fontsize)
     ax.set_xticklabels(df.columns, fontsize=fontsize)
-    ax.axhline(y=0, color="k", linewidth=2)
-    ax.axhline(y=df.shape[0], color="k", linewidth=2)
+    ax.axhline(y=0, color='k', linewidth=2)
+    ax.axhline(y=df.shape[1], color='k', linewidth=2)
+    ax.axvline(x=0, color='k', linewidth=2)
+    ax.axvline(x=df.shape[0], color='k', linewidth=2)
     ax.set_title("Rank 1 (%) Error", fontsize=fontsize)
 
     # save figure
@@ -126,12 +128,16 @@ def confusion_matrix(image_list_path, embedding_dir_path, save_figure_path=None)
 
 
 def create_bias_analysis_plots(image_pair_path, image_list_path, embedding_dir_path, processed_data=None,
-                               save_figure_dir="results"):
+                               save_processed_data=None, save_figure_dir="results"):
     if processed_data is not None:
         with open(processed_data, "rb") as f:
             data_pair_df = pk.load(f)
     else:
         data_pair_df = load_image_pair_with_attribute_and_score(image_pair_path, embedding_dir_path)
+        if save_processed_data is not None:
+            Path(os.path.dirname(save_processed_data)).mkdir(parents=True, exist_ok=True)
+            with open(save_processed_data, "wb") as f:
+                pk.dump(data_pair_df, f)
 
     # before saving figure, create nested directories if necessary
     Path(save_figure_dir).mkdir(parents=True, exist_ok=True)
