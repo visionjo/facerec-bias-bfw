@@ -1,6 +1,7 @@
 import numpy as np
 from numpy import greater_equal
-from sklearn import metrics as skmetrics
+from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, \
+    precision_score, recall_score, roc_curve
 
 
 # @author Joseph P. Robinson
@@ -96,9 +97,8 @@ class Metrics:
         :param cluster_ids:     Cluster assignment [ Nx1 ].
         :return: Confusion stats {TP, FP, TN, FN} (dictionary)
         """
-        tn, fp, fn, tp = skmetrics.confusion_matrix(
-            self.true_labels, self.predicted_labels
-        ).ravel()
+        tn, fp, fn, tp = confusion_matrix(self.true_labels,
+                                          self.predicted_labels).ravel()
 
         self.confusion_stats["tn"], self.confusion_stats["fp"], \
         self.confusion_stats[
@@ -117,8 +117,8 @@ class Metrics:
         """
         if not self._check_state():
             return None
-        return skmetrics.precision_score(self.true_labels,
-                                         self.predicted_labels)
+        return precision_score(self.true_labels,
+                               self.predicted_labels)
 
     def recall(self):
         """
@@ -129,7 +129,7 @@ class Metrics:
         """
         if not self._check_state():
             return None
-        return skmetrics.recall_score(self.true_labels, self.predicted_labels)
+        return recall_score(self.true_labels, self.predicted_labels)
 
     def accuracy(self):
         """
@@ -139,7 +139,7 @@ class Metrics:
         """
         if not self._check_state():
             return None
-        return skmetrics.accuracy_score(self.true_labels, self.predicted_labels)
+        return accuracy_score(self.true_labels, self.predicted_labels)
 
     def specificity(self):
         """
@@ -157,7 +157,7 @@ class Metrics:
 
         if not self._check_state():
             return None
-        return skmetrics.f1_score(self.true_labels, self.predicted_labels)
+        return f1_score(self.true_labels, self.predicted_labels)
 
     def calculate_negative_rates(self):
         """
@@ -179,6 +179,20 @@ class Metrics:
         return fnm_rate, fm_rate
 
 
+def calculate_tar_and_far_values(y_true, scores):
+    """
+    Calculate false match rates, both for non-matches and matches
+    :param y_true:   ground truth label, boolean (1 if match; else, 0)
+    :param scores:   scores for each pair.
+    :return:    list of tuples (false-match and false-non-match rates.
+    """
+
+    # y_pred = threshold_scores(scores, threshold)
+    fpr, tpr, thresholds = roc_curve(y_true, scores, pos_label=1)
+    fnr = 1 - tpr
+    return fpr, fnr, thresholds
+
+
 def calculate_det_curves(y_true, scores):
     """
     Calculate false match rates, both for non-matches and matches
@@ -188,7 +202,7 @@ def calculate_det_curves(y_true, scores):
     """
 
     # y_pred = threshold_scores(scores, threshold)
-    fpr, tpr, thresholds = skmetrics.roc_curve(y_true, scores, pos_label=1)
+    fpr, tpr, thresholds = roc_curve(y_true, scores, pos_label=1)
     fnr = 1 - tpr
     return fpr, fnr, thresholds
 
