@@ -181,16 +181,14 @@ class Metrics:
 
 def calculate_tar_and_far_values(y_true, scores):
     """
-    Calculate false match rates, both for non-matches and matches
+    Get TAR (TPR) and FAR (FNR) across various thresholds (via roc_curve)
     :param y_true:   ground truth label, boolean (1 if match; else, 0)
     :param scores:   scores for each pair.
-    :return:    list of tuples (false-match and false-non-match rates.
+    :return:    list of tuples (FAR, TAR, thresholds)
     """
-
-    # y_pred = threshold_scores(scores, threshold)
-    fpr, tpr, thresholds = roc_curve(y_true, scores, pos_label=1)
-    fnr = 1 - tpr
-    return fpr, fnr, thresholds
+    fpr, tar, thresholds = roc_curve(y_true, scores, pos_label=1)
+    far = 1 - tar
+    return far, tar, thresholds
 
 
 def calculate_det_curves(y_true, scores):
