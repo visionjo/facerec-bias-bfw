@@ -22,8 +22,7 @@ dir_data = "../../data/"
 dir_features = f"{dir_data}features/senet50/"
 f_datatable = f"{dir_data}bfw-datatable.pkl"
 
-data = load_bfw_datatable(f_datatable)
-data["score"] = data["senet50"]
+data = load_bfw_datatable(f_datatable, default_score_col='senet50')
 data["yp0"] = (data["score"] > global_threshold).astype(int)
 
 fpath = f'{dir_data}/interm/thresholds.pkl'
