@@ -1,6 +1,7 @@
 """
 Functions for loading the data
 """
+import os
 import warnings
 from pathlib import Path
 
@@ -38,23 +39,24 @@ def load_features_from_image_list(
     features: dict(file path, feature vector)
 
     """
-    li_features = [
-        dir_features + f.replace(f".{ext_img}", f".{ext_feat}") for f in li_images
-    ]
-    # read features as a dictionary, with keys set as the file path of the image with values set as the face encodings
-    # features = {str(f.replace(dir_features, '')): pd.read_pickle(f) for f in li_features}
-    # TODO some reason comprehension above does not work. Return to refactor later
-    features = {}
-    for feat in li_features:
-        features[
-            feat.replace(dir_features, "").replace(f".{ext_feat}", f".{ext_img}")
-        ] = np.load(feat)
-
-    return features
+    return {f: np.load(os.path.join(dir_features, f.replace(f".{ext_img}", f".{ext_feat}"))) for f in li_images}
 
 
 def prune_dataframe(data, cols):
-    # only keep columns specified as input arg cols
+    """
+    Prune dataframe data so that only columns specified in cols remain. Delete the rest.
+
+    Parameters
+    ----------
+    data : pandas.DataFrame
+    col : container (list or tuple)
+        List (or tuple) of columns headers of data we want to keep
+
+    Returns
+    -------
+    data : pandas.DataFrame
+        The pruned dataframe that only contain columns in cols
+    """
     columns = data.columns.to_list()
 
     for column in columns:
@@ -92,17 +94,7 @@ def load_bfw_datatable(fname, cols=None):
     assert Path(fname).exists(), f"error: file of datatable does not exist {fname}"
     data = pd.read_pickle(fname)
     if cols:
-        # only keep columns specified as input arg cols
-        columns = data.columns.to_list()
-
-        for column in columns:
-            if column not in cols:
-                del data[column]
-        for col in cols:
-            if col not in columns:
-                warnings.warn(
-                    f"cols={col} was not found in datatable... will be ommitted"
-                )
+        data = prune_dataframe(data, cols)
 
     return data
 
