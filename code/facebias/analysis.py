@@ -70,9 +70,9 @@ def det_plot(data, group_by, plot_title, save_figure_path=None):
         plt.savefig(save_figure_path)
 
 
-    def plot_confusion_matrix(df, save_figure_path=None):
-        # plot confusion matrix in heatmap format
-        fig, ax = plt.subplots(figsize=(9, 9))
+def plot_confusion_matrix(df, save_figure_path=None):
+    # plot confusion matrix in heatmap format
+    fig, ax = plt.subplots(figsize=(9, 9))
 
     # set color scheme and style
     cmap = colors.LinearSegmentedColormap.from_list("nameofcolormap", ["w", "b"], gamma=2.0)
