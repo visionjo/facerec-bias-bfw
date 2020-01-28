@@ -288,7 +288,7 @@ if __name__=="__main__":
                         help="path to the root directory to save figures and intermediate result")
     parser.add_argument("-d", "--processed_data", type=str, action="store",
                         help="path to the saved processed dataframe that contain attributes and scores")
-    parser.add_argument("-c", "--clean_image_pair_list", type=bool, action="store_true",
+    parser.add_argument("-c", "--clean_image_pair_list", action="store_true",
                         help=("specified if image pair and image list needs to be modified by deleting rows that"
                               "contains images that we do not have face embedding for"))
     args = parser.parse_args()
