@@ -257,7 +257,7 @@ def clean_image_pair_and_image_list_csv(image_pair_path, image_list_path, embedd
     print(f"For image pair csv, {old_nrow - new_nrow} rows out of {old_nrow} rows has been deleted"
           f"({100 * (1 - new_nrow / old_nrow):.2f}% of all rows)")
     new_filename = "updated_" + os.path.basename(image_pair_path)
-    image_pair_path = os.path.join(os.pardir(image_pair_path), new_filename)
+    image_pair_path = os.path.join(os.path.dirname(image_pair_path), new_filename)
     image_pair.to_csv(image_pair_path)
 
     # clean image list csv
@@ -268,7 +268,7 @@ def clean_image_pair_and_image_list_csv(image_pair_path, image_list_path, embedd
     print(f"For image list csv, {old_nrow - new_nrow} rows out of {old_nrow} rows has been deleted"
           f"({100 * (1 - new_nrow / old_nrow):.2f}% of all rows)")
     new_filename = "updated_" + os.path.basename(image_list_path)
-    image_list_path = os.path.join(os.pardir(image_list_path), new_filename)
+    image_list_path = os.path.join(os.path.dirname(image_list_path), new_filename)
     image_list.to_csv(image_list_path)
 
     return image_pair_path, image_list_path
