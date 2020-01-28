@@ -128,6 +128,8 @@ def load_bfw_datatable(f_name, cols=None, default_score_col=None):
     assert Path(
         f_name).exists(), f"error: file of datatable does not exist {f_name}"
     data = pd.read_pickle(f_name)
+    if default_score_col and default_score_col in data:
+        cols += [default_score_col] 
     if cols:
         data = prune_dataframe(data, cols)
     return data
