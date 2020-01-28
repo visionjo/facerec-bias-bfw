@@ -232,11 +232,7 @@ def replace_ext(path):
     return path
 
 
-def check_exist(rel_path):
-    return os.path.exists(os.path.join(embedding_dir_path, replace_ext(rel_path)))
-
-
-def clean_image_pair_and_image_list_csv(image_pair_path, image_list_path):
+def clean_image_pair_and_image_list_csv(image_pair_path, image_list_path, embedding_dir_path):
     """
     TODO
 
@@ -244,6 +240,7 @@ def clean_image_pair_and_image_list_csv(image_pair_path, image_list_path):
     ----------
     image_pair_path:
     image_list_path:
+    embedding_dir_path:
 
     returns
     -------
@@ -251,6 +248,7 @@ def clean_image_pair_and_image_list_csv(image_pair_path, image_list_path):
     image_list_path
 
     """
+    check_exist = lambda rel_path: os.path.exists(os.path.join(embedding_dir_path, replace_ext(rel_path)))
     # clean image pair csv
     image_pair = pd.read_csv(image_pair_path)
     old_nrow = image_pair.shape[0]
@@ -294,12 +292,14 @@ if __name__=="__main__":
     args = parser.parse_args()
     image_pair_path = args.image_pair_path
     image_list_path = args.image_list_path
+    embedding_dir_path = args.embedding_path
     clean_image_pair_list = args.clean_image_pair_list
 
     if clean_image_pair_list:
-        image_pair_path, image_list_path = clean_image_pair_and_image_list_csv(image_pair_path, image_list_path)
+        image_pair_path, image_list_path = clean_image_pair_and_image_list_csv(image_pair_path,
+                                                                               image_list_path,
+                                                                               embedding_dir_path)
 
-    embedding_dir_path = args.embedding_path
     save_figure_dir = os.path.join(args.save_path, "results")
     processed_data = args.processed_data
     if processed_data is not None:
