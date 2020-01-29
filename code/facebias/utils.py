@@ -43,3 +43,24 @@ def find_best_threshold(thresholds, predicts, function=eval_acc, find_max=True):
             best_score = score
             best_threshold = threshold
     return best_threshold, best_score
+
+
+def replace_ext(path):
+    """
+    Replace the extention (.jpg or .png) of path to .npy
+
+    parameters
+    ----------
+    path:   path that we want to replace the extension to .npy
+
+    returns
+    -------
+    path:   new path whose extension is already changed to .npy
+
+    """
+
+    if ".jpg" in path:
+        path = path.replace(".jpg", ".npy")
+    elif ".png" in path:
+        path = path.replace(".png", ".npy")
+    return path
