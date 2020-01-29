@@ -18,6 +18,7 @@ from facebias.iotools import load_features_from_image_list
 from facebias.visualization import draw_det_curve
 from facebias.metrics import calculate_det_curves
 from facebias.preprocessing import get_attribute_gender_ethnicity, load_image_pair_with_attribute_and_score
+from facebias.utils import replace_ext
 
 
 def violin_plot(data, save_figure_path=None):
@@ -33,7 +34,6 @@ def violin_plot(data, save_figure_path=None):
         'score' is the cosine similarity score between 'p1' and 'p2', 'label' is a binary indicating whether 'p1' and
         'p2' are the same person
     save_figure_path:   path to save the resulting violin plot. will not save is the value is None
-
     """
     fontsize = 12
     new_labels = ["Imposter", "Genuine"]
@@ -71,7 +71,6 @@ def det_plot(data, group_by, plot_title, save_figure_path=None):
     group_by:           the column in 'data' that we want to use as a separator
     plot_title:         the title of the plot
     save_figure_path:   path to save the resulting det plot. will not save is the value is None
-
     """
     subgroups = data.groupby(group_by)
     li_subgroups = subgroups.groups
@@ -109,7 +108,6 @@ def plot_confusion_matrix(df, save_figure_path=None):
     ---------
     data:               pandas.DataFrame that contains values of all cells in the confusion matrix we want to plot
     save_figure_path:   path to save the resulting confusion matrix plot. will not save is the value is None
-
     """
     # plot confusion matrix in heatmap format
     fig, ax = plt.subplots(figsize=(9, 9))
@@ -141,14 +139,16 @@ def plot_confusion_matrix(df, save_figure_path=None):
 
 def confusion_matrix(image_list_path, embedding_dir_path, save_figure_path=None):
     """
-    TODO
+    Plot rank-1 nearest neighbor confusion matrix. Rows and columns are different ethnicity-gender. The value in
+    row x and column y is the error rate that each image of ethnicity-gender x
+    and its rank-1 nearest neighbor of ethnicity-gender y is not the same person
 
     Parameters
     ----------
-    image_list_path:        path to the file that contains list of images of interest
+    image_list_path:        path to the csv file that contains list of images of interest. The csv must contain column
+        'path' that contains relative paths to images of interest
     embedding_dir_path:     path to the root directory that contains all the embeddings.
     save_figure_path:       path to save the resulting confusion matrix plot. will not save is the value is None
-
     """
     data = pd.read_csv(image_list_path)
     image_list = data["path"].to_list()
@@ -190,25 +190,28 @@ def create_bias_analysis_plots(image_pair_path, image_list_path, embedding_dir_p
             ii)     by ethnicity
             iii)    by ethnicity-gender
 
-    Using the list of image from 'image_list_path'
+    Using the list of image from 'image_list_path', plot the following plot
 
+    Confusion Matrix - rank-1 nearest neighbor confusion matrix when row and column are labeled by ethnicity-gender
 
     Parameters
     ----------
-    image_pair_path:        path to the file that contain all image pairs of interest
-    image_list_path:        path to the file that contains list of images of interest
+    image_pair_path:        path to the csv file that contain all image pairs of interest
+    image_list_path:        path to the csv file that contains list of images of interest
     embedding_dir_path:     path to the root directory that contains all the embeddings. in the root directories must
         exist subdirectories with name {ethnicity}_{gender}s, each of which contain person id subdirectories
     processed_data:         path to the saved processed dataframe that contain attributes, person unique id, and scores
     save_processed_data:    path to save intermediate processed data (with attributes, person unique id, and scores).
         will not save if the value is None
     save_figure_dir:        path to save the resulting figures
-
     """
     if processed_data is not None:
+        print("load processed data")
         with open(processed_data, "rb") as f:
             data_pair_df = pk.load(f)
     else:
+        print("get processed data (adding attribute, assigning unique person id, "
+              "and calculating cosine similarity score")
         data_pair_df = load_image_pair_with_attribute_and_score(image_pair_path, embedding_dir_path)
         if save_processed_data is not None:
             Path(os.path.dirname(save_processed_data)).mkdir(parents=True, exist_ok=True)
@@ -224,29 +227,22 @@ def create_bias_analysis_plots(image_pair_path, image_list_path, embedding_dir_p
     confusion_matrix(image_list_path, embedding_dir_path, join(save_figure_dir, "confusion_matrix.png"))
 
 
-def replace_ext(path):
-    if ".jpg" in path:
-        path = path.replace(".jpg", ".npy")
-    elif ".png" in path:
-        path = path.replace(".png", ".npy")
-    return path
-
-
 def clean_image_pair_and_image_list_csv(image_pair_path, image_list_path, embedding_dir_path):
     """
-    TODO
+    Clean image pair csv and image list csv by deleting the rows that contain a path to an image whose embedding does
+    not exist in embedding_dir_path
 
     parameters
     ----------
-    image_pair_path:
-    image_list_path:
-    embedding_dir_path:
+    image_pair_path:    path to the csv file that contain all image pairs of interest
+    image_list_path:    path to the csv file that contains list of images of interest
+    embedding_dir_path: path to the root directory that contains all the embeddings. in the root directories must
+        exist subdirectories with name {ethnicity}_{gender}s, each of which contain person id subdirectories
 
     returns
     -------
-    image_pair_path
-    image_list_path
-
+    image_pair_path:    path to the new file that contains the updated image pairs of interest
+    image_list_path:    path to the new file that contains the updated list of images of interest
     """
     check_exist = lambda rel_path: os.path.exists(os.path.join(embedding_dir_path, replace_ext(rel_path)))
     # clean image pair csv
@@ -254,7 +250,7 @@ def clean_image_pair_and_image_list_csv(image_pair_path, image_list_path, embedd
     old_nrow = image_pair.shape[0]
     image_pair = image_pair[image_pair["p1"].map(check_exist) & image_pair["p2"].map(check_exist)]
     new_nrow = image_pair.shape[0]
-    print(f"For image pair csv, {old_nrow - new_nrow} rows out of {old_nrow} rows has been deleted"
+    print(f"For image pair csv, {old_nrow - new_nrow} rows out of {old_nrow} rows has been deleted "
           f"({100 * (1 - new_nrow / old_nrow):.2f}% of all rows)")
     new_filename = "updated_" + os.path.basename(image_pair_path)
     image_pair_path = os.path.join(os.path.dirname(image_pair_path), new_filename)
@@ -265,7 +261,7 @@ def clean_image_pair_and_image_list_csv(image_pair_path, image_list_path, embedd
     old_nrow = image_list.shape[0]
     image_list = image_list[image_list["path"].map(check_exist)]
     new_nrow = image_list.shape[0]
-    print(f"For image list csv, {old_nrow - new_nrow} rows out of {old_nrow} rows has been deleted"
+    print(f"For image list csv, {old_nrow - new_nrow} rows out of {old_nrow} rows has been deleted "
           f"({100 * (1 - new_nrow / old_nrow):.2f}% of all rows)")
     new_filename = "updated_" + os.path.basename(image_list_path)
     image_list_path = os.path.join(os.path.dirname(image_list_path), new_filename)
@@ -296,6 +292,8 @@ if __name__=="__main__":
     clean_image_pair_list = args.clean_image_pair_list
 
     if clean_image_pair_list:
+        print("clening image pair and image list csv: delete rows that contain image paths for which we don't have"
+              "embedding in the embedding directory")
         image_pair_path, image_list_path = clean_image_pair_and_image_list_csv(image_pair_path,
                                                                                image_list_path,
                                                                                embedding_dir_path)
