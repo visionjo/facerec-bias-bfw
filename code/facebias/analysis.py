@@ -220,11 +220,26 @@ def create_bias_analysis_plots(image_pair_path, image_list_path, embedding_dir_p
 
     # before saving figure, create nested directories if necessary
     Path(save_figure_dir).mkdir(parents=True, exist_ok=True)
-    violin_plot(data_pair_df, join(save_figure_dir, "score_dist_violin.png"))
-    det_plot(data_pair_df, "a1", "DET Curve Per Ethnicity and Gender", join(save_figure_dir, "det_subgroup.png"))
-    det_plot(data_pair_df, "g1", "DET Curve Per Gender", join(save_figure_dir, "det_gender.png"))
-    det_plot(data_pair_df, "e1", "DET Curve Per Ethnicity", join(save_figure_dir, "det_ethnicity.png"))
-    confusion_matrix(image_list_path, embedding_dir_path, join(save_figure_dir, "confusion_matrix.png"))
+
+    violin_path = join(save_figure_dir, "score_dist_violin.png")
+    print(f"producing violin plot. result will be saved to {violin_path}")
+    violin_plot(data_pair_df, violin_path)
+
+    det_subgroup_path = join(save_figure_dir, "det_subgroup.png")
+    print(f"producing DET curve separated by ethnicity-gender. result will be saved to {det_subgroup_path}")
+    det_plot(data_pair_df, "a1", "DET Curve Per Ethnicity and Gender", det_subgroup_path)
+
+    det_gender_path = join(save_figure_dir, "det_gender.png")
+    print(f"producing DET curve separated by gender. result will be saved to {det_gender_path}")
+    det_plot(data_pair_df, "g1", "DET Curve Per Gender", det_gender_path)
+
+    det_ethnicity_path = join(save_figure_dir, "det_ethnicity.png")
+    print(f"producing DET curve separated by ethnicity. result will be saved to {det_ethnicity_path}")
+    det_plot(data_pair_df, "e1", "DET Curve Per Ethnicity", det_ethnicity_path)
+
+    confusion_matrix_path = join(save_figure_dir, "confusion_matrix.png")
+    print(f"producing confusion matrix plot. result will be saved to {confusion_matrix_path}")
+    confusion_matrix(image_list_path, embedding_dir_path, confusion_matrix_path)
 
 
 def clean_image_pair_and_image_list_csv(image_pair_path, image_list_path, embedding_dir_path):
@@ -297,7 +312,6 @@ if __name__=="__main__":
         image_pair_path, image_list_path = clean_image_pair_and_image_list_csv(image_pair_path,
                                                                                image_list_path,
                                                                                embedding_dir_path)
-
     save_figure_dir = os.path.join(args.save_path, "results")
     processed_data = args.processed_data
     if processed_data is not None:
