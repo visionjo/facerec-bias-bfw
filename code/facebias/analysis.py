@@ -211,7 +211,7 @@ def create_bias_analysis_plots(image_pair_path, image_list_path, embedding_dir_p
             data_pair_df = pk.load(f)
     else:
         print("get processed data (adding attribute, assigning unique person id, "
-              "and calculating cosine similarity score")
+              "and calculating cosine similarity score)")
         data_pair_df = load_image_pair_with_attribute_and_score(image_pair_path, embedding_dir_path)
         if save_processed_data is not None:
             Path(os.path.dirname(save_processed_data)).mkdir(parents=True, exist_ok=True)
