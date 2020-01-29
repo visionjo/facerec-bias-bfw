@@ -269,7 +269,7 @@ def clean_image_pair_and_image_list_csv(image_pair_path, image_list_path, embedd
           f"({100 * (1 - new_nrow / old_nrow):.2f}% of all rows)")
     new_filename = "updated_" + os.path.basename(image_pair_path)
     image_pair_path = os.path.join(os.path.dirname(image_pair_path), new_filename)
-    image_pair.to_csv(image_pair_path)
+    image_pair.to_csv(image_pair_path, index=False)
 
     # clean image list csv
     image_list = pd.read_csv(image_list_path)
@@ -280,13 +280,15 @@ def clean_image_pair_and_image_list_csv(image_pair_path, image_list_path, embedd
           f"({100 * (1 - new_nrow / old_nrow):.2f}% of all rows)")
     new_filename = "updated_" + os.path.basename(image_list_path)
     image_list_path = os.path.join(os.path.dirname(image_list_path), new_filename)
-    image_list.to_csv(image_list_path)
+    image_list.to_csv(image_list_path, index=False)
 
     return image_pair_path, image_list_path
 
 
 if __name__=="__main__":
-    parser = argparse.ArgumentParser(description="TODO")
+    parser = argparse.ArgumentParser(description=("Analyse bias in face recognition by producing 3 plots to give "
+                                                  "more insight. These three plots are violin plot, DET curve, "
+                                                  "and confusion matrix plot"))
     parser.add_argument("-p", "--image_pair_path", type=str, action="store", required=True,
                         help="path to the file that contain all image pairs of interest")
     parser.add_argument("-l", "--image_list_path", type=str, action="store", required=True,
@@ -307,7 +309,7 @@ if __name__=="__main__":
     clean_image_pair_list = args.clean_image_pair_list
 
     if clean_image_pair_list:
-        print("clening image pair and image list csv: delete rows that contain image paths for which we don't have"
+        print("cleaning image pair and image list csv: delete rows that contain image paths for which we don't have"
               "embedding in the embedding directory")
         image_pair_path, image_list_path = clean_image_pair_and_image_list_csv(image_pair_path,
                                                                                image_list_path,
