@@ -111,6 +111,18 @@ def get_attribute_gender_ethnicity(data, path_col, col_suffix=""):
 
 
 def assign_person_unique_id(data):
+    """
+    Assign unique ids to images in 'p1' and 'p2' column of 'data' and put them in column 'ids1' and 'ids2'
+
+    parameters
+    ----------
+    data: pandas.DataFrame that contains column 'p1' and 'p2' which specify the relative path to the pair of images
+
+    returns
+    -------
+    data:   pandas.DateFrame that have extra columns 'ids1' and 'ids2' which are the unique ids of images 'p1' and 'p2'
+        respectively
+    """
     label_encoder = LabelEncoder()
 
     subject_names = list(set(
@@ -124,20 +136,55 @@ def assign_person_unique_id(data):
     return data
 
 
-def compute_score_into_table(data, dir_features):
+def compute_score_into_table(data, embedding_dir_path):
+    """
+    compute cosine similarity scores of each pair of images specified in columns 'p1' and 'p2' in 'data' using the
+    embeddings from embedding_dir_path
+
+    parameters
+    ----------
+    data:               pandas.DataFrame that contains paths to pair of images. The path to the first image is in
+        column 'p1' while the path to the second image is in column 'p2'
+    embedding_dir_path: path to the root directory that contains all the embeddings. in the root directories must
+        exist subdirectories with name {ethnicity}_{gender}s, each of which contain person id subdirectories
+
+    returns
+    -------
+    data:   pandas.DataFrame that have one more column: 'score', which contains the cosine similarity score between
+        the embeddings of the pair of images specified in column 'p1' and 'p2'
+    """
     # create ali_images list of all faces (i.e., unique set)
     image_list = list(np.unique(data["p1"].to_list() + data["p2"].to_list()))
     # read features as a dictionary, with keys set as the filepath of the image with values set as the face encodings
-    features = load_features_from_image_list(image_list, dir_features, ext_feat="npy")
+    features = load_features_from_image_list(image_list, embedding_dir_path, ext_feat="npy")
     # score all feature pairs by calculating cosine similarity of the features
     data["score"] = data.apply(lambda x: cosine_similarity(features[x["p1"]], features[x["p2"]])[0][0], axis=1)
     return data
 
 
-def load_image_pair_with_attribute_and_score(image_pair_path, dir_features):
+def load_image_pair_with_attribute_and_score(image_pair_path, embedding_dir_path):
+    """
+    load pandas.DataFrame that contains pairs of images, their attributes (gender, ethnicity, etc.) and the cosine
+    similarity score between the embeddings of the pair of images
+
+    parameters
+    ----------
+    image_pair_path:    path to the csv file that contain all image pairs of interest. The csv must contain columns
+        'p1', 'p2', and 'label'
+    embedding_dir_path: path to the root directory that contains all the embeddings. in the root directories must
+        exist subdirectories with name {ethnicity}_{gender}s, each of which contain person id subdirectories
+
+    returns
+    -------
+    data:   pandas.DataFrame that contains columns 'p1', 'p2', 'label', 'g1', 'g2', 'e1', 'e2', 'a1', 'a2', 'ids1',
+        'ids2', 'score'. 'p1' and 'p2' are the paths to each pair of images. 'label' indicates whether these two
+        images are the same person. 'g1', 'e1', 'a1', 'ids1' are the gender, ethnicity, abbreviated ethnicity-gender,
+        and unique id of 'p1' respectively. The same goes for 'g2', 'e2', 'a2', and 'ids2'.
+        'score' is the cosine similarity of the embeddings in 'embedding_dir_path' that correspond to 'p1' and 'p2'
+    """
     data = pd.read_csv(image_pair_path)
     data = get_attribute_gender_ethnicity(data, "p1", "1")
     data = get_attribute_gender_ethnicity(data, "p2", "2")
     data = assign_person_unique_id(data)
-    data = compute_score_into_table(data, dir_features)
+    data = compute_score_into_table(data, embedding_dir_path)
     return data
