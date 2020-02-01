@@ -1,23 +1,47 @@
 # Face Recognition: Too Bias, or Not Too Bias?
 
-by
 
-[Joseph Robinson](robinson.jo@husky.neu.edu),
-[Samson Timoner](samson.timoner@ismconnect.com),
-[Yann Henon](yann.henon@ismconnect.com),
-[Gennady Livitz](gennady.livitz@ismconnect.com),
-[Can Qin](qin.ca@husky.neu.edu),
-[Yun Fu](yunfu@ece.neu.edu)
 
-This paper has been submitted for publication in _15th IEEE International Conference on Automatic Face and Gesture Recognition
- on Automatic Facial and Gesture Recognition (FG2020).
+<div>
+         <a href="robinson.jo@husky.neu.edu">Joseph P. Robinson</a>,
+          <a href="yann.henon@ismconnect.com">Yann Henon</a>,
+          <a href="gennady.livitz@ismconnect.com">Gennady Livitz</a>,
+          <a href="qin.ca@husky.neu.edu">Can Qin</a>,
+          Yun Fu,
+          <a href="samson.timoner@ismconnect.com">Samson Timoner</a>.
+          <br>
+          <a href="papers/tpami-final.pdf">
+            Face Recognition: Too Bias, or Not Too Bias?
+          </a> &nbsp;
+          <br>
+          CoRR, abs/????.?????, 2020.
+        <div class="links">
+          <a onclick="if (document.getElementById(&quot;BIBfiwpamiSI2018&quot;).style.display==&quot;none&quot;) document.getElementById(&quot;BIBfiwpamiSI2018&quot;).style.display=&quot;block&quot;; else document.getElementById(&quot;BIBfiwpamiSI2018&quot;).style.display=&quot;none&quot;;">
+          | <a href="papers/tpami-final.pdf"> PDF</a> | <a href="papers/pami-appendix.pdf"> Appendix</a> | <a href="papers/Supplemental_PP.pdf"> Supplemental PP</a> | <a href="papers/Labeling_Demo.mov"> Video Demo</a> |
+          <a href="index.html">Web</a></div>
+        <div style="display: none;" class="BibtexExpand" id="BIBfiwpamiSI2018">
+          <pre class="bibtex">@article{robinson:facebias:2020,
+          author        = "Joseph Robinson and Yann Henon and Gennady Livitz and Can Qin and Yun Fu and Samson Timoner",
+          title         = "Face Recognition: Too Bias, or Not Too Bias?",
+          journal       = "CoRR",
+          year          = "2020",
+          volume        = "abs/????.?????",
+          url           = "http://arxiv.org/abs/????.?????",
+          archiveprefix = "arXiv",
+          eprint        = "????.?????",
+          timestamp     = "Wed, 29 May 2019 11:27:50 +0200",
+          biburl        = "https://dblp.org/rec/bib/journals/corr/abs-????-?????",
+          bibsource     = "dblp computer science bibliography, https://dblp.org"
+      }
+          </pre>
+      </div>
 
 ## Overview
 Our findings reveal a bias in scoring sensitivity across different subgroups when verifying the identity of a subject
-using facial images. In other words, the performance of a FR system on different subgroups (e.g., male vs female, 
-asian vs black) typically depends on a global threshold (i.e., decision boundary on scores or distances to determine 
-whether true or false pair). Our work uses fundamental signal detection theory to show that the use of a single, 
-global threshold causes a skew in performance ratings across different subgroups. For this, we demonstrate that 
+using facial images. In other words, the performance of a FR system on different subgroups (e.g., male vs female,
+asian vs black) typically depends on a global threshold (i.e., decision boundary on scores or distances to determine
+whether true or false pair). Our work uses fundamental signal detection theory to show that the use of a single,
+global threshold causes a skew in performance ratings across different subgroups. For this, we demonstrate that
 subgroup-specific thresholds are optimal in terms of overall performance and balance across subgroups.
 
 Furthermore, we built and released the facial image dataset needed to address bias from this view of FR. Namely, *Bias Faces in the Wild* (BFW).
@@ -136,4 +160,3 @@ article content, which is currently submitted for publication in the
 ## Acknowledgement
 We would like to thank the [PINGA](https://github.com/pinga-lab?type=source) organization on Github for the
  [project template](https://github.com/pinga-lab/paper-template) used to structure this project.
-
