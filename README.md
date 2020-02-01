@@ -3,38 +3,32 @@
 
 
 <div>
-         <a href="robinson.jo@husky.neu.edu">Joseph P. Robinson</a>,
-          <a href="yann.henon@ismconnect.com">Yann Henon</a>,
-          <a href="gennady.livitz@ismconnect.com">Gennady Livitz</a>,
-          <a href="qin.ca@husky.neu.edu">Can Qin</a>,
-          Yun Fu,
-          <a href="samson.timoner@ismconnect.com">Samson Timoner</a>.
-          <br>
-          <a href="papers/tpami-final.pdf">
-            Face Recognition: Too Bias, or Not Too Bias?
-          </a> &nbsp;
-          <br>
-          CoRR, abs/????.?????, 2020.
-        <div class="links">
-          <a onclick="if (document.getElementById(&quot;BIBfiwpamiSI2018&quot;).style.display==&quot;none&quot;) document.getElementById(&quot;BIBfiwpamiSI2018&quot;).style.display=&quot;block&quot;; else document.getElementById(&quot;BIBfiwpamiSI2018&quot;).style.display=&quot;none&quot;;">
-          | <a href="papers/tpami-final.pdf"> PDF</a> | <a href="papers/pami-appendix.pdf"> Appendix</a> | <a href="papers/Supplemental_PP.pdf"> Supplemental PP</a> | <a href="papers/Labeling_Demo.mov"> Video Demo</a> |
-          <a href="index.html">Web</a></div>
-        <div style="display: none;" class="BibtexExpand" id="BIBfiwpamiSI2018">
-          <pre class="bibtex">@article{robinson:facebias:2020,
-          author        = "Joseph Robinson and Yann Henon and Gennady Livitz and Can Qin and Yun Fu and Samson Timoner",
-          title         = "Face Recognition: Too Bias, or Not Too Bias?",
-          journal       = "CoRR",
-          year          = "2020",
-          volume        = "abs/????.?????",
-          url           = "http://arxiv.org/abs/????.?????",
-          archiveprefix = "arXiv",
-          eprint        = "????.?????",
-          timestamp     = "Wed, 29 May 2019 11:27:50 +0200",
-          biburl        = "https://dblp.org/rec/bib/journals/corr/abs-????-?????",
-          bibsource     = "dblp computer science bibliography, https://dblp.org"
+<blockquote>
+         Joseph P. Robinson, Yann Henon, Gennady Livitz, Can Qin, Yun Fu, and Samson Timoner.
+         <a href="papers/tpami-final.pdf"> Face Recognition: Too Bias, or Not Too Bias?</a> CoRR, abs/????.?????, 2020.
+</blockquote>
+</div>
+<div>
+    <div>
+      <a href="papers/pami-appendix.pdf"> Appendix</a>  | 
+      <a href="https://northeastern-my.sharepoint.com/:u:/g/personal/robinson_jo_northeastern_edu/EY2_oZ3xCspJrGLms8nOy-cBjKJO_Azd7XemctvusWp1vw?e=TLBmhm">Download Data</a> 
+     </div>
+    <div style="display: none;" id="robinsonfacebias2020">
+      <pre class="bibtex">@article{robinson:facebias:2020,
+      author        = "Joseph Robinson and Yann Henon and Gennady Livitz and Can Qin and Yun Fu and Samson Timoner",
+      title         = "Face Recognition: Too Bias, or Not Too Bias?",
+      journal       = "CoRR",
+      year          = "2020",
+      volume        = "abs/????.?????",
+      url           = "http://arxiv.org/abs/????.?????",
+      archiveprefix = "arXiv",
+      eprint        = "????.?????",
+      timestamp     = "Wed, 29 May 2019 11:27:50 +0200",
+      biburl        = "https://dblp.org/rec/bib/journals/corr/abs-????-?????",
+      bibsource     = "dblp computer science bibliography, https://dblp.org"
       }
-          </pre>
-      </div>
+    </pre>
+  </div>
 
 ## Overview
 Our findings reveal a bias in scoring sensitivity across different subgroups when verifying the identity of a subject
@@ -57,7 +51,14 @@ Register and download via this [form](https://northeastern-my.sharepoint.com/:u:
 
 ## Abstract
 
-We reveal critical insights into problems of bias in state-of-the-art facial recognition (FR) systems using a novel Balanced Faces In the Wild (BFW) dataset: data balanced in gender and for ethnic groups. Classic signal detection theory was applied to understand the score distribution across different subgroups. Specifically, in face verification using Arc-Face, we show that the optimal threshold varies across different subgroups of face-pairs. Thus, the conventional approach of learning a single, global threshold on all data yields a threshold biased to subgroups. We leveled out performances across different subgroups while improving the overall performance by learning a threshold per subgroup. Furthermore, we conduct a human evaluation to measure the bias in humans (i.e., within versus across subgroups), which supports the hypothesis that such a bias exists in human perception.
+We reveal critical insights into problems of bias in state-of-the-art facial recognition (FR) systems using a novel 
+Balanced Faces In the Wild (BFW) dataset: data balanced in gender and for ethnic groups. Classic signal detection theory 
+was applied to understand the score distribution across different subgroups. Specifically, in face verification using 
+Sphere-Face, we show that the optimal threshold varies across different subgroups of face-pairs. Thus, the conventional 
+approach of learning a single, global threshold on all data yields a threshold biased to subgroups. We leveled out 
+performances across different subgroups while improving the overall performance by learning a threshold per subgroup. 
+Furthermore, we conduct a human evaluation to measure the bias in humans (i.e., within versus across subgroups), which 
+supports the hypothesis that such a bias exists in human perception.
 
 ## Software implementation
 All source code used to generate the results and figures in the paper are in
