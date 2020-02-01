@@ -1,0 +1,4 @@
+[submodule "BFW-Face-Bias-Paper"]
+	path = manuscript
+	url = https://github.com/visionjo/BFW-Face-Bias-Paper.git
+	branch = master
