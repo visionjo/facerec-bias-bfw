@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import matplotlib.style as style
 import matplotlib.colors as colors
+from matplotlib.lines import Line2D
 import seaborn as sns
 
 from os.path import join
@@ -51,6 +52,69 @@ def violin_plot(data, save_figure_path=None):
     ax.tick_params(axis="both", labelsize=fontsize)
     plt.legend(loc="best", fontsize=fontsize)
     plt.title("Score Distribution for Genuine and Imposter Pairs Across Subgroup", fontsize=fontsize)
+
+    # save figure
+    if save_figure_path is not None:
+        plt.savefig(save_figure_path)
+
+
+def overlapped_score_distribution(data, log_scale=False, save_figure_path=None):
+    """
+    Plot the score distribution of the cosine similarity score of Imposter pairs (different people) and
+    Genuine pair (same people) the plots are separated by ethnicity-gender attribute of the first person of each pair.
+    Curves of different ethnicity-gender attribute are distinguished by colors.
+    The final plot is saved to 'save_figure_path'
+
+    Parameters
+    ----------
+    data:               pandas.DataFrame that contains column 'p1', 'p2', 'att1', 'att2', 'score', and 'label'
+        'p1' and 'p2' are the pair of images. 'att1' and 'att2' are the abbreviated attribute (ethnicity-gender) of
+        'p1' and 'p2' respectively. 'score' is the cosine similarity score between 'p1' and 'p2', 'label' is a binary
+        indicating whether 'p1' and 'p2' are the same person
+    log_scale:          boolean indicating whether to use log scale on y axis
+    save_figure_path:   path to save the resulting score distribution plot. will not save is the value is None
+    """
+    # set figure size
+    plt.figure(figsize=(20, 10))
+
+    # set color scheme and font size
+    att_to_color = {"AM": "blue", "AF": "orange", "IM": "green", "IF": "red",
+                    "BM": "Purple", "BF": "brown", "WM": "hotpink", "WF": "black"}
+    fontsize = 14
+
+    # plot distribution for each ethnicity-gender attribute
+    for att in [f"{e}{g}" for e in ["A", "I", "B", "W"] for g in ["M", "F"]]:
+        data_att = data.loc[data["a1"] == att]
+
+        # plot intra score
+        sns.distplot(data_att.loc[data_att["label"] == 1]["score"], hist=False, label=att,
+                     color=att_to_color[att])
+        # plot inter score
+        sns.distplot(data_att.loc[data_att["label"] == 0]["score"], hist=False, color=att_to_color[att],
+                     kde_kws={"linestyle": "--"})
+
+    # set label and font sizes
+    plt.xlabel("Cosine Similarity Score", fontsize=fontsize)
+    plt.xticks(fontsize=fontsize)
+    plt.yticks(fontsize=fontsize)
+
+    # create legend
+    color_legend = plt.legend(fontsize=fontsize)
+    solid_line = Line2D([0], [0], color="black", linestyle="-")
+    dash_line = Line2D([0], [0], color="black", linestyle="--")
+    plt.legend([solid_line, dash_line], ["intra", "inter"], fontsize=fontsize, loc=2)
+    plt.gca().add_artist(color_legend)
+
+    # handle log scale
+    if log_scale:
+        title = "Score Distribution Log Scale"
+        plt.semilogy()
+        plt.ylim([10 ** (-5), 10])
+    else:
+        title = "Score Distribution"
+
+    # set title
+    plt.title(title, fontsize=fontsize)
 
     # save figure
     if save_figure_path is not None:
@@ -180,30 +244,32 @@ def confusion_matrix(image_list_path, embedding_dir_path, save_figure_path=None)
 def create_bias_analysis_plots(image_pair_path, image_list_path, embedding_dir_path, processed_data=None,
                                save_processed_data=None, save_figure_dir="results"):
     """
-    Using image pairs from 'image_pair_path', plot the following two plots
+    Using image pairs from 'image_pair_path', plot the following three plots.
 
     Violin plot - the distribution of the cosine similarity score of Imposter pairs (different people) and Genuine pair
-        (same people) the plots are separated by ethnicity-gender attribute of the first person of each pair
+        (same people) the plots are separated by ethnicity-gender attribute of the first person of each pair.
+    Overlapped Score Distribution plot - similar to violin plot, but overlap the curves of different ethnicity-gender
+        attribute all on top of each other.
     DET plots - Detection Error Tradeoff curves. Each DET curve is created by varying the threshold of the cosine
-        similarity score between each image pair. Curves will be separated by three methods
+        similarity score between each image pair. Curves will be separated by three methods.
             i)      by gender
             ii)     by ethnicity
             iii)    by ethnicity-gender
 
-    Using the list of image from 'image_list_path', plot the following plot
+    Using the list of image from 'image_list_path', plot the following plot.
 
-    Confusion Matrix - rank-1 nearest neighbor confusion matrix when row and column are labeled by ethnicity-gender
+    Confusion Matrix - rank-1 nearest neighbor confusion matrix when row and column are labeled by ethnicity-gender.
 
     Parameters
     ----------
-    image_pair_path:        path to the csv file that contain all image pairs of interest
-    image_list_path:        path to the csv file that contains list of images of interest
+    image_pair_path:        path to the csv file that contain all image pairs of interest.
+    image_list_path:        path to the csv file that contains list of images of interest.
     embedding_dir_path:     path to the root directory that contains all the embeddings. in the root directories must
-        exist subdirectories with name {ethnicity}_{gender}s, each of which contain person id subdirectories
+        exist subdirectories with name {ethnicity}_{gender}s, each of which contain person id subdirectories.
     processed_data:         path to the saved processed dataframe that contain attributes, person unique id, and scores
     save_processed_data:    path to save intermediate processed data (with attributes, person unique id, and scores).
-        will not save if the value is None
-    save_figure_dir:        path to save the resulting figures
+        will not save if the value is None.
+    save_figure_dir:        path to save the resulting figures.
     """
     if processed_data is not None:
         print("load processed data")
@@ -223,23 +289,31 @@ def create_bias_analysis_plots(image_pair_path, image_list_path, embedding_dir_p
 
     violin_path = join(save_figure_dir, "score_dist_violin.png")
     print(f"producing violin plot. result will be saved to {violin_path}")
-    violin_plot(data_pair_df, violin_path)
+    violin_plot(data_pair_df, save_figure_path=violin_path)
+
+    over_dist_path = join(save_figure_dir, "overlapped_score_dist.png")
+    print(f"producing overlapped score distribution plot. result will be saved to {over_dist_path}")
+    overlapped_score_distribution(data_pair_df, log_scale=False, save_figure_path=over_dist_path)
+
+    log_over_dist_path = join(save_figure_dir, "overlapped_log_scale_score_dist.png")
+    print(f"producing overlapped score distribution plot on log scale. result will be saved to {log_over_dist_path}")
+    overlapped_score_distribution(data_pair_df, log_scale=True, save_figure_path=log_over_dist_path)
 
     det_subgroup_path = join(save_figure_dir, "det_subgroup.png")
     print(f"producing DET curve separated by ethnicity-gender. result will be saved to {det_subgroup_path}")
-    det_plot(data_pair_df, "a1", "DET Curve Per Ethnicity and Gender", det_subgroup_path)
+    det_plot(data_pair_df, "a1", "DET Curve Per Ethnicity and Gender", save_figure_path=det_subgroup_path)
 
     det_gender_path = join(save_figure_dir, "det_gender.png")
     print(f"producing DET curve separated by gender. result will be saved to {det_gender_path}")
-    det_plot(data_pair_df, "g1", "DET Curve Per Gender", det_gender_path)
+    det_plot(data_pair_df, "g1", "DET Curve Per Gender", save_figure_path=det_gender_path)
 
     det_ethnicity_path = join(save_figure_dir, "det_ethnicity.png")
     print(f"producing DET curve separated by ethnicity. result will be saved to {det_ethnicity_path}")
-    det_plot(data_pair_df, "e1", "DET Curve Per Ethnicity", det_ethnicity_path)
+    det_plot(data_pair_df, "e1", "DET Curve Per Ethnicity", save_figure_path=det_ethnicity_path)
 
     confusion_matrix_path = join(save_figure_dir, "confusion_matrix.png")
     print(f"producing confusion matrix plot. result will be saved to {confusion_matrix_path}")
-    confusion_matrix(image_list_path, embedding_dir_path, confusion_matrix_path)
+    confusion_matrix(image_list_path, embedding_dir_path, save_figure_path=confusion_matrix_path)
 
 
 def clean_image_pair_and_image_list_csv(image_pair_path, image_list_path, embedding_dir_path):
@@ -309,7 +383,7 @@ if __name__=="__main__":
     clean_image_pair_list = args.clean_image_pair_list
 
     if clean_image_pair_list:
-        print("cleaning image pair and image list csv: delete rows that contain image paths for which we don't have"
+        print("cleaning image pair and image list csv: delete rows that contain image paths for which we don't have "
               "embedding in the embedding directory")
         image_pair_path, image_list_path = clean_image_pair_and_image_list_csv(image_pair_path,
                                                                                image_list_path,
