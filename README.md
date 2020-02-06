@@ -148,18 +148,20 @@ and produces it's output.
 To execute the whole notebook, run all cells in order.
 
 ## To Do
-[x] Begin Template
-[x] Create demo notebooks
-[ ] Documentation (sphinx)
-[ ] Update README (this)
-[ ] Complete test harness
-[ ] Modulate (refactor) code
+- [x] Begin Template
+- [x] Create demo notebooks
+- [x] Add manuscript
+- [ ] Documentation (sphinx)
+- [ ] Update README (this)
+- [ ] Complete test harness
+- [ ] Modulate (refactor) code
+- [ ] Add scripts and CLI
 
 ## License
 
 All source code is made available under a BSD 3-clause license. You can freely
 use and modify the code, without warranty, so long as you provide attribution
-to the authors. See `LICENSE.md` for the full license text.
+to the authors. See `LICENSE.md` ([LICENSE](LICENSE.md)) for the full license text.
 
 The manuscript text is not open source. The authors reserve the rights to the
 article content, which is currently submitted for publication in the
