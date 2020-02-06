@@ -46,7 +46,9 @@ Check out research paper, [https://github.com/visionjo/BFW-Face-Bias-Paper/blob/
 
 See [data/README.md](data/README.md) for more on BFW.
 
-See [results/README.md](results/README.md) for more on results and experiments.
+See [code/README.md](code/README.md) for more on 'facebias' package and experiments contained within.
+
+See [results/README.md](results/README.md) for summary of figures and results.
 
 Register and download via this [form](https://forms.office.com/Pages/ResponsePage.aspx?id=gcLuqKOqrk2sm5o5i5IV57dX0R2T-YhEje_JmPbemGlUOTVZTkhPVElCSkRFMlZaOEVDSkJYWjk5Uy4u).
 
