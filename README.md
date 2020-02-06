@@ -48,7 +48,7 @@ See [data/README.md](data/README.md) for more on BFW.
 
 See [results/README.md](results/README.md) for more on results and experiments.
 
-Register and download via this [form](https://northeastern-my.sharepoint.com/:u:/g/personal/robinson_jo_northeastern_edu/EUBGBL941IxAvLn7EyDf-z4B4GWKv0wiTD6aju14R5Kfnw?e=T2hj56).
+Register and download via this [form](https://forms.office.com/Pages/ResponsePage.aspx?id=gcLuqKOqrk2sm5o5i5IV57dX0R2T-YhEje_JmPbemGlUOTVZTkhPVElCSkRFMlZaOEVDSkJYWjk5Uy4u).
 
 ## Abstract
 
@@ -79,7 +79,7 @@ You can download a copy of all the files in this repository by cloning the
 
     git clone https://github.com/visionjo/facerec-bias-bfw.git
 
-or [download a zip archive](https://github.com/pinga-lab/PAPER-REPO/archive/master.zip).
+or [download a zip archive](https://github.com/visionjo/facerec-bias-bfw/archive/master.zip).
 
 A copy of the repository is also archived at *insert DOI here*
 
