@@ -59,15 +59,15 @@ all: build test figures
 
 # Main target for producing all results. Add results files as dependencies to
 # include them in the build.
-results: $(RESDIR)/hawaii-trend.csv
+#results: $(RESDIR)/hawaii-trend.csv
 
 
 # Build a result file from a notebook and a data file.
 # Execution modifies a notebook, so the time stamp will be later than the
 # target. touch the target to make sure it's always newer than the dependency.
-$(RESDIR)/hawaii-trend.csv: $(NBDIR)/estimate-hawaii-trend.ipynb $(DATADIR)/hawaii-TAVG-Trend.txt
-	$(RUN) $<
-	@touch $@
+#$(RESDIR)/hawaii-trend.csv: $(NBDIR)/estimate-hawaii-trend.ipynb $(DATADIR)/hawaii-TAVG-Trend.txt
+#	$(RUN) $<
+#	@touch $@
 
 
 
@@ -76,13 +76,13 @@ $(RESDIR)/hawaii-trend.csv: $(NBDIR)/estimate-hawaii-trend.ipynb $(DATADIR)/hawa
 
 # Main target for generating figures. Include figure files as dependencies to
 # include them in the build.
-figures: $(FIGDIR)/hawaii-trend.eps
+#figures: $(FIGDIR)/hawaii-trend.eps
 
 
 # Generate a figure file from a notebook and a results file.
-$(FIGDIR)/hawaii-trend.eps: $(NBDIR)/figure-hawaii-trend.ipynb $(RESDIR)/hawaii-trend.csv
-	$(RUN) $<
-	@touch $@
+#$(FIGDIR)/hawaii-trend.eps: $(NBDIR)/figure-hawaii-trend.ipynb $(RESDIR)/hawaii-trend.csv
+#	$(RUN) $<
+#	@touch $@
 
 
 
