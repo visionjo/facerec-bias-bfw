@@ -1,7 +1,6 @@
 # Face Recognition: Too Bias, or Not Too Bias?
 
 
-
 <div>
 <blockquote>
          Joseph P. Robinson, Yann Henon, Gennady Livitz, Can Qin, Yun Fu, and Samson Timoner.
@@ -40,12 +39,14 @@ subgroup-specific thresholds are optimal in terms of overall performance and bal
 
 Furthermore, we built and released the facial image dataset needed to address bias from this view of FR. Namely, *Bias Faces in the Wild* (BFW).
 
-<img src=manuscript/figures/montage.png alt="montage.png" width="400"/>
+<img src="docs/bfw-teaser-image.png" alt="teaser" width="600"/>
+
+
+Check out research paper, [https://github.com/visionjo/BFW-Face-Bias-Paper/blob/6900ea205381c4979e24e801cf670dfe314bf936/latest-version.pdf](https://github.com/visionjo/BFW-Face-Bias-Paper/blob/6900ea205381c4979e24e801cf670dfe314bf936/latest-version.pdf)
 
 See [data/README.md](data/README.md) for more on BFW.
 
 See [results/README.md](results/README.md) for more on results and experiments.
-
 
 Register and download via this [form](https://northeastern-my.sharepoint.com/:u:/g/personal/robinson_jo_northeastern_edu/EUBGBL941IxAvLn7EyDf-z4B4GWKv0wiTD6aju14R5Kfnw?e=T2hj56).
 
