@@ -148,6 +148,12 @@ and produces it's output.
 To execute the whole notebook, run all cells in order.
 
 ## To Do
+[x] Begin Template
+[x] Create demo notebooks
+[ ] Documentation (sphinx)
+[ ] Update README (this)
+[ ] Complete test harness
+[ ] Modulate (refactor) code
 
 ## License
 
