@@ -83,10 +83,10 @@ def img2gray(image):
 
 def resize_and_flatten(image, height=30, width=30):
     """ resize image and flatten (vectorize) """
-    row_res = cv2.resize(image, (height, width),
-                         interpolation=cv2.INTER_AREA).flatten()
-    col_res = cv2.resize(image, (height, width),
-                         interpolation=cv2.INTER_AREA).flatten("F")
+    row_res = cv2.resize(image, (height, width), interpolation=cv2.INTER_AREA).flatten()
+    col_res = cv2.resize(image, (height, width), interpolation=cv2.INTER_AREA).flatten(
+        "F"
+    )
     return row_res, col_res
 
 
@@ -307,24 +307,23 @@ def get_similarity_transform_for_cv2(src_pts, dst_pts, reflective=True):
     :return: cv2_trans: 2x3 np.array, transform matrix from src_pts to dst_pts,
     could be directly used for cv2.warpAffine()
     """
-    trans, _ = get_similarity_transform(src_pts, dst_pts,
-                                        reflective)
+    trans, _ = get_similarity_transform(src_pts, dst_pts, reflective)
     cv2_trans = cvt_tform_mat_for_cv2(trans)
 
     return cv2_trans
 
 
 def align_faces_affine(
-        src_img,
-        src_pts,
-        crop_size=(108, 124),
-        ref_pts=(
-                [30.2946, 51.6963],
-                [65.5318, 51.5014],
-                [48.0252, 71.7366],
-                [33.5493, 92.3655],
-                [62.7299, 92.2041],
-        ),
+    src_img,
+    src_pts,
+    crop_size=(108, 124),
+    ref_pts=(
+        [30.2946, 51.6963],
+        [65.5318, 51.5014],
+        [48.0252, 71.7366],
+        [33.5493, 92.3655],
+        [62.7299, 92.2041],
+    ),
 ):
     """
     Aligns via affine transformation.
