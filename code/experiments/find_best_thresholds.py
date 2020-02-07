@@ -5,7 +5,6 @@ from facebias.utils import add_package_path
 add_package_path()
 
 dir_data = "../../data/bfw-data/"
-dir_features = f"{dir_data}features/senet50/"
 f_datatable = f"{dir_data}bfw-v0.1.5-datatable.pkl"
 
 data = pd.read_pickle(f_datatable)
