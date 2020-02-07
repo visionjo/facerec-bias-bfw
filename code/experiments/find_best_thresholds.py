@@ -13,9 +13,11 @@ data["score"] = data["senet50"]
 
 thresholds = np.linspace(0.2, 0.9, 5000)
 
-subgroup_labels, gender_labels, ethnicity_labels = \
-    data.a1.unique().astype(str), data.g1.unique().astype(str), \
-    data.e1.unique().astype(str)
+subgroup_labels, gender_labels, ethnicity_labels = (
+    data.a1.unique().astype(str),
+    data.g1.unique().astype(str),
+    data.e1.unique().astype(str),
+)
 subgroup_labels.sort()
 gender_labels.sort()
 ethnicity_labels.sort()
@@ -55,8 +57,8 @@ meta = np.array(
     [
         (k, th, s, sc)
         for th, (k, s), sc in zip(
-        best_thresholds.values(), best_scores.items(), baseline_scores.values()
-    )
+            best_thresholds.values(), best_scores.items(), baseline_scores.values()
+        )
     ]
 ).reshape(-1, 4)
 print(meta)

@@ -30,8 +30,9 @@ folds = data.fold.unique()
 
 for fold in folds:
     ids = data.fold != fold
-    threshold, score = find_best_threshold(thresholds_arr, data.loc[
-        ids, ['label', 'score']])
+    threshold, score = find_best_threshold(
+        thresholds_arr, data.loc[ids, ["label", "score"]]
+    )
     print(threshold, score)
     data.loc[ids, "yp0"] = (data["score"] >= threshold).astype(int)
     global_threshold.append(threshold)
@@ -44,16 +45,15 @@ for meta in df:
 
 threholds = pd.read_pickle(f_threshold)
 threholds.optimal_threshold = threholds.loc[
-    threholds.optimal_threshold is None, "optimal_threshold"] = np.mean(
-    global_threshold)
+    threholds.optimal_threshold is None, "optimal_threshold"
+] = np.mean(global_threshold)
 
 # threshold scores and store decision as int (1 or 0)
 
 data["yp3"] = (data["score"] > threholds["optimal_threshold"]).astype(int)
 
 
-def evaluate_tar_at_far_values(scores,
-                               fars=np.array([0.3, 0.1, 0.01, 0.001, 0.0001])):
+def evaluate_tar_at_far_values(scores, fars=np.array([0.3, 0.1, 0.01, 0.001, 0.0001])):
     for th in fars:
         yp0_fp = sum((scores > th).astype(int))
         # bob.measure.eer()
@@ -70,9 +70,8 @@ means = []
 means1 = []
 attributes = np.unique(data.a1)
 tar_table = pd.DataFrame(
-    np.zeros((len(attributes), len(attributes))),
-    columns=attributes,
-    index=attributes)
+    np.zeros((len(attributes), len(attributes))), columns=attributes, index=attributes
+)
 
 
 def find_nearest(array, value):
@@ -87,11 +86,11 @@ for th in target_far_values:
         for i, attribute in enumerate(attributes):
             df_attribute = df_fold.loc[df_fold.a1 == attribute]
             y_true = df_attribute.label.values.astype(int)
-            yp0 = (df_attribute['score'] > global_threshold[0]).astype(int)
+            yp0 = (df_attribute["score"] > global_threshold[0]).astype(int)
 
-            far, tar, thresh = calculate_tar_and_far_values(y_true,
-                                                            scores=df_attribute[
-                                                                'score'])
+            far, tar, thresh = calculate_tar_and_far_values(
+                y_true, scores=df_attribute["score"]
+            )
 
             ids = np.nanargmin(np.absolute(far - th))
             # negatives = pairs.loc[pairs.label == 0, "score"].values
@@ -105,12 +104,11 @@ for th in target_far_values:
 
             confusion = confusion_matrix(y_true, yp0)
 
-            fpr, tpr, threshold_arr = roc_curve(y_true, df_attribute['score'])
+            fpr, tpr, threshold_arr = roc_curve(y_true, df_attribute["score"])
 
             far_values = fpr / n_negative
 
-            ids_far = np.argmin(
-                np.abs(far_values - find_nearest(far_values, th)))
+            ids_far = np.argmin(np.abs(far_values - find_nearest(far_values, th)))
 
             tn, fp, fn, tp = np.hstack(confusion)
             far = fp / n_negative
@@ -120,12 +118,11 @@ for th in target_far_values:
 
             # for th in target_far_values:
             yp0_fp = sum(
-                (df_attribute.loc[df_attribute.yp0 == 0, "score"] > th).astype(
-                    int))
+                (df_attribute.loc[df_attribute.yp0 == 0, "score"] > th).astype(int)
+            )
         # yp3_fp = sum((pairs.loc[pairs.yp3 == 0, "score"] > th).astype(int))
         # bob.measure.eer()
-        acc0 = 1.0 - 1. * yp0_fp / \
-               df_attribute.loc[df_attribute.yp0 == 0].shape[0]
+        acc0 = 1.0 - 1.0 * yp0_fp / df_attribute.loc[df_attribute.yp0 == 0].shape[0]
         # acc4 = 1.0 - float(yp3_fp / len(pairs.loc[pairs.yp3 == 0]))
 
         tars.append(acc0)

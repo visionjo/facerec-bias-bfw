@@ -2,15 +2,13 @@
 Functions to process the bfw data
 """
 
-import sys
-import pandas as pd
-import numpy as np
 from pathlib import Path
+
+import numpy as np
+import pandas as pd
+from facebias.iotools import load_features_from_image_list
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import LabelEncoder
-
-
-from facebias.iotools import load_features_from_image_list
 
 
 def _label_encoder(labels):
@@ -100,7 +98,9 @@ def get_attribute_gender_ethnicity(data, path_col, col_suffix=""):
     label_col = f"a{col_suffix}"
 
     data[attribute_col] = data[path_col].apply(lambda x: x.split("/")[0])
-    data[ethnicity_col] = data[attribute_col].apply(lambda x: x.split("_")[0][0].upper())
+    data[ethnicity_col] = data[attribute_col].apply(
+        lambda x: x.split("_")[0][0].upper()
+    )
     data[gender_col] = data[attribute_col].apply(lambda x: x.split("_")[1][0].upper())
     data[label_col] = data[ethnicity_col] + data[gender_col]
 
@@ -125,13 +125,20 @@ def assign_person_unique_id(data):
     """
     label_encoder = LabelEncoder()
 
-    subject_names = list(set(
-        ["/".join(p1.split('/')[:-1]) for p1 in data["p1"].unique()] +
-        ["/".join(p2.split('/')[:-1]) for p2 in data["p2"].unique()]))
+    subject_names = list(
+        set(
+            ["/".join(p1.split("/")[:-1]) for p1 in data["p1"].unique()]
+            + ["/".join(p2.split("/")[:-1]) for p2 in data["p2"].unique()]
+        )
+    )
     label_encoder.fit(subject_names)
 
-    data["ids1"] = label_encoder.transform(data["p1"].apply(lambda x: "/".join(x.split("/")[:-1])))
-    data["ids2"] = label_encoder.transform(data["p2"].apply(lambda x: "/".join(x.split("/")[:-1])))
+    data["ids1"] = label_encoder.transform(
+        data["p1"].apply(lambda x: "/".join(x.split("/")[:-1]))
+    )
+    data["ids2"] = label_encoder.transform(
+        data["p2"].apply(lambda x: "/".join(x.split("/")[:-1]))
+    )
 
     return data
 
@@ -156,9 +163,13 @@ def compute_score_into_table(data, embedding_dir_path):
     # create ali_images list of all faces (i.e., unique set)
     image_list = list(np.unique(data["p1"].to_list() + data["p2"].to_list()))
     # read features as a dictionary, with keys set as the filepath of the image with values set as the face encodings
-    features = load_features_from_image_list(image_list, embedding_dir_path, ext_feat="npy")
+    features = load_features_from_image_list(
+        image_list, embedding_dir_path, ext_feat="npy"
+    )
     # score all feature pairs by calculating cosine similarity of the features
-    data["score"] = data.apply(lambda x: cosine_similarity(features[x["p1"]], features[x["p2"]])[0][0], axis=1)
+    data["score"] = data.apply(
+        lambda x: cosine_similarity(features[x["p1"]], features[x["p2"]])[0][0], axis=1
+    )
     return data
 
 
