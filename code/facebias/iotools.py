@@ -115,7 +115,7 @@ def load_bfw_datatable(f_name, cols=None, default_score_col=None):
         List (or tuple) of columns headers to return; Note [] accessor is used,
         so typically column keys are of type str. If element in cols does not
         exist, then it is simply ignored
-    default_score_col:
+    default_score_col:  name of column to set score as (made for cases that assume analysis on 'scores' column)
     
     Returns
     -------
@@ -128,11 +128,18 @@ def load_bfw_datatable(f_name, cols=None, default_score_col=None):
 
     """
     assert Path(f_name).exists(), f"error: file of datatable does not exist {f_name}"
+    set_score = False
     data = pd.read_pickle(f_name)
+
     if default_score_col and default_score_col in data:
-        cols += [default_score_col]
+        if cols:
+            cols += [default_score_col]
+        set_score = True
     if cols:
         data = prune_dataframe(data, cols)
+    if set_score:
+        # set default score to column
+        data['score'] = data[default_score_col]
     return data
 
 
