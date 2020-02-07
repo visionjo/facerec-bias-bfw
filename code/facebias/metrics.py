@@ -1,7 +1,13 @@
 import numpy as np
 from numpy import greater_equal
-from sklearn.metrics import accuracy_score, confusion_matrix, f1_score, \
-    precision_score, recall_score, roc_curve
+from sklearn.metrics import (
+    accuracy_score,
+    confusion_matrix,
+    f1_score,
+    precision_score,
+    recall_score,
+    roc_curve,
+)
 
 
 # @author Joseph P. Robinson
@@ -72,8 +78,7 @@ class Metrics:
             "FP:\t{}\n"
             "FN:\t{}\n"
             "NCLASSES:\t{}\n"
-            "NSAMPLES:\t{}".format(tp, tn, fp, fn, self.n_classes,
-                                   self.n_samples)
+            "NSAMPLES:\t{}".format(tp, tn, fp, fn, self.n_classes, self.n_samples)
         )
 
     def _check_state(self, check_stats=False):
@@ -97,13 +102,16 @@ class Metrics:
         :param cluster_ids:     Cluster assignment [ Nx1 ].
         :return: Confusion stats {TP, FP, TN, FN} (dictionary)
         """
-        tn, fp, fn, tp = confusion_matrix(self.true_labels,
-                                          self.predicted_labels).ravel()
+        tn, fp, fn, tp = confusion_matrix(
+            self.true_labels, self.predicted_labels
+        ).ravel()
 
-        self.confusion_stats["tn"], self.confusion_stats["fp"], \
-        self.confusion_stats[
-            "fn"
-        ], self.confusion_stats["tp"] = (tn, fp, fn, tp)
+        (
+            self.confusion_stats["tn"],
+            self.confusion_stats["fp"],
+            self.confusion_stats["fn"],
+            self.confusion_stats["tp"],
+        ) = (tn, fp, fn, tp)
 
         self.confusion_stats["n_neg"] = tn + fn
         self.confusion_stats["n_pos"] = tp + fp
@@ -117,8 +125,7 @@ class Metrics:
         """
         if not self._check_state():
             return None
-        return precision_score(self.true_labels,
-                               self.predicted_labels)
+        return precision_score(self.true_labels, self.predicted_labels)
 
     def recall(self):
         """

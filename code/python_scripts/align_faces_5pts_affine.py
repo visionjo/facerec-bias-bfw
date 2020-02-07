@@ -52,11 +52,11 @@ def align_faces(dir_in, dir_out, facial_points):
         image = cv2.imread(f_image_in)
         coords = points[0]["keypoints"]
         pts = (
-                [coords["left_eye"]]
-                + [coords["right_eye"]]
-                + [coords["nose"]]
-                + [coords["mouth_left"]]
-                + [coords["mouth_right"]]
+            [coords["left_eye"]]
+            + [coords["right_eye"]]
+            + [coords["nose"]]
+            + [coords["mouth_left"]]
+            + [coords["mouth_right"]]
         )
         image = align_faces_affine(image, pts)
 
