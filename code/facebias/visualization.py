@@ -4,23 +4,23 @@ Functions for generating plots and visuals.
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import ScalarFormatter
-from sklearn.metrics import roc_curve, auc
+from sklearn.metrics import auc, roc_curve
 
 
 def draw_det_curve(
-        fpr,
-        fnr,
-        ax=None,
-        label=None,
-        set_axis_log_x=True,
-        set_axis_log_y=False,
-        scale=100,
-        title=None,
-        label_x="FPR",
-        label_y="FNR (%)",
-        ticks_to_use_x=(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e-0),
-        ticks_to_use_y=(0.01, 0.03, 0.05, 0.10, 0.20, 0.30, 0.40),
-        fontsize=24,
+    fpr,
+    fnr,
+    ax=None,
+    label=None,
+    set_axis_log_x=True,
+    set_axis_log_y=False,
+    scale=100,
+    title=None,
+    label_x="FPR",
+    label_y="FNR (%)",
+    ticks_to_use_x=(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e-0),
+    ticks_to_use_y=(0.01, 0.03, 0.05, 0.10, 0.20, 0.30, 0.40),
+    fontsize=24,
 ):
     """
     Generate DET Curve (i.e., FNR vs FPR). It is assumed FPR and FNR is
@@ -73,15 +73,15 @@ def draw_det_curve(
 
 
 def generate_roc(
-        scores,
-        labels,
-        fpath="",
-        calculate_auc=True,
-        add_diag_line=False,
-        color="darkorange",
-        lw=2,
-        label="ROC curve",
-        title="Receiver operating characteristic",
+    scores,
+    labels,
+    fpath="",
+    calculate_auc=True,
+    add_diag_line=False,
+    color="darkorange",
+    lw=2,
+    label="ROC curve",
+    title="Receiver operating characteristic",
 ):
     """
 

@@ -1,7 +1,6 @@
 # Face Recognition: Too Bias, or Not Too Bias?
 
 
-
 <div>
 <blockquote>
          Joseph P. Robinson, Yann Henon, Gennady Livitz, Can Qin, Yun Fu, and Samson Timoner.
@@ -40,14 +39,18 @@ subgroup-specific thresholds are optimal in terms of overall performance and bal
 
 Furthermore, we built and released the facial image dataset needed to address bias from this view of FR. Namely, *Bias Faces in the Wild* (BFW).
 
-<img src=manuscript/figures/montage.png alt="montage.png" width="400"/>
+<img src="docs/bfw-teaser-image.png" alt="teaser" width="600"/>
+
+
+Check out research paper, [https://github.com/visionjo/BFW-Face-Bias-Paper/blob/6900ea205381c4979e24e801cf670dfe314bf936/latest-version.pdf](https://github.com/visionjo/BFW-Face-Bias-Paper/blob/6900ea205381c4979e24e801cf670dfe314bf936/latest-version.pdf)
 
 See [data/README.md](data/README.md) for more on BFW.
 
-See [results/README.md](results/README.md) for more on results and experiments.
+See [code/README.md](code/README.md) for more on 'facebias' package and experiments contained within.
 
+See [results/README.md](results/README.md) for summary of figures and results.
 
-Register and download via this [form](https://northeastern-my.sharepoint.com/:u:/g/personal/robinson_jo_northeastern_edu/EUBGBL941IxAvLn7EyDf-z4B4GWKv0wiTD6aju14R5Kfnw?e=T2hj56).
+Register and download via this [form](https://forms.office.com/Pages/ResponsePage.aspx?id=gcLuqKOqrk2sm5o5i5IV57dX0R2T-YhEje_JmPbemGlUOTVZTkhPVElCSkRFMlZaOEVDSkJYWjk5Uy4u).
 
 ## Abstract
 
@@ -78,7 +81,7 @@ You can download a copy of all the files in this repository by cloning the
 
     git clone https://github.com/visionjo/facerec-bias-bfw.git
 
-or [download a zip archive](https://github.com/pinga-lab/PAPER-REPO/archive/master.zip).
+or [download a zip archive](https://github.com/visionjo/facerec-bias-bfw/archive/master.zip).
 
 A copy of the repository is also archived at *insert DOI here*
 
@@ -147,12 +150,20 @@ and produces it's output.
 To execute the whole notebook, run all cells in order.
 
 ## To Do
+- [x] Begin Template
+- [x] Create demo notebooks
+- [x] Add manuscript
+- [ ] Documentation (sphinx)
+- [ ] Update README (this)
+- [ ] Complete test harness
+- [ ] Modulate (refactor) code
+- [ ] Add scripts and CLI
 
 ## License
 
 All source code is made available under a BSD 3-clause license. You can freely
 use and modify the code, without warranty, so long as you provide attribution
-to the authors. See `LICENSE.md` for the full license text.
+to the authors. See `LICENSE.md` ([LICENSE](LICENSE.md)) for the full license text.
 
 The manuscript text is not open source. The authors reserve the rights to the
 article content, which is currently submitted for publication in the
