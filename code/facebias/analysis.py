@@ -359,7 +359,7 @@ def plot_confusion_matrix(data, save_figure_path=None):
         plt.savefig(save_figure_path)
 
 
-def confusion_matrix(im_paths, embedding_dir_path, save_figure_path=None):
+def confusion_matrix(im_paths, dir_embeddings, save_figure_path=None):
     """
     Plot rank-1 nearest neighbor confusion matrix. Rows and columns are
     different ethnicity-gender. The value in row x and column y is the error
@@ -371,14 +371,14 @@ def confusion_matrix(im_paths, embedding_dir_path, save_figure_path=None):
     im_paths:       path to the csv file that contains list of images of
                     interest. The csv must contain column 'path' that contains
                     relative paths to images
-    embedding_dir_path:     path to root directory that contains the embeddings.
+    dir_embeddings:     path to root directory that contains the embeddings.
     save_figure_path:       path to save the resulting confusion matrix plot.
                             will not save is the value is None
     """
     data = pd.read_csv(im_paths)
     image_list = data["path"].to_list()
     feature = load_features_from_image_list(
-        image_list, embedding_dir_path, ext_feat="npy"
+        image_list, dir_embeddings, ext_feat="npy"
     )
     data = get_attribute_gender_ethnicity(data, "path")
     data["id"] = (
@@ -411,12 +411,12 @@ def confusion_matrix(im_paths, embedding_dir_path, save_figure_path=None):
 
 
 def create_bias_analysis_plots(
-        image_pair_path,
-        image_list_path,
-        embedding_dir_path,
-        processed_data=None,
-        save_processed_data=None,
-        save_figure_dir="results",
+        im_pair_paths,
+        im_paths,
+        dir_embeddings,
+        data=None,
+        save_data=None,
+        dir_output="results",
 ):
     """
     Using image pairs from 'image_pair_path', plot the following three plots.
@@ -441,22 +441,22 @@ def create_bias_analysis_plots(
 
     Parameters
     ----------
-    image_pair_path:        path to csv file with all image pairs .
-    image_list_path:        path to csv file with list of images .
-    embedding_dir_path:     path to csv file with the embeddings. in the root
+    im_pair_paths:        path to csv file with all image pairs .
+    im_paths:        path to csv file with list of images .
+    dir_embeddings:     path to csv file with the embeddings. in the root
                             directories must exist subdirectories with name
                             {ethnicity}_{gender}s, each of which contain person
                             id subdirectories.
-    processed_data:         path to the saved processed dataframe that contain
+    data:         path to the saved processed dataframe that contain
                             attributes, person unique id, and scores
-    save_processed_data:    path to save intermediate processed data (with
+    save_data:    path to save intermediate processed data (with
                             attributes, person unique id, and scores). will not
                             save if the value is None.
-    save_figure_dir:        path to save the resulting figures.
+    dir_output:        path to save the resulting figures.
     """
-    if processed_data is not None:
+    if data is not None:
         print("load processed data")
-        with open(processed_data, "rb") as f:
+        with open(data, "rb") as f:
             data_pair_df = pk.load(f)
     else:
         print(
@@ -464,23 +464,23 @@ def create_bias_analysis_plots(
             "and calculating cosine similarity score)"
         )
         data_pair_df = load_image_pair_with_attribute_and_score(
-            image_pair_path, embedding_dir_path
+            im_pair_paths, dir_embeddings
         )
-        if save_processed_data is not None:
-            Path(os.path.dirname(save_processed_data)).mkdir(
+        if save_data is not None:
+            Path(os.path.dirname(save_data)).mkdir(
                 parents=True, exist_ok=True
             )
-            with open(save_processed_data, "wb") as f:
+            with open(save_data, "wb") as f:
                 pk.dump(data_pair_df, f)
 
     # before saving figure, create nested directories if necessary
-    Path(save_figure_dir).mkdir(parents=True, exist_ok=True)
+    Path(dir_output).mkdir(parents=True, exist_ok=True)
 
-    violin_path = join(save_figure_dir, "score_dist_violin.png")
+    violin_path = join(dir_output, "score_dist_violin.png")
     print(f"producing violin plot. result will be saved to {violin_path}")
     violin_plot(data_pair_df, save_figure_path=violin_path)
 
-    over_dist_path = join(save_figure_dir, "overlapped_score_dist.png")
+    over_dist_path = join(dir_output, "overlapped_score_dist.png")
     print(
         f"producing overlapped score distribution plot. result will be saved to"
         f" {over_dist_path}"
@@ -489,7 +489,7 @@ def create_bias_analysis_plots(
         data_pair_df, log_scale=False, save_figure_path=over_dist_path
     )
 
-    log_over_dist_path = join(save_figure_dir,
+    log_over_dist_path = join(dir_output,
                               "overlapped_log_scale_score_dist.png")
     print(
         f"producing overlapped score distribution plot on log scale. "
@@ -499,7 +499,7 @@ def create_bias_analysis_plots(
         data_pair_df, log_scale=True, save_figure_path=log_over_dist_path
     )
 
-    det_subgroup_path = join(save_figure_dir, "det_subgroup.png")
+    det_subgroup_path = join(dir_output, "det_subgroup.png")
     print(
         f"producing DET curve separated by ethnicity-gender. result will be "
         f"saved to {det_subgroup_path}"
@@ -511,7 +511,7 @@ def create_bias_analysis_plots(
         save_figure_path=det_subgroup_path,
     )
 
-    det_gender_path = join(save_figure_dir, "det_gender.png")
+    det_gender_path = join(dir_output, "det_gender.png")
     print(
         f"producing DET curve separated by gender. result will be saved to "
         f"{det_gender_path}"
@@ -521,7 +521,7 @@ def create_bias_analysis_plots(
         save_figure_path=det_gender_path
     )
 
-    det_ethnicity_path = join(save_figure_dir, "det_ethnicity.png")
+    det_ethnicity_path = join(dir_output, "det_ethnicity.png")
     print(
         f"producing DET curve separated by ethnicity. result will be saved to "
         f"{det_ethnicity_path}"
@@ -533,13 +533,13 @@ def create_bias_analysis_plots(
         save_figure_path=det_ethnicity_path,
     )
 
-    confusion_matrix_path = join(save_figure_dir, "confusion_matrix.png")
+    confusion_matrix_path = join(dir_output, "confusion_matrix.png")
     print(
         f"producing confusion matrix plot. result will be saved to "
         f"{confusion_matrix_path}"
     )
     confusion_matrix(
-        image_list_path, embedding_dir_path,
+        im_paths, dir_embeddings,
         save_figure_path=confusion_matrix_path
     )
 
@@ -635,14 +635,14 @@ if __name__ == "__main__":
         type=str,
         action="store",
         required=True,
-        help="path to the root directory to save figures and intermediate result",
+        help="path to root directory to save figures and intermediate result",
     )
     parser.add_argument(
         "-d",
         "--processed_data",
         type=str,
         action="store",
-        help="path to the saved processed dataframe that contain attributes and scores",
+        help="path to the dataframe containing attributes and scores",
     )
     parser.add_argument(
         "-c",
