@@ -20,5 +20,6 @@ dependencies:
   - pytest-cov=2.5.1
   - pylint=1.8.2
   - flake8=3.5.0
+  - jupyter_contrib_nbextensions=0.5.1
   - pip:
       - proselint==0.8.0
