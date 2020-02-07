@@ -5,6 +5,23 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.ticker import ScalarFormatter
 from sklearn.metrics import auc, roc_curve
+import seaborn as sns
+
+def set_defaults(
+    font={
+        "font.family": "serif",
+        "font.serif": "Times New Roman",
+        "font.color": "darkred",
+        "font.weight": "normal",
+        "font.size": 16,
+    },
+    rc={"axes.facecolor": (0, 0, 0, 0)},
+    style="white",
+    gridstyle="whitegrid",
+):
+
+    sns.set(style=style, rc=rc)
+    sns.set_style(gridstyle, font)
 
 
 def draw_det_curve(
