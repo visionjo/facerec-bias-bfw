@@ -4,25 +4,22 @@ Calculate TAR for specific FAR values. Spit out table organized by subgroup.
 import numpy as np
 import pandas as pd
 from facebias.metrics import calculate_tar_and_far_values
-from facebias.utils import add_package_path, find_best_threshold
+from facebias.utils import find_best_threshold
 from sklearn.metrics import confusion_matrix, roc_curve
-
-# import sys
-# sys.path.append('../../')
-# from utils.io import sys_home
-
-add_package_path()
 
 from facebias.iotools import load_bfw_datatable
 
-dir_data = "../../data/"
-dir_features = f"{dir_data}features/senet50/"
-f_datatable = f"{dir_data}bfw-datatable.pkl"
-f_threshold = f"{dir_data}/interm/thresholds.pkl"
+bfw_version = "0.1.5"
+dir_data = "../../data/bfw/"
 
-thresholds_arr = np.linspace(0.4, 0.7, 500)
+dir_features = f"{dir_data}features/sphereface/"
+dir_meta = f"{dir_data}meta/"
+f_datatable = f"{dir_meta}bfw-v{bfw_version}-datatable.pkl"
+f_threshold = f"{dir_meta}thresholds.pkl"
+
+thresholds_arr = np.linspace(0.18, 0.4, 500)
 global_threshold = []
-data = load_bfw_datatable(f_datatable, default_score_col="senet50")
+data = load_bfw_datatable(f_datatable, default_score_col="sphereface")
 
 data["yp0"] = 0
 
@@ -51,6 +48,7 @@ threholds.optimal_threshold = threholds.loc[
 # threshold scores and store decision as int (1 or 0)
 
 data["yp3"] = (data["score"] > threholds["optimal_threshold"]).astype(int)
+data["yp3"] = data["yp1"]
 
 
 def evaluate_tar_at_far_values(scores, fars=np.array([0.3, 0.1, 0.01, 0.001, 0.0001])):
@@ -65,7 +63,7 @@ def evaluate_tar_at_far_values(scores, fars=np.array([0.3, 0.1, 0.01, 0.001, 0.0
     return tars, fars
 
 
-target_far_values = np.array([0.3, 0.1, 0.01, 0.001, 0.0001])
+target_far_values = np.array([0.3, 0.1, 0.01, 0.001, 0.0001, 0.00001])
 means = []
 means1 = []
 attributes = np.unique(data.a1)
@@ -81,12 +79,17 @@ def find_nearest(array, value):
 
 
 for th in target_far_values:
-    for fold in folds:
-        df_fold = data.loc[data.fold == fold]
-        for i, attribute in enumerate(attributes):
+
+    for i, attribute in enumerate(attributes):
+        tars = []
+        tars1 = []
+        for fold in folds:
+            df_fold = data.loc[data.fold == fold]
+
             df_attribute = df_fold.loc[df_fold.a1 == attribute]
             y_true = df_attribute.label.values.astype(int)
-            yp0 = (df_attribute["score"] > global_threshold[0]).astype(int)
+            yp0 = df_attribute["y0"].astype(int)
+            # yp0 = (df_attribute["score"] > global_threshold[0]).astype(int)
 
             far, tar, thresh = calculate_tar_and_far_values(
                 y_true, scores=df_attribute["score"]
@@ -97,8 +100,6 @@ for th in target_far_values:
             # positives = pairs.loc[pairs.label == 1, "score"].values
             # positives.sort()
             # negatives.sort()
-            tars = []
-            tars1 = []
             n_positive = sum(df_attribute.label == 1)
             n_negative = sum(df_attribute.label == 0)
 
@@ -120,13 +121,14 @@ for th in target_far_values:
             yp0_fp = sum(
                 (df_attribute.loc[df_attribute.yp0 == 0, "score"] > th).astype(int)
             )
-        # yp3_fp = sum((pairs.loc[pairs.yp3 == 0, "score"] > th).astype(int))
-        # bob.measure.eer()
-        acc0 = 1.0 - 1.0 * yp0_fp / df_attribute.loc[df_attribute.yp0 == 0].shape[0]
-        # acc4 = 1.0 - float(yp3_fp / len(pairs.loc[pairs.yp3 == 0]))
+            yp3_fp = sum((df_attribute.loc[df_attribute.yp3 == 0, "score"] > th).astype(int))
 
-        tars.append(acc0)
-        # tars1.append(acc4)
+            # bob.measure.eer()
+            acc0 = 1.0 - 1.0 * yp0_fp / df_attribute.loc[df_attribute.yp0 == 0].shape[0]
+            acc4 = 1.0 - float(yp3_fp / len(df_attribute.loc[df_attribute.yp3 == 0]))
+
+            tars.append(acc0)
+            tars1.append(acc4)
 
         # far = measure.farfrr(negatives, positives,
         #                      measure.far_threshold(negatives, positives,
@@ -150,3 +152,14 @@ for th in target_far_values:
 
         # m1 = np.array(means).mean(axis=0)
         # m2 = np.array(means1).mean(axis=0)
+table_header = [str(t).replace('.', '_') for t in target_far_values]
+df_tar_at_far = pd.DataFrame(data=np.zeros((len(attributes), len(target_far_values))),
+                             columns=table_header)
+df_tar_at_far.index = attributes
+df_tar_at_far1 = df_tar_at_far.copy()
+counter = 0
+for col in table_header:
+    for att in attributes:
+        df_tar_at_far.loc[att, col] = np.mean(means[counter])
+        df_tar_at_far1.loc[att, col] = np.mean(means1[counter])
+        counter += 1
