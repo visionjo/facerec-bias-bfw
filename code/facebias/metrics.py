@@ -77,8 +77,9 @@ class Metrics:
             "TN:\t{}\n"
             "FP:\t{}\n"
             "FN:\t{}\n"
-            "NCLASSES:\t{}\n"
-            "NSAMPLES:\t{}".format(tp, tn, fp, fn, self.n_classes, self.n_samples)
+            "N_CLASSES:\t{}\n"
+            "N_SAMPLES:\t{}".format(tp, tn, fp, fn, self.n_classes,
+                                    self.n_samples)
         )
 
     def _check_state(self, check_stats=False):
@@ -98,8 +99,6 @@ class Metrics:
     def _set_confusion_stats(self):
         """
         Calculate TP, FP, TN, and FN and store in dictionary container.
-        :param true_ids:    Ground-truth label [ Nx1 ].
-        :param cluster_ids:     Cluster assignment [ Nx1 ].
         :return: Confusion stats {TP, FP, TN, FN} (dictionary)
         """
         tn, fp, fn, tp = confusion_matrix(

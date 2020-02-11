@@ -145,7 +145,8 @@ def overlapped_score_distribution(data, log_scale=False, save_figure_path=None):
     color_legend = plt.legend(fontsize=fontsize)
     solid_line = Line2D([0], [0], color="black", linestyle="-")
     dash_line = Line2D([0], [0], color="black", linestyle="--")
-    plt.legend([solid_line, dash_line], ["intra", "inter"], fontsize=fontsize, loc=2)
+    plt.legend([solid_line, dash_line], ["intra", "inter"], fontsize=fontsize,
+               loc=2)
     plt.gca().add_artist(color_legend)
 
     # handle log scale
@@ -230,7 +231,8 @@ def overlapped_score_distribution(data, log_scale=False, save_figure_path=None):
     color_legend = plt.legend(fontsize=fontsize)
     solid_line = Line2D([0], [0], color="black", linestyle="-")
     dash_line = Line2D([0], [0], color="black", linestyle="--")
-    plt.legend([solid_line, dash_line], ["intra", "inter"], fontsize=fontsize, loc=2)
+    plt.legend([solid_line, dash_line], ["intra", "inter"], fontsize=fontsize,
+               loc=2)
     plt.gca().add_artist(color_legend)
 
     # handle log scale
@@ -375,10 +377,12 @@ def confusion_matrix(im_paths, dir_embeddings, save_figure_path=None):
     """
     data = pd.read_csv(im_paths)
     image_list = data["path"].to_list()
-    feature = load_features_from_image_list(image_list, dir_embeddings, ext_feat="npy")
+    feature = load_features_from_image_list(image_list, dir_embeddings,
+                                            ext_feat="npy")
     data = get_attribute_gender_ethnicity(data, "path")
     data["id"] = (
-        data["path"].apply(lambda x: "/".join(x.split("/")[:-1])).astype("category")
+        data["path"].apply(lambda x:
+                           "/".join(x.split("/")[:-1])).astype("category")
     )
     score_matrix = cosine_similarity(
         data["path"].apply(lambda x: feature[x][0]).to_list()
@@ -397,7 +401,8 @@ def confusion_matrix(im_paths, dir_embeddings, save_figure_path=None):
     confusion_npy[np.isnan(confusion_npy)] = 0
     confusion_npy = confusion_npy.reshape((8, -1))
     all_subgroup = data["a"].unique()
-    confusion_df = pd.DataFrame(confusion_npy, index=all_subgroup, columns=all_subgroup)
+    confusion_df = pd.DataFrame(confusion_npy, index=all_subgroup,
+                                columns=all_subgroup)
 
     n_samples_per_subgroup = data["a"].count() / len(all_subgroup)
     confusion_percent_error_df = (confusion_df / n_samples_per_subgroup) * 100
@@ -405,12 +410,12 @@ def confusion_matrix(im_paths, dir_embeddings, save_figure_path=None):
 
 
 def create_bias_analysis_plots(
-    im_pair_paths,
-    im_paths,
-    dir_embeddings,
-    data=None,
-    save_data=None,
-    dir_output="results",
+        im_pair_paths,
+        im_paths,
+        dir_embeddings,
+        data=None,
+        save_data=None,
+        dir_output="results",
 ):
     """
     Using image pairs from 'image_pair_path', plot the following three plots.
@@ -508,7 +513,8 @@ def create_bias_analysis_plots(
         f"{det_gender_path}"
     )
     det_plot(
-        data_pair_df, "g1", "DET Curve Per Gender", save_figure_path=det_gender_path
+        data_pair_df, "g1", "DET Curve Per Gender",
+        save_figure_path=det_gender_path
     )
 
     det_ethnicity_path = join(dir_output, "det_ethnicity.png")
@@ -528,17 +534,18 @@ def create_bias_analysis_plots(
         f"producing confusion matrix plot. result will be saved to "
         f"{confusion_matrix_path}"
     )
-    confusion_matrix(im_paths, dir_embeddings, save_figure_path=confusion_matrix_path)
+    confusion_matrix(
+        im_paths, dir_embeddings, save_figure_path=confusion_matrix_path)
 
 
-def clean_image_pair_and_image_list_csv(im_pair_paths, im_paths, dir_embeddings):
+def clean_image_pair_and_image_list_csv(pair_paths, im_paths, dir_embeddings):
     """
     Clean image pair csv and image list csv by deleting the rows that contain a
     path to an image whose embedding does not exist in embedding_dir_path
 
     parameters
     ----------
-    im_pair_paths:     path to csv file with image pairs
+    pair_paths:     path to csv file with image pairs
     im_paths:     path to csv file with list of images
     dir_embeddings:  path to csv file with the embeddings.
                     in the root directories must exist subdirectories with name
@@ -553,19 +560,19 @@ def clean_image_pair_and_image_list_csv(im_pair_paths, im_paths, dir_embeddings)
         os.path.join(dir_embeddings, replace_ext(rel_path))
     )
     # clean image pair csv
-    image_pair = pd.read_csv(im_pair_paths)
+    image_pair = pd.read_csv(pair_paths)
     old_nrow = image_pair.shape[0]
     image_pair = image_pair[
         image_pair["p1"].map(check_exist) & image_pair["p2"].map(check_exist)
-    ]
+        ]
     new_nrow = image_pair.shape[0]
     print(
         f"For image pair csv, {old_nrow - new_nrow} rows out of {old_nrow} rows"
         f" were deleted ({100 * (1 - new_nrow / old_nrow):.2f}% of all rows)"
     )
-    new_filename = "updated_" + os.path.basename(im_pair_paths)
-    im_pair_paths = os.path.join(os.path.dirname(im_pair_paths), new_filename)
-    image_pair.to_csv(im_pair_paths, index=False)
+    new_filename = "updated_" + os.path.basename(pair_paths)
+    pair_paths = os.path.join(os.path.dirname(pair_paths), new_filename)
+    image_pair.to_csv(pair_paths, index=False)
 
     # clean image list csv
     image_list = pd.read_csv(im_paths)
@@ -580,7 +587,7 @@ def clean_image_pair_and_image_list_csv(im_pair_paths, im_paths, dir_embeddings)
     im_paths = os.path.join(os.path.dirname(im_paths), new_filename)
     image_list.to_csv(im_paths, index=False)
 
-    return im_pair_paths, im_paths
+    return pair_paths, im_paths
 
 
 if __name__ == "__main__":

@@ -121,7 +121,9 @@ for th in target_far_values:
             yp0_fp = sum(
                 (df_attribute.loc[df_attribute.yp0 == 0, "score"] > th).astype(int)
             )
-            yp3_fp = sum((df_attribute.loc[df_attribute.yp3 == 0, "score"] > th).astype(int))
+            yp3_fp = sum(
+                (df_attribute.loc[df_attribute.yp3 == 0, "score"] > th).astype(int)
+            )
 
             # bob.measure.eer()
             acc0 = 1.0 - 1.0 * yp0_fp / df_attribute.loc[df_attribute.yp0 == 0].shape[0]
@@ -152,9 +154,10 @@ for th in target_far_values:
 
         # m1 = np.array(means).mean(axis=0)
         # m2 = np.array(means1).mean(axis=0)
-table_header = [str(t).replace('.', '_') for t in target_far_values]
-df_tar_at_far = pd.DataFrame(data=np.zeros((len(attributes), len(target_far_values))),
-                             columns=table_header)
+table_header = [str(t).replace(".", "_") for t in target_far_values]
+df_tar_at_far = pd.DataFrame(
+    data=np.zeros((len(attributes), len(target_far_values))), columns=table_header
+)
 df_tar_at_far.index = attributes
 df_tar_at_far1 = df_tar_at_far.copy()
 counter = 0

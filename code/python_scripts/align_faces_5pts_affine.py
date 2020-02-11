@@ -15,7 +15,7 @@ from pathlib import Path
 import cv2
 import pandas as pd
 import tqdm
-from facebias.imutils import align_faces_affine
+from facebias.image import align_faces_affine
 
 
 def align_faces(dir_in, dir_out, facial_points):
