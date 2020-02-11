@@ -36,18 +36,48 @@ def find_best_threshold(thresholds, predicts, function=eval_acc, find_max=True):
     op = np.greater_equal if find_max else np.less_equal
     predicts["label"] = predicts["label"].astype(int)
     best_threshold = best_score = 0
+    last_score = -1
+    counter = 0
     for threshold in thresholds:
 
         score = function(threshold, predicts)
+        if score < last_score:
+            counter += 1
+        else:
+            counter = 0
+        if counter > 5:
+            break
         if op(score, best_score):
             best_score = score
             best_threshold = threshold
+
+        last_score = score
     return best_threshold, best_score
+
+
+def get_acc_per_threshold(thresholds, predicts):
+    """
+    Calculate accuracies for a list of thresholds (see eval_acc())
+    :param thresholds: threshold values to calculate accuracy with respect to.
+    :param predicts:   predictions [p1, p2, score, label], where score and label
+                        (index 2 and 3) are used.
+    :return:    array of accuracies with same size and order as thresholds (ie
+                results for each element of thresholds).
+    """
+    accs = np.zeros(len(thresholds))
+    best_threshold = 0
+    best_acc = 0
+    for i, threshold in enumerate(thresholds):
+        accs[i] = eval_acc(threshold, predicts)
+        best_threshold = threshold if accs[i] > best_acc else best_threshold
+        best_acc = accs[i] if accs[i] > best_acc else best_acc
+
+    return accs, best_acc, best_threshold
 
 
 def replace_ext(path):
     """
-    Replace the extention (.jpg or .png) of path to .npy
+    Replace the extension (.jpg or .png) of path to .npy
 
     parameters
     ----------

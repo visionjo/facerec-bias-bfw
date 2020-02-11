@@ -3,9 +3,10 @@ Functions for generating plots and visuals.
 """
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
 from matplotlib.ticker import ScalarFormatter
 from sklearn.metrics import auc, roc_curve
-import seaborn as sns
+
 
 def set_defaults(
     font={
@@ -19,7 +20,6 @@ def set_defaults(
     style="white",
     gridstyle="whitegrid",
 ):
-
     sns.set(style=style, rc=rc)
     sns.set_style(gridstyle, font)
 
@@ -58,6 +58,7 @@ def draw_det_curve(
     title: <default=None>
     ticks_to_use_x: <default=ticks_to_use_x=(1e-4, 1e-3, 1e-2, 1e-1, 1e-0)>
     ticks_to_use_y: <default=(0.01, 0.03, 0.05, 0.10, 0.20, 0.30, 0.40)>
+    fontsize:  <default=24>
 
     Returns Axes of figure:   plt.Axes()
     -------
@@ -98,7 +99,7 @@ def generate_roc(
     color="darkorange",
     lw=2,
     label="ROC curve",
-    title="Receiver operating characteristic",
+    title=None,
 ):
     """
 
@@ -134,7 +135,8 @@ def generate_roc(
     plt.ylim([0.0, 1.05])
     # plt.xlabel("False Positive Rate")
     # plt.ylabel("True Positive Rate")
-    # plt.title(title)
+    if title is not None:
+        plt.title(title)
     plt.legend(loc="best")
     if fpath is not None:
         plt.savefig(fpath)
