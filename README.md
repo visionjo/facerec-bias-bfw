@@ -9,8 +9,7 @@
 </div>
 <div>
     <div>
-      <a href="papers/pami-appendix.pdf"> Appendix</a>  | 
-      <a href="https://northeastern-my.sharepoint.com/:u:/g/personal/robinson_jo_northeastern_edu/EY2_oZ3xCspJrGLms8nOy-cBjKJO_Azd7XemctvusWp1vw?e=TLBmhm">Download Data</a> 
+      <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAMDJhXxUMElHQ0tVSDFSNDZTMVBPSVpXMkxJTkY4Ny4u">Download Data</a> 
      </div>
     <div style="display: none;" id="robinsonfacebias2020">
       <pre class="bibtex">@article{robinson:facebias:2020,
@@ -50,7 +49,7 @@ See [code/README.md](code/README.md) for more on 'facebias' package and experime
 
 See [results/README.md](results/README.md) for summary of figures and results.
 
-Register and download via this [form](https://forms.office.com/Pages/ResponsePage.aspx?id=gcLuqKOqrk2sm5o5i5IV57dX0R2T-YhEje_JmPbemGlUOTVZTkhPVElCSkRFMlZaOEVDSkJYWjk5Uy4u).
+Register and download via this [form](https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAMDJhXxUMElHQ0tVSDFSNDZTMVBPSVpXMkxJTkY4Ny4u).
 
 ## Abstract
 
