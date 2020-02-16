@@ -41,7 +41,7 @@ Furthermore, we built and released the facial image dataset needed to address bi
 <img src="docs/bfw-teaser-image.png" alt="teaser" width="600"/>
 
 
-Check out research paper, [https://github.com/visionjo/BFW-Face-Bias-Paper/blob/6900ea205381c4979e24e801cf670dfe314bf936/latest-version.pdf](https://github.com/visionjo/BFW-Face-Bias-Paper/blob/6900ea205381c4979e24e801cf670dfe314bf936/latest-version.pdf)
+Check out research paper, [https://github.com/visionjo/BFW-Face-Bias-Paper/blob/6900ea205381c4979e24e801cf670dfe314bf936/latest-version.pdf](https://github.com/visionjo/BFW-Face-Bias-Paper/blob/0248f5b8fff52d5ae84e29ba4affef0de02e79c0/latest-version.pdf)
 
 See [data/README.md](data/README.md) for more on BFW.
 
