@@ -4,7 +4,7 @@
 <div>
 <blockquote>
          Joseph P. Robinson, Yann Henon, Gennady Livitz, Can Qin, Yun Fu, and Samson Timoner.
-         <a href="papers/tpami-final.pdf"> Face Recognition: Too Bias, or Not Too Bias?</a> CoRR, abs/2002.06483, 2020.
+         <a href="https://arxiv.org/pdf/2002.06483.pdf"> Face Recognition: Too Bias, or Not Too Bias?</a> CoRR, abs/2002.06483, 2020.
 </blockquote>
 </div>
 <div>
