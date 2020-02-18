@@ -19,4 +19,4 @@ This folder contains the raw data files used in the paper:
 Download link: ADD URL
 
 ### References
-[1] Joseph P. Robinson, Yann Henon, Gennady Livitz,Can Qin, Yun Fu, and Samson Timoner. "Face Recognition: Too Bias, or Not Too Bias?" under peer review in _15th IEEE International Conference on Automatic Face and Gesture Recognition on Automatic Facial and Gesture Recognition_, 2020.
+[1] Joseph P. Robinson, Yann Henon, Gennady Livitz, Can Qin, Yun Fu, and Samson Timoner. Face Recognition: Too Bias, or Not Too Bias? CoRR, abs/2002.06483, 2020.
