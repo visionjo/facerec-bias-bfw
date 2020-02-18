@@ -19,4 +19,4 @@ This folder contains the raw data files used in the paper:
 Download link: ADD URL
 
 ### References
-[1] Joseph P. Robinson, Yann Henon, Gennady Livitz, Can Qin, Yun Fu, and Samson Timoner. Face Recognition: Too Bias, or Not Too Bias? _CoRR, abs/2002.06483_, 2020.
+[1] Joseph P. Robinson, Yann Henon, Gennady Livitz, Can Qin, Yun Fu, and Samson Timoner. "Face Recognition: Too Bias, or Not Too Bias?" _CoRR, abs/2002.06483_, 2020.
