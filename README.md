@@ -4,7 +4,7 @@
 <div>
 <blockquote>
          Joseph P. Robinson, Yann Henon, Gennady Livitz, Can Qin, Yun Fu, and Samson Timoner.
-         <a href="papers/tpami-final.pdf"> Face Recognition: Too Bias, or Not Too Bias?</a> CoRR, abs/????.?????, 2020.
+         <a href="https://arxiv.org/pdf/2002.06483.pdf"> Face Recognition: Too Bias, or Not Too Bias?</a> CoRR, abs/2002.06483, 2020.
 </blockquote>
 </div>
 <div>
@@ -13,17 +13,14 @@
      </div>
     <div style="display: none;" id="robinsonfacebias2020">
       <pre class="bibtex">@article{robinson:facebias:2020,
-      author        = "Joseph Robinson and Yann Henon and Gennady Livitz and Can Qin and Yun Fu and Samson Timoner",
+      author        = "Joseph P. Robinson and Yann Henon and Gennady Livitz and Can Qin and Yun Fu and Samson Timoner",
       title         = "Face Recognition: Too Bias, or Not Too Bias?",
       journal       = "CoRR",
       year          = "2020",
-      volume        = "abs/????.?????",
-      url           = "http://arxiv.org/abs/????.?????",
+      volume        = "abs/2002.06483",
+      url           = "http://arxiv.org/abs/2002.06483",
       archiveprefix = "arXiv",
-      eprint        = "????.?????",
-      timestamp     = "Wed, 29 May 2019 11:27:50 +0200",
-      biburl        = "https://dblp.org/rec/bib/journals/corr/abs-????-?????",
-      bibsource     = "dblp computer science bibliography, https://dblp.org"
+      eprint        = "2002.06483",
       }
     </pre>
   </div>
