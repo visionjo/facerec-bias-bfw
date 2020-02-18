@@ -17,7 +17,7 @@ generating the final figures:
 
 Analyze, both quantitatively and qualitatively, the bias present in face verification. Specifically, focusing on different subgroups making up the Balanced Faces in the Wild (BFW) dataset, such as split by gender (i.e., Male / Female), ethnicity (Asian, Black, Indian, White), or both (i.e., ethnicities split by gender).
 
-`facebias` enables the reproducing of results from paper, [_Face Recognition: Too Bias, or Not Too Bias_](../manuscript/latest-version.pdf). Furthermore, the aim of this package is to allow for all experiments to be generalizable to other related problem and data domains. Check out list of [Notebooks](#notebooks) for details of features and capabilities of `facebias`. 
+`facebias` enables the reproducing of results from paper, [_Face Recognition: Too Bias, or Not Too Bias_](https://arxiv.org/pdf/2002.06483.pdf). Furthermore, the aim of this package is to allow for all experiments to be generalizable to other related problem and data domains. Check out list of [Notebooks](#notebooks) for details of features and capabilities of `facebias`. 
 
 PR, bug reports, issues, etc., are welcome and would be appreciated :) 
 
