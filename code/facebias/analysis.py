@@ -8,14 +8,14 @@ import numpy as np
 import pandas as pd
 from facebias.visualization import det_plot, overlapped_score_distribution, \
     plot_confusion_matrix, violin_plot
-from iotools import load_features_from_image_list
-from preprocessing import (
+from facebias.iotools import load_features_from_image_list
+from facebias.preprocessing import (
     get_attribute_gender_ethnicity,
     load_image_pair_with_attribute_and_score,
 )
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import LabelEncoder
-from utils import replace_ext
+from facebias.utils import replace_ext
 
 
 def confusion_matrix(im_paths, dir_embeddings, save_figure_path=None):
