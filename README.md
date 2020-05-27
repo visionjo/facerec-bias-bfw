@@ -13,15 +13,11 @@
      </div>
     <div style="display: none;" id="robinsonfacebias2020">
       <pre class="bibtex">@article{robinson:facebias:2020,
-      author        = "Joseph P. Robinson and Yann Henon and Gennady Livitz and Can Qin and Yun Fu and Samson Timoner",
-      title         = "Face Recognition: Too Bias, or Not Too Bias?",
-      journal       = "CoRR",
-      year          = "2020",
-      volume        = "abs/2002.06483",
-      url           = "http://arxiv.org/abs/2002.06483",
-      archiveprefix = "arXiv",
-      eprint        = "2002.06483",
-      }
+         title={Face recognition: too bias, or not too bias?},
+         author={Robinson, Joseph P and Livitz, Gennady and Henon, Yann and Qin, Can and Fu, Yun and Timoner, Samson},
+         journal={arXiv preprint arXiv:2002.06483},
+         year={2020}
+         }
     </pre>
   </div>
 
@@ -35,7 +31,7 @@ subgroup-specific thresholds are optimal in terms of overall performance and bal
 
 Furthermore, we built and released the facial image dataset needed to address bias from this view of FR. Namely, *Bias Faces in the Wild* (BFW).
 
-<img src="docs/bfw-teaser-image.png" alt="teaser" width="600"/>
+<img src="docs/bfw-logo.png" alt="teaser" width="600"/>
 
 
 Check out research paper, [https://github.com/visionjo/BFW-Face-Bias-Paper/blob/6900ea205381c4979e24e801cf670dfe314bf936/latest-version.pdf](https://github.com/visionjo/BFW-Face-Bias-Paper/blob/0248f5b8fff52d5ae84e29ba4affef0de02e79c0/latest-version.pdf)
