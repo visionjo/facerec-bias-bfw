@@ -1,25 +1,28 @@
 # Face Recognition: Too Bias, or Not Too Bias?
-
-
 <div>
 <blockquote>
-         Joseph P. Robinson, Yann Henon, Gennady Livitz, Can Qin, Yun Fu, and Samson Timoner.
-         <a href="https://arxiv.org/pdf/2002.06483.pdf"> Face Recognition: Too Bias, or Not Too Bias?</a> CoRR, abs/2002.06483, 2020.
-</blockquote>
+     Robinson, Joseph P., Gennady Livitz, Yann Henon, Can Qin, Yun Fu, and Samson Timoner. 
+     "<a href="https://arxiv.org/pdf/2002.06483.pdf">Face recognition: too bias, or not too bias?
+     </a>" 
+     <i>In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition 
+     Workshops</i>, pp. 0-1. 2020.
+ </blockquote>
 </div>
 <div>
     <div>
       <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAMDJhXxUMElHQ0tVSDFSNDZTMVBPSVpXMkxJTkY4Ny4u">Download Data</a> 
      </div>
     <div style="display: none;" id="robinsonfacebias2020">
-      <pre class="bibtex">@article{robinson:facebias:2020,
-         title={Face recognition: too bias, or not too bias?},
-         author={Robinson, Joseph P and Livitz, Gennady and Henon, Yann and Qin, Can and Fu, Yun and Timoner, Samson},
-         journal={arXiv preprint arXiv:2002.06483},
-         year={2020}
-         }
+      <pre class="bibtex">@inproceedings{robinson2020face,
+               title={Face recognition: too bias, or not too bias?},
+               author={Robinson, Joseph P and Livitz, Gennady and Henon, Yann and Qin, Can and Fu, Yun and Timoner, Samson},
+               booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops},
+               pages={0--1},
+               year={2020}
+             }
     </pre>
   </div>
+</div>
 
 ## Overview
 Our findings reveal a bias in scoring sensitivity across different subgroups when verifying the identity of a subject
@@ -31,10 +34,10 @@ subgroup-specific thresholds are optimal in terms of overall performance and bal
 
 Furthermore, we built and released the facial image dataset needed to address bias from this view of FR. Namely, *Bias Faces in the Wild* (BFW).
 
-<img src="docs/bfw-logo.png" alt="teaser" width="600"/>
+![Teaser](docs/bfw-logo.png)
 
 
-Check out research paper, [https://github.com/visionjo/BFW-Face-Bias-Paper/blob/6900ea205381c4979e24e801cf670dfe314bf936/latest-version.pdf](https://github.com/visionjo/BFW-Face-Bias-Paper/blob/0248f5b8fff52d5ae84e29ba4affef0de02e79c0/latest-version.pdf)
+Check out research paper, [https://arxiv.org/pdf/2002.06483.pdf](https://arxiv.org/pdf/2002.06483.pdf)
 
 See [data/README.md](data/README.md) for more on BFW.
 
@@ -42,18 +45,20 @@ See [code/README.md](code/README.md) for more on 'facebias' package and experime
 
 See [results/README.md](results/README.md) for summary of figures and results.
 
-Register and download via this [form](https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAMDJhXxUMElHQ0tVSDFSNDZTMVBPSVpXMkxJTkY4Ny4u).
+Register and download via this 
+<a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAMDJhXxUMElHQ0tVSDFSNDZTMVBPSVpXMkxJTkY4Ny4u">form</a>.
 
 ## Abstract
-
-We reveal critical insights into problems of bias in state-of-the-art facial recognition (FR) systems using a novel 
-Balanced Faces In the Wild (BFW) dataset: data balanced in gender and for ethnic groups. Classic signal detection theory 
-was applied to understand the score distribution across different subgroups. Specifically, in face verification using 
-Sphere-Face, we show that the optimal threshold varies across different subgroups of face-pairs. Thus, the conventional 
-approach of learning a single, global threshold on all data yields a threshold biased to subgroups. We leveled out 
-performances across different subgroups while improving the overall performance by learning a threshold per subgroup. 
-Furthermore, we conduct a human evaluation to measure the bias in humans (i.e., within versus across subgroups), which 
-supports the hypothesis that such a bias exists in human perception.
+We reveal critical insights into problems of bias in state-of-the-art facial recognition (FR) 
+systems using a novel Balanced Faces In the Wild (BFW) dataset: data balanced for gender and ethnic 
+groups. We show variations in the optimal scoring threshold for face-pairs across different 
+subgroups. Thus, the conventional approach of learning a global threshold for all pairs results in 
+performance gaps between subgroups. By learning subgroup-specific thresholds, we reduce performance 
+gaps, and also show a notable boost in overall performance. Furthermore, we do a human evaluation to 
+measure bias in humans, which supports the hypothesis that an analogous bias exists in human 
+perception. For the BFW database, source code, and more, visit 
+<a href="https://github.com/visionjo/facerec-bias-bfw">https://github.com/visionjo/facerec-bias-bfw
+</a>.
 
 ## Software implementation
 All source code used to generate the results and figures in the paper are in
