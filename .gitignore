@@ -10,4 +10,6 @@ manuscript/output/
 .env
 */.ipynb_checkpoints/
 *.pkl
-.ipynb_checkpoints.ipynb_checkpoints
+.ipynb_checkpoints
+.ipynb_checkpoints
+.idea/

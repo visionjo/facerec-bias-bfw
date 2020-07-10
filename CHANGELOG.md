@@ -17,7 +17,7 @@
 
 ### Changed
 
-* N/A
+* Updates made to documentation. Specifically, the README files.
 
 ## 0.0.1
 
