@@ -3,7 +3,6 @@
 
 BFW, proposed in [<span style="color:blue">**1**</span>], provides balance in data (i.e., different subgroups) for face verification. Specifically, Table I compares BFW to related datasets (i.e., bias in faces), Table II characterizes BFW highlighting relevant stats, and Figure 1 shows a sample montage for each of the eight subgroups in BFW.
 
-<<<<<<< HEAD
 <p>
   <img src=../docs/facemontage.jpg alt="facemontage.png" width="700"/>
 
@@ -12,7 +11,7 @@ BFW, proposed in [<span style="color:blue">**1**</span>], provides balance in da
   
 <p>
   
-**Table 1: Database stats and nomenclature.** Header: Subgroup definitions. Top: Statistics of Balanced Faces in the Wild (BFW). Bottom: Number of pairs for each partition. Columns grouped by ethnicity and then further split by gender.
+**Table 1. Database stats and nomenclature.** Header: Subgroup definitions. Top: Statistics of Balanced Faces in the Wild (BFW). Bottom: Number of pairs for each partition. Columns grouped by ethnicity and then further split by gender.
 <br>
 
 <img src=../docs/table1.png alt="table1" width="700"/>
@@ -20,19 +19,7 @@ BFW, proposed in [<span style="color:blue">**1**</span>], provides balance in da
 
 <p>
   
-**Table 2: BFW and related datasets.** BFW is balanced across ID, gender, and ethnicity (Table 1). Compared with DemogPairs, BFW provides more samples per subject and subgroups per set, while using a single resource, VGG2. RFW, on the other hand, supports domain adaptation, and focuses on race-distribution - not the distribution of identities.
-<br>
-=======
-
-<img src=../docs/facemontage.jpg alt="facemontage.png" width="600"/>
-**Fig 1. Subgroups of BFW.** Rows depict different genders, Female (top) and Male (bottom). Columns are grouped by ethnicity (i.e., Asian, Black, Indian, and White, respectfully).
-
-**Table 1: Database stats and nomenclature.** Header: Subgroup definitions. Top: Statistics of Balanced Faces in the Wild (BFW). Bottom: Number of pairs for each partition. Columns grouped by ethnicity and then further split by gender.
-<img src=../docs/table1.png alt="table1" width="600"/>
-
-**Table 2: BFW and related datasets.** BFW is balanced across ID, gender, and ethnicity (Table 1). Compared with DemogPairs, BFW provides more samples per subject and subgroups per set, while using a single resource, VGG2. RFW, on the other hand, supports domain adaptation, and focuses on race-distribution - not the distribution of identities.
-<img src=../docs/table2.png alt="table2" width="600"/>
->>>>>>> documentation
+**Table 2. BFW and related datasets.** BFW is balanced across ID, gender, and ethnicity (Table 1). Compared with DemogPairs, BFW provides more samples per subject and subgroups per set, while using a single resource, VGG2. RFW, on the other hand, supports domain adaptation, and focuses on race-distribution - not the distribution of identities.
 
 <img src=../docs/table2.png alt="table2" width="700"/>
 </p>
