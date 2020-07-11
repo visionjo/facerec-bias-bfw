@@ -16,7 +16,8 @@ div {
 ### Background
 #### 0. Summary of metrics
 <div>
-<b>Depiction of bio-metrics.</b> The signal detec- tion model (SDM) (top-left) shows the sensitivity related to a single threshold tg . Translated to error rate (bottom- left), a direct trade-off between FNP and FPR. In prac- tice, this is entirely application dependent. Specifically, the specific chose in desired FPR (%) (bottom-right).
+<b>Depiction of bio-metrics.</b> The signal detection model (SDM) (top-left) shows the sensitivity related to a single threshold tg. Translated to error rate (bottom- left), a direct trade-off between FNP and FPR. In prac- tice, this is entirely application dependent. Specifically, the specific chose in desired FPR (%) (bottom-right).
+<br>
 <img src=../docs/metric-summary.png alt="metric summary" width="570"/>
 </div>
 
@@ -24,36 +25,41 @@ div {
 #### 1. Signal detection models (SDM)
 
 <div>
-<b>SDM across subgroups.</b> Scores of imposters have medians around 0.3 but with variations in upper per- centiles; genuine pairs vary in mean and spread (e.g., AF has more area of overlap). A threshold varying across different subgroups yields a constant FPR.
+<b>SDM across subgroups.</b> Scores of imposters have medians around 0.3 but with variations in upper percentiles; genuine pairs vary in mean and spread (e.g., AF has more area of overlap). A threshold varying across different subgroups yields a constant FPR.
 <img src=../docs/violinplots.png alt="violinplots.png" width="570"/>
 <br>
 </div>
 
 #### 2. NN (i.e., rank 1) error analysis
 <div>
-<b>Confusion matrix.</b> Error (Rank 1, %) for all BFW faces versus all others. Errors concentrate intra- subgroup - consistent with the SDM (Fig. 4). Although subgroups are challenging to define, this shows the ones chosen are meaningful for FR.
+<b>Confusion matrix.</b> Error (Rank 1, %) for all BFW faces versus all others. Errors concentrate intra-subgroup - consistent with the SDM (above [1]). Although subgroups are challenging to define, this shows the ones chosen are meaningful for FR.
+<br>
 <img src=../docs/confusion.png alt="confusion.png" width="570"/>
 </div>
 
 #### 3. detection error trade-Off (DET) curves
 <div>
 <b>DET curves.</b> Top-left: per gender.Top-Right: per ethnic groups.Bottom:per subgroup. Lower is better. On the gender-based DET curve, two dashed lined connects points at a constan threshold, which shows a rough factor of 3 difference inFPR at the same threshold. Similar differences in FPR exist in the other plots at a constant threshold &theta;<sub>const</sub>.
+<br>
 <img src=../docs/detcurve-improved.png alt="detcurve" width="570"/>
 </div>
 
 #### 4. TAR at FAR
 <b>TAR at intervals of FAR.</b> FAR, listed are the TAR scores for a global threshold (top) and the proposed category-based threshold (bottom). Higher is better.
-<img src=../docs/tar_at_far.png alt="tar_at_far.png" width="570"/>
+<br>
+<img src=../docs/tar_at_far.png alt="tar_at_far.png" width="470"/>
  
 ##### 5. Intended FPR
 <div>
 <b>Percent difference from intended FPR.</b> Top: tg yields FPR the span as large as 2× (i.e., 200%) that intended (i.e., WM for 1e-4). Furthermore, F subgroups tend to perform worse than intended for all cases (while M tend to overshoot intended performance, with excep- tion of IM in for FPR=1e-4). Bottom: Subgroup-specific thresholds reduces this difference to near zero, where there are small differences, the percent difference across different subgroups is fair (i.e., FPR=1e-4).
+<br>
 <img src=../docs/adaptive_fpr_percent_diff_complete.png alt="adaptive_fpr_percent_diff_complete.png" width="570"/>
 </div>
 
 ##### 5. Different models
 <div>
 <b>DET curves for different CNNs.</b> FNR (%) (vertical) vs FPR (horizontal, log-scale) for VGG2 [6] models with different backbones (VGG16, Resnet50, SEnet50). Lower is better. For each plot, WM is the top-performer, while AF is the worst. The ordering of the curves is roughly the same for each backbone.
+<br>
 <img src=../docs/SDM.png alt="SDM.png" width="570"/>
 </div>
 
@@ -64,9 +70,10 @@ Samples were collected by recruiting subjects from multiple sources (e.g., socia
 “look-alikes” were collected from the internet, with 20 (WA) and 20 (C) pairs (male and female split evenly). The other 10 pairs are of others (e.g., Hispanic/ Latino, Japanese, African). Survey was created, distributed, and recorded via PaperForm.
 
 <b>Human assessment (quantitative).</b> Sub- groups listed per row (i.e., human) and column (i.e., im- age). Note, most do the best intra-subgroup (blue), and second-best (red) intra-subgroup but inter-gender. WF performs the best; WF pairs are most correctly matched.
-<img src=../docs/human_eval-table.png alt="humaneval-fig" width="500"/>
+<br>
+<img src=../docs/human_eval-table.png alt="humaneval-table" width="500"/>
 <br>
 <b>Human assessment (qualitative).</b> <i>checkmarks</i> for match; × for non-match. Accuracy scores shown as bar plots. Humans are most successful at recognizing their own subgroup, with a few exceptions (e.g., bottom).
-
+<br>
 <img src=../docs/human_eval.png alt="humaneval-fig" width="570"/>
 </div>
