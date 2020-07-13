@@ -13,3 +13,10 @@ manuscript/output/
 .ipynb_checkpoints
 .ipynb_checkpoints
 .idea/
+*.v2
+*.trace
+*.profile-empty
+.DS_Store
+*.h5
+data/*
+code/logs/*
