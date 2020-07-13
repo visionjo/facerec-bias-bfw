@@ -3,6 +3,7 @@ Functions for loading the data
 """
 import os
 import warnings
+import pickle
 from pathlib import Path
 
 import numpy as np
@@ -66,8 +67,7 @@ def load_features_from_image_list(
 
     """
     return {
-        f: np.load(os.path.join(dir_features,
-                                f.replace(f".{ext_img}", f".{ext_feat}")))
+        f: np.load(os.path.join(dir_features, f.replace(f".{ext_img}", f".{ext_feat}")))
         for f in li_images
     }
 
@@ -95,8 +95,7 @@ def prune_df(data, columns_in):
             del data[column]
     for col in columns_in:
         if col not in columns:
-            warnings.warn(
-                f"cols={col} was not found in datatable... will be ommitted")
+            warnings.warn(f"cols={col} was not found in datatable... will be ommitted")
 
     return data
 
@@ -130,8 +129,7 @@ def load_bfw_datatable(f_name, cols=None, default_score_col=None):
 
 
     """
-    assert Path(
-        f_name).exists(), f"error: file of datatable does not exist {f_name}"
+    assert Path(f_name).exists(), f"error: file of datatable does not exist {f_name}"
     set_score = False
     data = pd.read_pickle(f_name)
 
@@ -148,8 +146,7 @@ def load_bfw_datatable(f_name, cols=None, default_score_col=None):
 
 
 def save_bfw_datatable(
-        data, fpath="datatable.pkl", cols=None, append_cols=True,
-        f_type="pickle"
+        data, fpath="datatable.pkl", cols=None, append_cols=True, f_type="pickle"
 ):
     """
     Saves data table; if cols is set, only the respective cols included; if
@@ -204,3 +201,43 @@ def save_bfw_datatable(
         data.to_csv(fpath, index=False)
     else:
         pd.to_pickle(data, fpath)
+
+
+def prepare_training_features(path_data):
+    with open(path_data, "rb") as f:
+        train_data = pickle.load(f)
+
+    li_features = list()
+    li_feature_ref = list()
+    li_label = list()
+    for k, v in train_data.items():
+        li_feature_ref.append(k)
+        li_features.append(v[..., np.newaxis].T)
+        li_label.append(1 if k.split("/")[0].split("_")[1][0] == "m" else 0)
+
+    return li_feature_ref, np.array(li_features), np.array(li_label)
+
+
+def load_utk_unlabeled_test(path_data, label_type='gender'):
+    # Here are label representation as encapsulated in the file name (source https://susanqq.github.io/UTKFace/):
+    # The labels of each face image is embedded in the file name, formated like [age]_[gender]_[race]_[date&time].jpg
+    #
+    # [age] is an integer from 0 to 116, indicating the age
+    # [gender] is either 0 (male) or 1 (female)
+    # [race] is an integer from 0 to 4, denoting White, Black, Asian, Indian, and Others (like Hispanic, Latino, Middle Eastern).
+    # [date&time] is in the format of yyyymmddHHMMSSFFF, showing the date and time an image was collected to UTKFace
+
+    li_features = list()
+    val_ref = list()
+    li_label = list()
+
+    for f in path_data.glob("*.npy"):
+        vec = np.load(f)
+        li_features.append(vec[..., np.newaxis].T)
+        val_ref.append(f.name)
+        if label_type == 'gender':
+            li_label.append(1 if str(f).split('_')[1] == '0' else 0)  # UTK-Face, the males are represented by 0's
+        else:  # do ethnicity
+            li_label.append(int(str(f).split('_')[1]))  # UTK-Face, the males are represented by 0's
+
+    return np.array(li_features), np.array(li_label)
