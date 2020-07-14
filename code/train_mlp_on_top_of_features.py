@@ -1,5 +1,6 @@
 import argparse
 import datetime
+import os
 from pathlib import Path
 
 import matplotlib.pyplot as plt
@@ -10,6 +11,7 @@ from tensorflow.keras.layers import Dense, Dropout, Flatten
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam, RMSprop
 
+os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 def get_mlp_definition(input_shape, output_size=1, output_activation='sigmoid', optimizer=Adam(1e-4),  # "rmsprop",
                        loss="binary_crossentropy", metrics=["accuracy"]):
@@ -47,10 +49,16 @@ def plot_summary(N, filepath):
     # plot the training loss and accuracy
     plt.style.use("ggplot")
     plt.figure()
-    plt.plot(np.arange(0, N), model.history.history["accuracy"],
-             label="train_acc")
-    plt.plot(np.arange(0, N), model.history.history["val_accuracy"],
-             label="val_acc")
+    try:
+        plt.plot(np.arange(0, N), model.history.history["accuracy"],
+                 label="train_acc")
+        plt.plot(np.arange(0, N), model.history.history["val_accuracy"],
+                 label="val_acc")
+    except KeyError:
+        plt.plot(np.arange(0, N), model.history.history["acc"],
+                 label="train_acc")
+        plt.plot(np.arange(0, N), model.history.history["val_acc"],
+                 label="val_acc")
     plt.title("Training Loss and Accuracy on Dataset")
     plt.xlabel("Epoch #")
     plt.ylabel("Accuracy")
@@ -60,27 +68,27 @@ def plot_summary(N, filepath):
 
 parser = argparse.ArgumentParser(prog="Train MLP Classifier(s)")
 parser.add_argument('-i', '--input', type=str,
-                    default='bfw/features/sphereface/features.pkl',
+                    default='../data/bfw/features/sphereface/features.pkl',
                     help='path to the datatable, i.e., meta file (CSV)')
 parser.add_argument('-d', '--datatable', type=str,
-                    default='data/bfw/meta/bfw-fold-meta-lut.csv',
+                    default='../data/bfw/meta/bfw-fold-meta-lut.csv',
                     help='path to the datatable, i.e., meta file (CSV)')
 parser.add_argument('-l', '--logs', type=str, default='logs',
                     help='directory to write log output and plots')
-parser.add_argument('--epochs', type=int, default=100, help='N epochs (train)')
-parser.add_argument('--batch', type=int, default=16, help='Size mini-batch')
-parser.add_argument('-g', '--gender', action="store_true", type=bool,
+parser.add_argument('--epochs', type=int, default=35, help='N epochs (train)')
+parser.add_argument('--batch', type=int, default=64, help='Size mini-batch')
+parser.add_argument('-g', '--gender', action="store_true",
                     help='train gender classifier')
-parser.add_argument('-e', '--ethnicity', action="store_true", type=bool,
+parser.add_argument('-e', '--ethnicity', action="store_true",
                     help='train ethnicity classifier')
-parser.add_argument('-w', '--weights', type=str, default='train_models',
+parser.add_argument('-w', '--weights', type=str, default='train_models1',
                     help='path to dump trained weights')
 parser.add_argument('-o', '--optimizer', type=str, default='adam',
                     help='optimizer to train with (i.e., "adam" or not)')
 args = parser.parse_args()
 
 dir_features = str(Path(args.input).parent)
-f_meta = args.input
+f_meta = args.datatable
 
 output_tag = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
@@ -108,7 +116,7 @@ if args.gender:
         callbacks=[tb_callback]
     )
     model.save_weights(str(path_weights / "gender_fc_model.h5"))
-    plot_summary(epochs, args.logs + '/gender/plot_summary.pdf')
+    plot_summary(epochs, f"{args.logs}/gender/{output_tag}plot_summary.pdf")
 
 if args.ethnicity:
     train_ref, train_features, train_labels, val_ref, val_features, val_labels \
@@ -131,4 +139,4 @@ if args.ethnicity:
         callbacks=[tb_callback]
     )
     model.save_weights(str(path_weights / "ethnicity_fc_model.h5"))
-    plot_summary(epochs, args.logs + '/ethnicity/plot_summary.pdf')
+    plot_summary(epochs, f"{args.logs}/ethnicity/{output_tag}plot_summary.pdf")
