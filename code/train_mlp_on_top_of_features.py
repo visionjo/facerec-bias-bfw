@@ -1,5 +1,4 @@
-import numpy as np
-from pathlib import Path
+import argparse
 import datetime
 from pathlib import Path
 
@@ -7,7 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from facebias.iotools import split_bfw_features
 from tensorflow.keras.callbacks import TensorBoard
-from tensorflow.keras.layers import Flatten, Dense, Dropout
+from tensorflow.keras.layers import Dense, Dropout, Flatten
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.optimizers import Adam, RMSprop
 
@@ -48,8 +47,10 @@ def plot_summary(N, filepath):
     # plot the training loss and accuracy
     plt.style.use("ggplot")
     plt.figure()
-    plt.plot(np.arange(0, N), model.history.history["accuracy"], label="train_acc")
-    plt.plot(np.arange(0, N), model.history.history["val_accuracy"], label="val_acc")
+    plt.plot(np.arange(0, N), model.history.history["accuracy"],
+             label="train_acc")
+    plt.plot(np.arange(0, N), model.history.history["val_accuracy"],
+             label="val_acc")
     plt.title("Training Loss and Accuracy on Dataset")
     plt.xlabel("Epoch #")
     plt.ylabel("Accuracy")
@@ -57,42 +58,46 @@ def plot_summary(N, filepath):
     plt.savefig(filepath)
 
 
-do_gender = True
-do_ethnicity = True
+parser = argparse.ArgumentParser(prog="Train MLP Classifier(s)")
+parser.add_argument('-i', '--input', type=str,
+                    default='bfw/features/sphereface/features.pkl',
+                    help='path to the datatable, i.e., meta file (CSV)')
+parser.add_argument('-d', '--datatable', type=str,
+                    default='data/bfw/meta/bfw-fold-meta-lut.csv',
+                    help='path to the datatable, i.e., meta file (CSV)')
+parser.add_argument('-l', '--logs', type=str, default='logs',
+                    help='directory to write log output and plots')
+parser.add_argument('--epochs', type=int, default=100, help='N epochs (train)')
+parser.add_argument('--batch', type=int, default=16, help='Size mini-batch')
+parser.add_argument('-g', '--gender', action="store_true", type=bool,
+                    help='train gender classifier')
+parser.add_argument('-e', '--ethnicity', action="store_true", type=bool,
+                    help='train ethnicity classifier')
+parser.add_argument('-w', '--weights', type=str, default='train_models',
+                    help='path to dump trained weights')
+parser.add_argument('-o', '--optimizer', type=str, default='adam',
+                    help='optimizer to train with (i.e., "adam" or not)')
+args = parser.parse_args()
 
-f_tr_features = "/Volumes/MyBook/bfw/bfw-cropped-aligned-features/features.pkl"
-dir_val_features = '/Users/jrobby/GitHub/facerec-bias-bfw/data/utkface/features/'  # Path('./').home() /
-dir_features = str(Path(f_tr_features).parent)
-f_meta = '/Users/jrobby/datasets/BFW-v0_1_5/meta/bfw-fold-meta-lut.csv'
-dir_gender_logs = 'logs/gender/' + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
-dir_ethnicity_logs = 'logs/ethnicity/' + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+dir_features = str(Path(args.input).parent)
+f_meta = args.input
 
-path_weights = Path('train_models')
+output_tag = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
+path_weights = Path(args.weights)
 path_weights.mkdir(exist_ok=True, parents=True)
-top_gender_model_weights_path = path_weights / "gender_fc_model.h5"
-top_ethnicity_model_weights_path = path_weights / "ethnicity_fc_model.h5"
-train_data_dir = "data/train"
-validation_data_dir = "data/validation"
-# nb_train_samples = 2000
-# nb_validation_samples = 800
-epochs = 100
-batch_size = 16
 
-path_tr_features = Path(f_tr_features)
+epochs = args.epochs
+batch_size = args.batch
 
-# Load data, both train (BFW) and validation (UTK-Face) sets
-path_val_features = Path(dir_val_features)
+if args.gender:
+    train_ref, train_features, train_labels, val_ref, val_features, val_labels \
+        = split_bfw_features(f_meta, dir_features)
 
-# train_ref, train_features, train_labels = prepare_training_features(path_tr_features)
-# val_features, val_labels = load_utk_unlabeled_test(path_val_features)
-optimizer = 'adam'
-
-if do_gender:
-    train_ref, train_features, train_labels, val_ref, val_features, val_labels = split_bfw_features(f_meta, dir_features)
-    opt = Adam(lr=1e-4) if optimizer == 'adam' else RMSprop(0.0001, decay=1e-6)
-    model = get_mlp_definition(train_features.shape[1:], optimizer=opt)  # use default settings to define gender recognizer.
-    tensorboard_callback = TensorBoard(log_dir=dir_gender_logs)
+    opt = Adam(lr=1e-4) if args.optimizer == 'adam' \
+        else RMSprop(0.0001, decay=1e-6)
+    model = get_mlp_definition(train_features.shape[1:], optimizer=opt)
+    tb_callback = TensorBoard(log_dir=f"{args.logs}/gender/{output_tag}")
 
     model.fit(
         train_features,
@@ -100,25 +105,22 @@ if do_gender:
         epochs=epochs,
         batch_size=batch_size,
         validation_data=(val_features, val_labels),
-        callbacks=[tensorboard_callback]
+        callbacks=[tb_callback]
     )
-    model.save_weights(str(top_gender_model_weights_path))
-    plot_summary(epochs, dir_gender_logs + '/plot_summary.pdf')
-if do_ethnicity:
-    train_ref, train_features, train_labels, val_ref, val_features, val_labels = split_bfw_features(f_meta, dir_features, 'ethnicity')
-    # perform one-hot encoding on the labels
-    # lb = LabelBinarizer()
-    # train_labels = lb.fit_transform(train_labels)
-    # train_labels = to_categorical(train_labels,num_classes=4)
-    # lb = LabelBinarizer()
-    # val_labels = lb.fit_transform(val_labels)
-    # val_labels = to_categorical(val_labels,num_classes=4)
+    model.save_weights(str(path_weights / "gender_fc_model.h5"))
+    plot_summary(epochs, args.logs + '/gender/plot_summary.pdf')
 
-    opt = Adam(lr=1e-4) if optimizer == 'adam' else RMSprop(0.0001, decay=1e-6)
-    model = get_mlp_definition(train_features.shape[1:], optimizer=opt, loss='sparse_categorical_crossentropy',
+if args.ethnicity:
+    train_ref, train_features, train_labels, val_ref, val_features, val_labels \
+        = split_bfw_features(f_meta, dir_features, 'ethnicity')
+
+    opt = Adam(lr=1e-4) if args.optimizer == 'adam' \
+        else RMSprop(0.0001, decay=1e-6)
+    model = get_mlp_definition(train_features.shape[1:], optimizer=opt,
+                               loss='sparse_categorical_crossentropy',
                                output_activation='softmax', output_size=4)
 
-    tensorboard_callback = TensorBoard(log_dir=dir_ethnicity_logs)  # , histogram_freq=1, write_images=False)
+    tb_callback = TensorBoard(log_dir=f"{args.logs}/ethnicity/{output_tag}")
 
     model.fit(
         train_features,
@@ -126,7 +128,7 @@ if do_ethnicity:
         epochs=epochs,
         batch_size=batch_size,
         validation_data=(val_features, val_labels),
-        callbacks=[tensorboard_callback]
+        callbacks=[tb_callback]
     )
-    model.save_weights(str(top_ethnicity_model_weights_path))
-    plot_summary(epochs, dir_ethnicity_logs + '/plot_summary.pdf')
+    model.save_weights(str(path_weights / "ethnicity_fc_model.h5"))
+    plot_summary(epochs, args.logs + '/ethnicity/plot_summary.pdf')
