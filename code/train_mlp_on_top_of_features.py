@@ -13,8 +13,9 @@ from tensorflow.keras.optimizers import Adam, RMSprop
 
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
-def get_mlp_definition(input_shape, output_size=1, output_activation='sigmoid', optimizer=Adam(1e-4),  # "rmsprop",
-                       loss="binary_crossentropy", metrics=["accuracy"]):
+def get_mlp_definition(input_shape, output_size=1, output_activation='sigmoid',
+                       optimizer=Adam(1e-4),  # "rmsprop",
+                       loss="binary_crossentropy", metrics=None):
     """
     Define MLP and compile loss on top. Default settings are for a binary classifier (i.e., gender recognition).
     @param output_size: number of output predictions (i.e., number of classes or just 1 for binary)
@@ -27,6 +28,8 @@ def get_mlp_definition(input_shape, output_size=1, output_activation='sigmoid', 
     @return: Keras model compiled with loss on top of MLP
 
     """
+    if metrics is None:
+        metrics = ["accuracy"]
     model = Sequential()
     model.add(Flatten(input_shape=input_shape))
     model.add(Dense(512, activation="relu"))
