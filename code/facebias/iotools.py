@@ -204,7 +204,12 @@ def save_bfw_datatable(
 
 
 def reshape_arr(arr_in):
-    tmp_arr = np.zeros((arr_in.shape[0], 1, arr_in[0].shape[0]))
+    shape = (arr_in.shape[0], arr_in[0].shape[0])
+    if len(arr_in[0].shape) > 1:
+        if arr_in[0].shape[1] == 512:
+            shape = (arr_in.shape[0], arr_in[0].shape[1])
+
+    tmp_arr = np.zeros((shape[0], 1, shape[1]))
     for i, vec in enumerate(arr_in):
         tmp_arr[i, 0, ...] = vec
     return tmp_arr
@@ -215,12 +220,17 @@ def split_bfw_features(path_data, dir_features, tags='gender'):
     df['face'] = df.face.str.replace('.jpg', '.npy')
 
     fold_1 = df.loc[df.fold == 1, :]
-    arr_val_features = reshape_arr(fold_1.apply(lambda x: np.load(dir_features + '/' + x['face']), axis=1).to_numpy())
+    arr_val_features = fold_1.apply(
+        lambda x: np.load(dir_features + '/' + x['face']), axis=1).to_numpy()
+    arr_val_features = reshape_arr(arr_val_features)
+
     arr_val_labels = fold_1[tags].to_numpy()
     refs_val = fold_1['face'].to_list()
 
     fold_2_5 = df.loc[df.fold != 1, :]
-    arr_tr_features = reshape_arr(fold_2_5.apply(lambda x: np.load(dir_features + '/' + x['face']), axis=1).to_numpy())
+    arr_tr_features = fold_2_5.apply(
+        lambda x: np.load(dir_features + '/' + x['face']), axis=1).to_numpy()
+    arr_tr_features = reshape_arr(arr_tr_features)
     arr_tr_labels = fold_2_5[tags].to_numpy()
     refs_tr = fold_2_5['face'].to_list()
 
