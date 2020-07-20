@@ -53,5 +53,18 @@ Paired faces and all corresponding metadata is organized as a <a href="https://p
 * **g1** and **g2** : abbreviated gender tag of subjects in pair [F, M].
 * **e1** and **e2** : abbreviate ethnicity tag of subjects in pair [A, B, I, W].
 
+
+## Reported bugs
+Here listed are the bugs in the data.<sup><a href="#fn1" id="ref1">1</a></sup> Each bug is listed per the date first reported, along with a brief description proceeding the item in parentheses. Future versions of data will incorporate bug fixes based on the following:
+__19 July 2020__
+* white_females/n003391/0017_02.jpg (cartoon face)
+* asian_males/n006741/0275_02.jpg (cartoon face)
+
+
+
 ### References
 [1] Robinson, Joseph P., Gennady Livitz, Yann Henon, Can Qin, Yun Fu, and Samson Timoner. "<a href="https://arxiv.org/pdf/2002.06483.pdf">Face recognition: too bias, or not too bias?</a>" <i>In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition Workshops</i>, pp. 0-1. 2020.
+
+
+<sup id="fn1">1. The list is for contributors to post any errors found in the data. Besides, all are welcome to report bugs by directly contacting <a href = "mailto: robinson.jo@northeastern.edu">Joseph Robinson</a>.
+  <a href="#ref1" title="Footnote 1.">↩</a></sup>
