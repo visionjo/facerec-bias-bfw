@@ -204,27 +204,41 @@ def save_bfw_datatable(
 
 
 def reshape_arr(arr_in):
-    tmp_arr = np.zeros((arr_in.shape[0], 1, arr_in[0].shape[0]))
+    shape = (arr_in.shape[0], arr_in[0].shape[0])
+    if len(arr_in[0].shape) > 1:
+        if arr_in[0].shape[1] == 512 or arr_in[0].shape[1] == 2048:
+            shape = (arr_in.shape[0], arr_in[0].shape[1])
+
+    tmp_arr = np.zeros((shape[0], 1, shape[1]))
     for i, vec in enumerate(arr_in):
         tmp_arr[i, 0, ...] = vec
     return tmp_arr
 
 
-def split_bfw_features(path_data, dir_features, tags='gender'):
+def split_bfw_features(path_data, dir_features, tags='gender', val_fold=1):
+    """
+    Split BFW data as 5-fold. Specifically, reserve val_fold as the held-out
+    test fold, with the remaining four as train.
+    """
     df = pd.read_csv(path_data)
     df['face'] = df.face.str.replace('.jpg', '.npy')
 
-    fold_1 = df.loc[df.fold == 1, :]
-    arr_val_features = reshape_arr(fold_1.apply(lambda x: np.load(dir_features + '/' + x['face']), axis=1).to_numpy())
-    arr_val_labels = fold_1[tags].to_numpy()
-    refs_val = fold_1['face'].to_list()
+    fold_test = df.loc[df.fold == val_fold, :]
+    features_val = fold_test.apply(
+        lambda x: np.load(dir_features + '/' + x['face']), axis=1).to_numpy()
+    features_val = reshape_arr(features_val)
 
-    fold_2_5 = df.loc[df.fold != 1, :]
-    arr_tr_features = reshape_arr(fold_2_5.apply(lambda x: np.load(dir_features + '/' + x['face']), axis=1).to_numpy())
-    arr_tr_labels = fold_2_5[tags].to_numpy()
-    refs_tr = fold_2_5['face'].to_list()
+    labels_val = fold_test[tags].to_numpy()
+    refs_val = fold_test['face'].to_list()
 
-    return refs_tr, arr_tr_features, arr_tr_labels, refs_val, arr_val_features, arr_val_labels
+    fold_train = df.loc[df.fold != val_fold, :]
+    features_tr = fold_train.apply(
+        lambda x: np.load(dir_features + '/' + x['face']), axis=1).to_numpy()
+    features_tr = reshape_arr(features_tr)
+    labels_tr = fold_train[tags].to_numpy()
+    refs_tr = fold_train['face'].to_list()
+
+    return refs_tr, features_tr, labels_tr, refs_val, features_val, labels_val
 
 
 def prepare_training_features(path_data):
@@ -243,13 +257,17 @@ def prepare_training_features(path_data):
 
 
 def load_utk_unlabeled_test(path_data, label_type='gender'):
-    # Here are label representation as encapsulated in the file name (source https://susanqq.github.io/UTKFace/):
-    # The labels of each face image is embedded in the file name, formated like [age]_[gender]_[race]_[date&time].jpg
+    # Here are label representation as encapsulated in the file name (source
+    # https://susanqq.github.io/UTKFace/): The labels of each face image is
+    # embedded in the file name, formatted like
+    # [age]_[gender]_[race]_[date&time].jpg
     #
-    # [age] is an integer from 0 to 116, indicating the age
-    # [gender] is either 0 (male) or 1 (female)
-    # [race] is an integer from 0 to 4, denoting White, Black, Asian, Indian, and Others (like Hispanic, Latino, Middle Eastern).
-    # [date&time] is in the format of yyyymmddHHMMSSFFF, showing the date and time an image was collected to UTKFace
+    # [age] is an integer from 0 to 116, indicating the age [gender] is
+    # either 0 (male) or 1 (female) [race] is an integer from 0 to 4,
+    # denoting White, Black, Asian, Indian, and Others (like Hispanic,
+    # Latino, Middle Eastern). [date&time] is in the format of
+    # yyyymmddHHMMSSFFF, showing the date and time an image was collected to
+    # UTKFace
 
     li_features = list()
     val_ref = list()
@@ -260,8 +278,10 @@ def load_utk_unlabeled_test(path_data, label_type='gender'):
         li_features.append(vec[..., np.newaxis].T)
         val_ref.append(f.name)
         if label_type == 'gender':
-            li_label.append(1 if str(f).split('_')[1] == '0' else 0)  # UTK-Face, the males are represented by 0's
+            # UTK-Face, the males are represented by 0's
+            li_label.append(1 if str(f).split('_')[1] == '0' else 0)
         else:  # do ethnicity
-            li_label.append(int(str(f).split('_')[1]))  # UTK-Face, the males are represented by 0's
+            # UTK-Face, the males are represented by 0's
+            li_label.append(int(str(f).split('_')[1]))
 
     return np.array(li_features), np.array(li_label)

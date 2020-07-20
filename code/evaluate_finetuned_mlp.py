@@ -24,38 +24,13 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 N_FOLDS = 5
 
 
-def plot_summary(N, filepath):
-    # plot the training loss and accuracy
-    plt.style.use("ggplot")
-    plt.figure()
-    try:
-        plt.plot(np.arange(0, N), model.history.history["accuracy"],
-                 label="train_acc")
-        plt.plot(np.arange(0, N), model.history.history["val_accuracy"],
-                 label="val_acc")
-    except KeyError:
-        plt.plot(np.arange(0, N), model.history.history["acc"],
-                 label="train_acc")
-        plt.plot(np.arange(0, N), model.history.history["val_acc"],
-                 label="val_acc")
-    plt.title("Training Loss and Accuracy on Dataset")
-    plt.xlabel("Epoch #")
-    plt.ylabel("Accuracy")
-    plt.legend(loc="lower left")
-    Path(filepath).parent.mkdir(exist_ok=True, parents=True)
-    plt.savefig(filepath)
-
-
-parser = argparse.ArgumentParser(prog="Train MLP Classifier(s)")
+parser = argparse.ArgumentParser(prog="Evaluate MLP Classifier(s)")
 parser.add_argument('-i', '--input', type=str,
                     default='../data/bfw/features/sphereface/features.pkl',
                     help='path to the datatable, i.e., meta file (CSV)')
 parser.add_argument('-d', '--datatable', type=str,
                     default='../data/bfw/meta/bfw-fold-meta-lut.csv',
                     help='path to the datatable, i.e., meta file (CSV)')
-parser.add_argument('-l', '--logs', type=str, default='logs',
-                    help='directory to write log output and plots')
-parser.add_argument('--epochs', type=int, default=35, help='N epochs (train)')
 parser.add_argument('--batch', type=int, default=64, help='Size mini-batch')
 parser.add_argument('-g', '--gender', action="store_true",
                     help='train gender classifier')
@@ -71,12 +46,11 @@ args = parser.parse_args()
 dir_features = str(Path(args.input).parent)
 f_meta = args.datatable
 
-output_tag = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
 path_weights = Path(args.weights)
 path_weights.mkdir(exist_ok=True, parents=True)
 
-epochs = args.epochs
+
 batch_size = args.batch
 
 if args.gender:
@@ -88,22 +62,17 @@ if args.gender:
         opt = Adam(lr=1e-4) if args.optimizer == 'adam' \
             else RMSprop(0.0001, decay=1e-6)
         model = get_finetuned_mlp(features_tr.shape[1:], optimizer=opt)
-        dir_out = f"{args.logs}/gender/{output_tag}/{val_fold}"
-        tb_callback = TensorBoard(log_dir=dir_out)
 
         model.fit(
             features_tr,
             labels_tr,
-            epochs=epochs,
             batch_size=batch_size,
             validation_data=(features_val, labels_val),
-            callbacks=[tb_callback]
         )
-        path_out = path_weights / str(val_fold) / "gender_fc_model.h5"
-        path_out.parent.mkdir(exist_ok=True, parents=True)
-        model.save_weights(str(path_out))
-        f_out = f"{args.logs}/gender/{output_tag}/{val_fold}/plot_summary"
-        plot_summary(epochs, f"{f_out}.pdf")
+        path_in = path_weights / str(val_fold) / "gender_fc_model.h5"
+
+        model.load_weights(str(path_in))
+
 
 if args.ethnicity:
     for val_fold in range(1, N_FOLDS + 1):
@@ -115,8 +84,6 @@ if args.ethnicity:
         model = get_finetuned_mlp(features_tr.shape[1:], optimizer=opt,
                                   loss='sparse_categorical_crossentropy',
                                   output_activation='softmax', output_size=4)
-        dir_out = f"{args.logs}/ethnicity/{output_tag}/{val_fold}"
-        tb_callback = TensorBoard(log_dir=dir_out)
 
         model.fit(
             features_tr,
@@ -126,9 +93,5 @@ if args.ethnicity:
             validation_data=(features_val, labels_val),
             callbacks=[tb_callback]
         )
-        path_out = path_weights / str(val_fold) / "ethnicity_fc_model.h5"
-        path_out.parent.mkdir(exist_ok=True, parents=True)
-        model.save_weights(str(path_out))
-
-        f_out = f"{args.logs}/ethnicity/{output_tag}/{val_fold}/plot_summary"
-        plot_summary(epochs, f"{f_out}.pdf")
+        path_in = path_weights / str(val_fold) / "ethnicity_fc_model.h5"
+        model.save_weights(str(path_in))
