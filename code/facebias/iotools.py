@@ -206,7 +206,7 @@ def save_bfw_datatable(
 def reshape_arr(arr_in):
     shape = (arr_in.shape[0], arr_in[0].shape[0])
     if len(arr_in[0].shape) > 1:
-        if arr_in[0].shape[1] == 512:
+        if arr_in[0].shape[1] == 512 or arr_in[0].shape[1] == 2048:
             shape = (arr_in.shape[0], arr_in[0].shape[1])
 
     tmp_arr = np.zeros((shape[0], 1, shape[1]))
