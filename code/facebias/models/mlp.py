@@ -22,13 +22,13 @@ def get_finetuned_mlp(input_shape, output_size=1, output_activation='sigmoid',
         metrics = ["accuracy"]
     model = Sequential()
     model.add(Flatten(input_shape=input_shape))
-    model.add(Dense(2048, activation="relu"))
+    model.add(Dense(512, activation="relu"))
     model.add(Dropout(0.5))
     # model.add(Dense(512, activation="relu"))
     # model.add(Dropout(0.5))
-    model.add(Dense(1024, activation="relu"))
+    model.add(Dense(256, activation="relu"))
     model.add(Dropout(0.5))
-    model.add(Dense(512, activation="relu"))
+    model.add(Dense(128, activation="relu"))
     model.add(Dropout(0.5))
 
     model.add(Dense(output_size, activation=output_activation))
