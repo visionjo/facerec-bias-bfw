@@ -48,7 +48,7 @@ def plot_summary(N, filepath):
 
 parser = argparse.ArgumentParser(prog="Train MLP Classifier(s)")
 parser.add_argument('-i', '--input', type=str,
-                    default='../data/bfw/features/sphereface/features.pkl',
+                    default='../data/bfw/features/resnet50/features.pkl',
                     help='path to the datatable, i.e., meta file (CSV)')
 parser.add_argument('-d', '--datatable', type=str,
                     default='../data/bfw/meta/bfw-fold-meta-lut.csv',
@@ -61,7 +61,7 @@ parser.add_argument('-g', '--gender', action="store_true",
                     help='train gender classifier')
 parser.add_argument('-e', '--ethnicity', action="store_true",
                     help='train ethnicity classifier')
-parser.add_argument('-w', '--weights', type=str, default='train_models',
+parser.add_argument('-w', '--weights', type=str, default='train_models_resnet50',
                     help='path to dump trained weights')
 parser.add_argument('-o', '--optimizer', type=str, default='adam',
                     help='optimizer to train with (i.e., "adam" or not)')
@@ -85,8 +85,8 @@ if args.gender:
         ref_tr, features_tr, labels_tr, ref_val, features_val, labels_val \
             = split_bfw_features(f_meta, dir_features, val_fold=val_fold)
 
-        opt = Adam(lr=1e-4) if args.optimizer == 'adam' \
-            else RMSprop(0.0001, decay=1e-6)
+        opt = Adam(lr=1e-3) if args.optimizer == 'adam' \
+            else RMSprop(0.001, decay=1e-6)
         model = get_finetuned_mlp(features_tr.shape[1:], optimizer=opt)
         dir_out = f"{args.logs}/gender/{output_tag}/{val_fold}"
         tb_callback = TensorBoard(log_dir=dir_out)
@@ -110,8 +110,8 @@ if args.ethnicity:
         ref_tr, features_tr, labels_tr, ref_val, features_val, labels_val \
             = split_bfw_features(f_meta, dir_features, 'ethnicity')
 
-        opt = Adam(lr=1e-4) if args.optimizer == 'adam' \
-            else RMSprop(0.0001, decay=1e-6)
+        opt = Adam(lr=1e-3) if args.optimizer == 'adam' \
+            else RMSprop(0.001, decay=1e-6)
         model = get_finetuned_mlp(features_tr.shape[1:], optimizer=opt,
                                   loss='sparse_categorical_crossentropy',
                                   output_activation='softmax', output_size=4)
