@@ -56,10 +56,13 @@ Paired faces and all corresponding metadata is organized as a <a href="https://p
 
 ## Reported bugs
 Here listed are the bugs in the data.<sup><a href="#fn1" id="ref1">1</a></sup> Each bug is listed per the date first reported, along with a brief description proceeding the item in parentheses. Future versions of data will incorporate bug fixes based on the following:
+
+__24 July 2020__,
+* asian_females/n002509/0139_03.jpg (incorrect identity)
+
 __19 July 2020__
 * white_females/n003391/0017_02.jpg (cartoon face)
 * asian_males/n006741/0275_02.jpg (cartoon face)
-
 
 
 ### References
