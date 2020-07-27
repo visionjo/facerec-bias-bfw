@@ -35,7 +35,7 @@ def exists(path):
 
 
 def load_features_from_image_list(
-        li_images, dir_features, ext_img="jpg", ext_feat="pkl"
+    li_images, dir_features, ext_img="jpg", ext_feat="pkl"
 ):
     """
     Provided a list of images and the directory holding features, load features
@@ -66,8 +66,7 @@ def load_features_from_image_list(
 
     """
     return {
-        f: np.load(os.path.join(dir_features,
-                                f.replace(f".{ext_img}", f".{ext_feat}")))
+        f: np.load(os.path.join(dir_features, f.replace(f".{ext_img}", f".{ext_feat}")))
         for f in li_images
     }
 
@@ -95,8 +94,7 @@ def prune_df(data, columns_in):
             del data[column]
     for col in columns_in:
         if col not in columns:
-            warnings.warn(
-                f"cols={col} was not found in datatable... will be ommitted")
+            warnings.warn(f"cols={col} was not found in datatable... will be ommitted")
 
     return data
 
@@ -119,7 +117,7 @@ def load_bfw_datatable(f_name, cols=None, default_score_col=None):
         so typically column keys are of type str. If element in cols does not
         exist, then it is simply ignored
     default_score_col:  column to set as 'score' (some code assumes 'score' col)
-    
+
     Returns
     -------
     data : pandas.DataFrame
@@ -130,8 +128,7 @@ def load_bfw_datatable(f_name, cols=None, default_score_col=None):
 
 
     """
-    assert Path(
-        f_name).exists(), f"error: file of datatable does not exist {f_name}"
+    assert Path(f_name).exists(), f"error: file of datatable does not exist {f_name}"
     set_score = False
     data = pd.read_pickle(f_name)
 
@@ -148,8 +145,7 @@ def load_bfw_datatable(f_name, cols=None, default_score_col=None):
 
 
 def save_bfw_datatable(
-        data, fpath="datatable.pkl", cols=None, append_cols=True,
-        f_type="pickle"
+    data, fpath="datatable.pkl", cols=None, append_cols=True, f_type="pickle"
 ):
     """
     Saves data table; if cols is set, only the respective cols included; if

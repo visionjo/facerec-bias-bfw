@@ -85,9 +85,7 @@ def resize_and_flatten(image, height=30, width=30, interp=cv2.INTER_AREA):
     """ resize image and flatten (vectorized) """
 
     row_res = cv2.resize(image, (height, width), interpolation=interp).flatten()
-    col_res = cv2.resize(image, (height, width), interpolation=interp).flatten(
-        "F"
-    )
+    col_res = cv2.resize(image, (height, width), interpolation=interp).flatten("F")
     return row_res, col_res
 
 

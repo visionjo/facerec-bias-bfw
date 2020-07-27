@@ -6,11 +6,7 @@ import pandas as pd
 from facebias.utils import add_package_path
 from sklearn.metrics import confusion_matrix, roc_curve
 
-# import sys
-# sys.path.append('../../')
-# from utils.io import sys_home
-
-add_package_path()
+# add_package_path()
 
 from facebias.iotools import load_bfw_datatable
 
@@ -33,17 +29,17 @@ data["yp3"] = (data["score"] > threholds["optimal_threshold"]).astype(int)
 target_far_values = np.array([0.3, 0.1, 0.01, 0.001, 0.0001])
 
 tags = (
-    "\\textbf{\gls{af}}",
-    "\\textbf{\gls{am}}",
-    "\\textbf{\gls{bf}}",
-    "\\textbf{\gls{bm}}",
-    "\\textbf{\gls{if}}",
-    "\\textbf{\gls{im}}",
-    "\\textbf{\gls{wf}}",
-    "\\textbf{\gls{wm}}",
+    r"\textbf{\gls{af}}",
+    r"\textbf{\gls{am}}",
+    r"\textbf{\gls{bf}}",
+    r"\textbf{\gls{bm}}",
+    r"\textbf{\gls{if}}",
+    r"\textbf{\gls{im}}",
+    r"\textbf{\gls{wf}}",
+    r"\textbf{\gls{wm}}",
 )
 
-strout = "{0} & {1:.3f} & {2:.3f} & {3:.3f} & {4:.5f} &  {5:.3f} & {6}\\\\"
+strout = r"{0} & {1:.3f} & {2:.3f} & {3:.3f} & {4:.5f} &  {5:.3f} & {6}\\"
 toprint = []
 toprint1 = []
 means = []
@@ -52,8 +48,7 @@ for i, att1 in enumerate(np.unique(data.att1)):
     pairs = data.loc[data.att1 == att1]
     # pairs.y0 == pairs.label
     fpr, tpr, thresholds = roc_curve(pairs.label.astype(int), pairs.score)
-    confusion = confusion_matrix(pairs.label.astype(int).values,
-                                 pairs.yp0.values)
+    confusion = confusion_matrix(pairs.label.astype(int).values, pairs.yp0.values)
 
     tn, fp, fn, tp = np.hstack(confusion)
     acc = (tp + tn) / (tn + tp + fn + fp)
@@ -74,12 +69,10 @@ for i, att1 in enumerate(np.unique(data.att1)):
     means1.append(tars1)
 
     toprint.append(
-        strout.format(tags[i], tars[0], tars[1], tars[2], tars[3], tars[4],
-                      "--")
+        strout.format(tags[i], tars[0], tars[1], tars[2], tars[3], tars[4], "--")
     )  # tars[3]))
     toprint1.append(
-        strout.format(tags[i], tars1[0], tars1[1], tars1[2], tars[3], tars[4],
-                      "--")
+        strout.format(tags[i], tars1[0], tars1[1], tars1[2], tars[3], tars[4], "--")
     )  # , tars1[3]))
 
 m1 = np.array(means).mean(axis=0)

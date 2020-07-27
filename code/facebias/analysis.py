@@ -6,8 +6,12 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from facebias.visualization import det_plot, overlapped_score_distribution, \
-    plot_confusion_matrix, violin_plot
+from facebias.visualization import (
+    det_plot,
+    overlapped_score_distribution,
+    plot_confusion_matrix,
+    violin_plot,
+)
 from facebias.iotools import load_features_from_image_list
 from facebias.preprocessing import (
     get_attribute_gender_ethnicity,
@@ -36,12 +40,10 @@ def confusion_matrix(im_paths, dir_embeddings, save_figure_path=None):
     """
     data = pd.read_csv(im_paths)
     image_list = data["path"].to_list()
-    feature = load_features_from_image_list(image_list, dir_embeddings,
-                                            ext_feat="npy")
+    feature = load_features_from_image_list(image_list, dir_embeddings, ext_feat="npy")
     data = get_attribute_gender_ethnicity(data, "path")
     data["id"] = (
-        data["path"].apply(lambda x: "/".join(x.split("/")[:-1])).astype(
-            "category")
+        data["path"].apply(lambda x: "/".join(x.split("/")[:-1])).astype("category")
     )
     score_matrix = cosine_similarity(
         data["path"].apply(lambda x: feature[x][0]).to_list()
@@ -60,8 +62,7 @@ def confusion_matrix(im_paths, dir_embeddings, save_figure_path=None):
     confusion_npy[np.isnan(confusion_npy)] = 0
     confusion_npy = confusion_npy.reshape((8, -1))
     all_subgroup = data["a"].unique()
-    confusion_df = pd.DataFrame(confusion_npy, index=all_subgroup,
-                                columns=all_subgroup)
+    confusion_df = pd.DataFrame(confusion_npy, index=all_subgroup, columns=all_subgroup)
 
     n_samples_per_subgroup = data["a"].count() / len(all_subgroup)
     confusion_percent_error_df = (confusion_df / n_samples_per_subgroup) * 100
@@ -69,12 +70,12 @@ def confusion_matrix(im_paths, dir_embeddings, save_figure_path=None):
 
 
 def create_bias_analysis_plots(
-        im_pair_paths,
-        im_paths,
-        dir_embeddings,
-        data=None,
-        save_data=None,
-        dir_output="results",
+    im_pair_paths,
+    im_paths,
+    dir_embeddings,
+    data=None,
+    save_data=None,
+    dir_output="results",
 ):
     """
     Using image pairs from 'image_pair_path', plot the following three plots.
@@ -172,8 +173,7 @@ def create_bias_analysis_plots(
         f"{det_gender_path}"
     )
     det_plot(
-        data_pair_df, "g1", "DET Curve Per Gender",
-        save_figure_path=det_gender_path
+        data_pair_df, "g1", "DET Curve Per Gender", save_figure_path=det_gender_path
     )
 
     det_ethnicity_path = join(dir_output, "det_ethnicity.png")
@@ -193,8 +193,7 @@ def create_bias_analysis_plots(
         f"producing confusion matrix plot. result will be saved to "
         f"{confusion_matrix_path}"
     )
-    confusion_matrix(im_paths, dir_embeddings,
-                     save_figure_path=confusion_matrix_path)
+    confusion_matrix(im_paths, dir_embeddings, save_figure_path=confusion_matrix_path)
 
 
 def clean_image_pair_and_image_list_csv(pair_paths, im_paths, dir_embeddings):

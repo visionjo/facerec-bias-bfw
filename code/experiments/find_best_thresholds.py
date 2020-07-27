@@ -30,8 +30,7 @@ for fold in folds:
         thresholds_arr, data.loc[~test_ids, ["label", "score"]]
     )
     print(f"Fold {fold}: with t_g={threshold}, acc={score}")
-    data.loc[test_ids, "yp0"] = \
-        (data.loc[test_ids, "score"] >= threshold).astype(int)
+    data.loc[test_ids, "yp0"] = (data.loc[test_ids, "score"] >= threshold).astype(int)
 
     global_threshold.append(threshold)
 
@@ -45,13 +44,11 @@ print(
 )
 
 accuracy = (
-        data.groupby("att1").sum()["iscorrect"] / data.groupby("att1").count()
-        ["iscorrect"]
+    data.groupby("att1").sum()["iscorrect"] / data.groupby("att1").count()["iscorrect"]
 ).mean()
 
 std = (
-        data.groupby("att1").sum()["iscorrect"] / data.groupby("att1").count()
-        ["iscorrect"]
+    data.groupby("att1").sum()["iscorrect"] / data.groupby("att1").count()["iscorrect"]
 ).std()
 
 print(f"Accuracy:{accuracy}\nSTD:{std}")
@@ -85,28 +82,24 @@ for att in subgroup_labels:
     for fold in folds:
         test_ids = df_subgroup.fold == fold
         threshold, score = find_best_threshold(
-            thresholds_arr,
-            df_subgroup.loc[~test_ids, ["label", "score"]]
+            thresholds_arr, df_subgroup.loc[~test_ids, ["label", "score"]]
         )
         print(f"Fold {fold}: with t_g={threshold}, acc={score}")
         df_subgroup.loc[test_ids, "optimal_threshold"] = threshold
 
-        df_subgroup.loc[test_ids, "yp1"] = (
-                df_subgroup["score"] >= threshold).astype(
+        df_subgroup.loc[test_ids, "yp1"] = (df_subgroup["score"] >= threshold).astype(
             int
         )
 
         best_thresholds_li.append(threshold)
         best_scores_li.append(score)
     data.loc[df_subgroup.index, "yp1"] = df_subgroup["yp1"]
-    data.loc[df_subgroup.index, "optimal_threshold"] = df_subgroup[
-        "optimal_threshold"]
+    data.loc[df_subgroup.index, "optimal_threshold"] = df_subgroup["optimal_threshold"]
     best_thresholds[att] = best_thresholds_li
     best_scores[att] = best_scores_li
 data["optimal_threshold"] = 0.6
 for att in subgroup_labels:
-    data.loc[
-        (data.a1 == att) * (data.a2 == att), "optimal_threshold"] = np.mean(
+    data.loc[(data.a1 == att) * (data.a2 == att), "optimal_threshold"] = np.mean(
         best_thresholds[att]
     )
 
@@ -120,12 +113,12 @@ print(
     )
 )
 accuracy1 = (
-        data.groupby("att1").sum()["iscorrect1"]
-        / data.groupby("att1").count()["iscorrect1"]
+    data.groupby("att1").sum()["iscorrect1"]
+    / data.groupby("att1").count()["iscorrect1"]
 ).mean()
 std1 = (
-        data.groupby("att1").sum()["iscorrect1"]
-        / data.groupby("att1").count()["iscorrect1"]
+    data.groupby("att1").sum()["iscorrect1"]
+    / data.groupby("att1").count()["iscorrect1"]
 ).std()
 
 print(f"Accuracy:{accuracy1}\nSTD:{std1}")

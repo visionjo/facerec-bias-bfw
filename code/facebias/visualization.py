@@ -3,35 +3,36 @@ Functions for generating plots and visuals.
 """
 import numpy as np
 import seaborn as sns
-from matplotlib import colors as colors, pyplot as plt, style as style, \
-    ticker as mtick
+from matplotlib import colors as colors, pyplot as plt, style as style, ticker as mtick
 from matplotlib.lines import Line2D
 from matplotlib.ticker import ScalarFormatter
 from sklearn.metrics import auc, roc_curve
 
+from facebias.metrics import calculate_det_curves
+
 
 def set_defaults(
-        font={
-            "font.family": "serif",
-            "font.serif" : "Times New Roman",
-            "font.color" : "darkred",
-            "font.weight": "normal",
-            "font.size"  : 16,
-        },
-        rc={"axes.facecolor": (0, 0, 0, 0)},
-        style="white",
-        gridstyle="whitegrid",
+    font={
+        "font.family": "serif",
+        "font.serif": "Times New Roman",
+        "font.color": "darkred",
+        "font.weight": "normal",
+        "font.size": 16,
+    },
+    rc={"axes.facecolor": (0, 0, 0, 0)},
+    style="white",
+    gridstyle="whitegrid",
 ):
     sns.set(style=style, rc=rc)
     sns.set_style(gridstyle, font)
 
 
 def box_plot(
-        data,
-        save_figure_path=None,
-        fontsize=12,
-        new_labels=("Imposter", "Genuine"),
-        figsize=(13, 7),
+    data,
+    save_figure_path=None,
+    fontsize=12,
+    new_labels=("Imposter", "Genuine"),
+    figsize=(13, 7),
 ):
     """
     Plot a violin plot of the distribution of the cosine similarity score of
@@ -83,14 +84,14 @@ def box_plot(
 
 
 def draw_det_curve(
-        fpr,
-        fnr,
-        ax=None,
-        label=None,
-        set_axis_log_x=True,
-        set_axis_log_y=False,
-        scale=100,
-        title=None,
+    fpr,
+    fnr,
+    ax=None,
+    label=None,
+    set_axis_log_x=True,
+    set_axis_log_y=False,
+    scale=100,
+    title=None,
     label_x="FPR",
     label_y="FNR (%)",
     ticks_to_use_x=(1e-5, 1e-4, 1e-3, 1e-2, 1e-1, 1e-0),
@@ -322,8 +323,7 @@ def overlapped_score_distribution(data, log_scale=False, save_figure_path=None):
     color_legend = plt.legend(fontsize=fontsize)
     solid_line = Line2D([0], [0], color="black", linestyle="-")
     dash_line = Line2D([0], [0], color="black", linestyle="--")
-    plt.legend([solid_line, dash_line], ["intra", "inter"], fontsize=fontsize,
-               loc=2)
+    plt.legend([solid_line, dash_line], ["intra", "inter"], fontsize=fontsize, loc=2)
     plt.gca().add_artist(color_legend)
 
     # handle log scale
