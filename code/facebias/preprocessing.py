@@ -103,8 +103,7 @@ def get_attribute_gender_ethnicity(data, path_col, col_suffix=""):
     data[ethnicity_col] = data[attribute_col].apply(
         lambda x: x.split("_")[0][0].upper()
     )
-    data[gender_col] = data[attribute_col].apply(lambda x:
-                                                 x.split("_")[1][0].upper())
+    data[gender_col] = data[attribute_col].apply(lambda x: x.split("_")[1][0].upper())
     data[label_col] = data[ethnicity_col] + data[gender_col]
 
     for col in [attribute_col, ethnicity_col, gender_col, label_col]:
@@ -178,8 +177,7 @@ def compute_score_into_table(data, embedding_dir_path):
     )
     # score all feature pairs by calculating cosine similarity of the features
     data["score"] = data.apply(
-        lambda x: cosine_similarity(features[x["p1"]], features[x["p2"]])[0][0],
-        axis=1
+        lambda x: cosine_similarity(features[x["p1"]], features[x["p2"]])[0][0], axis=1
     )
     return data
 

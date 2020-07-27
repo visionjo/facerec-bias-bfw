@@ -78,8 +78,7 @@ class Metrics:
             "FP:\t{}\n"
             "FN:\t{}\n"
             "N_CLASSES:\t{}\n"
-            "N_SAMPLES:\t{}".format(tp, tn, fp, fn, self.n_classes,
-                                    self.n_samples)
+            "N_SAMPLES:\t{}".format(tp, tn, fp, fn, self.n_classes, self.n_samples)
         )
 
     def _check_state(self, check_stats=False):
