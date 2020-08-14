@@ -1,5 +1,8 @@
 # Change Log
 
+The contents of the change log are listed from oldest to more recent (i.e., bottom-most section would be the most up-to-date).
+
+PRs that are submitted can edit this file directly with the respective information for the submitted PR. Nonetheless, if overlooked this can also be noted thereafter.
 ## Unreleased
 
 ### Added
@@ -44,6 +47,9 @@ N/A
 ### Removed
 N/A
 
+14 August 2020
+===
+Updated docunmentation (i.e., README in repo root folder).
 
 
 
