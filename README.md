@@ -25,6 +25,27 @@
   <br>
 </div>
 
+<div>
+<blockquote>
+     Robinson, Joseph P., Can Qin, Yann Henon, Samson Timoner, and Yun Fu. 
+     "<a href="https://arxiv.org/pdf/2103.09118.pdf">Balancing Biases and Preserving Privacy on
+Balanced Faces in the Wild.</a>" <i>In CoRR arXiv:2103.09118</i>, (2021).
+ </blockquote>
+</div>
+<div>
+    <div style="display: none;" id="robinson2021balancing">
+      <pre class="bibtex">@article{robinson2021balancing,
+        title={Balancing Biases and Preserving Privacy on Balanced Faces in the Wild},
+        author={Robinson, Joseph P and Qin, Can and Henon, Yann and Timoner, Samson and Fu, Yun},
+        journal={arXiv preprint arXiv:2103.09118},
+        year={2021}
+       }
+    </pre>
+  </div>
+  <br>
+</div>
+
+
 ![Teaser](docs/bfw-logo.png)
 
 ## Balanced Faces in the Wild (BFW): Data, Code, Evaluations
