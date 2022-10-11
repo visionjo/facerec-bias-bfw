@@ -84,7 +84,7 @@ Here are quick links to key aspects of this resource.
 * See [code/README.md](code/README.md) for more on 'facebias' package and experiments contained within.
 * See [results/README.md](results/README.md) for summary of figures and results.
 
-Register and download via this <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAMDJhXxUMElHQ0tVSDFSNDZTMVBPSVpXMkxJTkY4Ny4u">form</a>.
+Register and download via this <a href="https://docs.google.com/forms/d/e/1FAIpQLSdZQLrKJnX5ZuE2oBa9FH_W9dm_wiptAHXTGyQ0-CjW-KLjUA/viewform">form</a>.
 
 **Final note.** Thee repo is a work-in-progress. Certainly, it is ready to be cloned and used; however, expect regular improvements, both in the implementation and documentation (i.e., *getting started* instructions will be enhanced). For now, it is recommended to begin with README files listed just above, along with the tutorial notebooks found in `code-> notebooks` with brief descriptions in README and more detail inline of each notebook. Again, PRs are more than welcome :)
 
