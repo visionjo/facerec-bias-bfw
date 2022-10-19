@@ -57,6 +57,8 @@ Intended to address problems of bias in facial recognition, we built BFW as a la
 
 Data can be accessed via <a href="https://forms.gle/PAKbxgUxCSUbM29q9">Google form</a>. Do not hesitate to report an issue for any and all inquiries.
 
+Also, the same data has been added to IEEEDataPort, which can be accessed at <a href="https://ieee-dataport.org/documents/balanced-faces-wild">https://ieee-dataport.org/documents/balanced-faces-wild</a>.
+
 ## Project Overview
 This project investigates bias in automatic facial recognition (FR). Specifically, subjects are grouped into predefined subgroups based on gender, ethnicity, and soon-to-be age. For this, we propose a novel image collection called Balanced Faces in the Wild (BFW), which is balanced across eight subgroups (i.e., 800 face images of 100 subjects, each with 25 face samples). Thus, along with the name (i.e., identification) labels and task protocols (e.g., list of pairs for face verification, pre-packaged data-table with additional metadata and labels, etc.), BFW clearly groups into ethnicities (i.e., Asian (A), Black (B), Indian (I), and White (W)) and genders (i.e., Females (F) and Males (M)). Thus, the motivation and intent are that BFW will provide a proxy to characterize FR systems with demographic-specific analysis now possible. For instance, various confusion metrics, along with the predefined criteria (i.e., score threshold), are fundamental when characterizing performance ratings of FR systems. The following visualization summarizes the confusion metrics in a way that relates to the different measurements.
 
