@@ -10,7 +10,7 @@
 </div>
 <div>
     <div>
-      Download Data on <a href="https://www.dropbox.com/scl/fi/5gindh41lrw8j7bgyv9mq/BFW-Release.zip?rlkey=k7kf4knhm18qi3be661m8qmo4&st=w5k6o36d&dl=0>">Dropbox</a>. Raw facial crops are also on <a href="https://ieee-dataport.org/documents/balanced-faces-wild">IEEEDataPort</a>.
+      Download Data on <a href="https://www.dropbox.com/scl/fi/5gindh41lrw8j7bgyv9mq/BFW-Release.zip?rlkey=k7kf4knhm18qi3be661m8qmo4&st=w5k6o36d&dl=0">Dropbox</a>. Raw facial crops are also on <a href="https://ieee-dataport.org/documents/balanced-faces-wild">IEEEDataPort</a>.
      </div>
     <div style="display: none;" id="robinsonfacebias2020">
       <pre class="bibtex">@inproceedings{robinson2020face,
