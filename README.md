@@ -86,8 +86,6 @@ Here are quick links to key aspects of this resource.
 * See [code/README.md](code/README.md) for more on the 'facebias' package and experiments contained within.
 * See [results/README.md](results/README.md) for summary of figures and results.
 
-<a href="https://www.dropbox.com/scl/fi/5gindh41lrw8j7bgyv9mq/BFW-Release.zip?rlkey=k7kf4knhm18qi3be661m8qmo4&st=w5k6o36d&dl=0>">Download data here</a>.
-
 **Final note.** The repo is a work-in-progress. Indeed, it is ready to be cloned and used; however, expect regular improvements, both in the implementation and documentation (i.e., *getting started* instructions will be enhanced). It is recommended to begin with the README files listed just above, along with the tutorial notebooks found in `code-> notebooks`, with brief descriptions in the README and more detail inline in each notebook. Again, PRs are more than welcome :)
 
 ## Paper abstract
