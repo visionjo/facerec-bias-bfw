@@ -1,7 +1,7 @@
 # Data and related files
 ### Balanced Faces _in the Wild_ (BFW)
 
-BFW, proposed in [<span style="color:blue">**1**</span>], provides balance in data (i.e., different subgroups) for face verification. Specifically, Table I compares BFW to related datasets (i.e., bias in faces), Table II characterizes BFW highlighting relevant stats, and Figure 1 shows a sample montage for each of the eight subgroups in BFW.
+BFW, proposed in [<span style="color:blue">**1**</span>], provides balanced data (i.e., across different subgroups) for face verification. Specifically, Table I compares BFW to related datasets (i.e., bias in faces), Table II characterizes BFW, highlighting relevant stats, and Figure 1 shows a sample montage for each of the eight subgroups in BFW.
 
 <p>
   <img src=../docs/facemontage.jpg alt="facemontage.png" width="700"/>
@@ -19,7 +19,7 @@ BFW, proposed in [<span style="color:blue">**1**</span>], provides balance in da
 
 <p>
   
-**Table 2. BFW and related datasets.** BFW is balanced across ID, gender, and ethnicity (Table 1). Compared with DemogPairs, BFW provides more samples per subject and subgroups per set, while using a single resource, VGG2. RFW, on the other hand, supports domain adaptation, and focuses on race-distribution - not the distribution of identities.
+**Table 2. BFW and related datasets.** BFW is balanced across ID, gender, and ethnicity (Table 1). Compared with DemogPairs, BFW provides more samples per subject and subgroups per set, while using a single resource, VGG2. RFW, on the other hand, supports domain adaptation and focuses on race distribution rather than the distribution of identities.
 
 <img src=../docs/table2.png alt="table2" width="700"/>
 </p>
@@ -28,7 +28,7 @@ BFW, proposed in [<span style="color:blue">**1**</span>], provides balance in da
 This folder contains the raw data files used in the paper:
 
 * `bfw-<version>-datatable.pkl`: List of pairs with corresponding tags for class labels (1/0), subgroups, and scores.
-Download link: <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAMDJhXxUMElHQ0tVSDFSNDZTMVBPSVpXMkxJTkY4Ny4u">form</a>.
+Download link: <a href="https://www.dropbox.com/scl/fo/i2gj82qewyikts2d55xo5/AK5cY0nmJ7Of-iHmD6eF9E4?rlkey=ebj8bbq0giwk30v75r51vsw75&st=uqp8lisi&dl=0">dropbox</a>.
 
 ### Data structure
 Paired faces and all corresponding metadata is organized as a <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html"> pandas dataframe</a> formatted as follows.
@@ -55,7 +55,7 @@ Paired faces and all corresponding metadata is organized as a <a href="https://p
 
 
 ## Reported bugs
-Here listed are the bugs in the data.<sup><a href="#fn1" id="ref1">1</a></sup> Each bug is listed per the date first reported, along with a brief description proceeding the item in parentheses. Future versions of data will incorporate bug fixes based on the following:
+Here are the bugs in the data.<sup><a href="#fn1" id="ref1">1</a></sup> Each bug is listed per the date first reported, along with a brief description proceeding the item in parentheses. Future versions of data will incorporate bug fixes based on the following:
 
 __24 July 2020__,
 * asian_females/n002509/0139_03.jpg (incorrect identity)
